@@ -20,5 +20,6 @@
         public int tiempoReparacion {  get; set; }
 
         public Fabricante Fabricante { get; set; }
+        public IList<AlquilarItem> alquilarItems { get; set; }
     }
 }
