@@ -1,25 +1,22 @@
 ﻿using System;
+using System.Security.Cryptography.X509Certificates;
 
 public class Compra
 {
-	public Compra()
+	public String apellidoCliente {  get; set; }
+	public String correoElectronico { get; set; }
+	public String direccionEnvio { get; set; }
+	public DateTime fechaCompra {  get; set; }
+	public int id {  get; set; }
+	public String nombreCliente { get; set; }
+	public double preciototal { get; set; }
+	public int telefono { get; set; }
+	public tiposMetodoPago metodoPago { get; set; }
+
+	public enum tiposMetodoPago
 	{
-		public string apellidoCliente{ get;set;}
-		
-		public string correoElectrónico { get;set;}
-		
-		public string direcciónEnvío { get;set;}
-		
-		public string fechaCompra {  get;set;}
-
-		[Key]
-		public int id { get;set;}
-
-		public string nombreCliente { get;set;}
-
-		public double precioTotal { get;set;}
-
-		public int teléfono { get;set;}
-
+		TarjetaCredito,
+		PayPal,
+		Efectivo
 	}
 }
