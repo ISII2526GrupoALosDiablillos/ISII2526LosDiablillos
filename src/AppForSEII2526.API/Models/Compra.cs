@@ -16,6 +16,9 @@ public class Compra
 	public String nombreCliente { get; set; }
 	public double preciototal { get; set; }
     public int telefono { get; set; }
+
+	public Lista<CompraItem> ComprasItem { get; set; }
+
 	public tiposMetodoPago metodoPago { get; set; }
 
 	public enum tiposMetodoPago
