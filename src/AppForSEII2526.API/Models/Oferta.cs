@@ -2,6 +2,18 @@
 {
     public class Oferta
     {
+        public Oferta() { }
+        public Oferta(DateTime fechaFinal, DateTime fechaInicio, DateTime fechaOferta, int id, tiposMetodoPago metodoPago, tiposDirigidaOferta dirigidaOferta, IList<OfertaItem> ofertaItems)
+        {
+            this.fechaFinal = fechaFinal;
+            this.fechaInicio = fechaInicio;
+            this.fechaOferta = fechaOferta;
+            Id = id;
+            this.metodoPago = metodoPago;
+            this.dirigidaOferta = dirigidaOferta;
+            this.ofertaItems = ofertaItems;
+        }
+
         public DateTime fechaFinal {  get; set; }
         public DateTime fechaInicio { get; set; }
         public DateTime fechaOferta { get; set; }
@@ -24,6 +36,16 @@
         }
 
         public IList<OfertaItem> ofertaItems { get; set; }
+
+        public override bool Equals(object? obj)
+        {
+            return base.Equals(obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
 
     }
 
