@@ -16,9 +16,9 @@ public class Compra
 	public String NombreCliente { get; set; }
 	public double Preciototal { get; set; }
     public int Telefono { get; set; }
-	public List<CompraItem> ComprasItem { get; set; }
+	public IList<CompraItem> compraItem { get; set; }
 	public Compra() { }
-	public Compra(String apellidoCliente, String correoElectronico, String direccionEnvio, DateTime fechaCompra, int id, String nombreCliente, double preciototal, int telefono)
+	public Compra(String apellidoCliente, String correoElectronico, String direccionEnvio, DateTime fechaCompra, int id, String nombreCliente, double preciototal, int telefono, IList<CompraItem> compraItem)
 	{
 		ApellidoCliente = apellidoCliente;
 		CorreoElectronico = correoElectronico;
