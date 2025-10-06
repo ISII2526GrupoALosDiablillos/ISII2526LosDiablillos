@@ -47,11 +47,5 @@ public class Compra
         return base.GetHashCode();
     }
 
-	public tiposMetodoPago metodoPago { get; set; }
-	public enum tiposMetodoPago
-	{
-		TarjetaCredito,
-		PayPal,
-		Efectivo
-	}
+	public PaymentMethodTypes metodoPago { get; set; }
 }
