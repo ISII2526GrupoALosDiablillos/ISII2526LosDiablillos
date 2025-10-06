@@ -8,11 +8,15 @@
     }
     public class Reparacion
     {
-        public int Id { get; set; } 
+        public int Id { get; set; }
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Porfavor, introduzca su Nombre.")]  
         public string NombreCliente { get; set; }
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Porfavor, introduzca su Apellido.")]
         public string ApellidoCliente { get; set; }
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Porfavor, introduzca la Fecha de Entrega.")]
         public DateTime FechaEntrega { get; set; }
         public DateTime FechaRecogida { get; set; }
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Porfavor, introduzca el Metodo de Pago que desee.")]
         public MetodosPago MetodosPago { get; set; }
         public string Telefono { get; set; }
         public double PrecioTotal { get; set; }
