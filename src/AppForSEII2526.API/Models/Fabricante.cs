@@ -5,9 +5,7 @@
         [Key]
         public int Id { get; set; }
 
-        public string Nombre { get; set; }
-
-        public IList<Herramienta> herramientas { get; set; }  
+        public string Nombre { get; set; } 
 
     }
 }
