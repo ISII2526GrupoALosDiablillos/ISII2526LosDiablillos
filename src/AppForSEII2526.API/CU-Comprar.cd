@@ -1,4 +1,89 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Compra">
+    <Position X="13.25" Y="0.75" Width="2" />
+    <Members>
+      <Property Name="ApellidoCliente" Hidden="true" />
+      <Property Name="CorreoElectronico" Hidden="true" />
+      <Property Name="DireccionEnvio" Hidden="true" />
+      <Property Name="FechaCompra" Hidden="true" />
+      <Property Name="NombreCliente" Hidden="true" />
+      <Property Name="Preciototal" Hidden="true" />
+      <Property Name="Telefono" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAACCAAQAAgAEBAAgEIAAEACAABAAIAAABAQAgAAEAI=</HashCode>
+      <FileName>Models\Compra.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="metodoPago" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="compraItem" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="CompraItem">
+    <Position X="9.75" Y="0.75" Width="1.5" />
+    <Members>
+      <Property Name="Cantidad" Hidden="true" />
+      <Property Name="Descripcion" Hidden="true" />
+      <Property Name="Precio" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AQAEAAEAAAAAAAAAgAEAAAARABAAEIAAIAAEAAAAAAA=</HashCode>
+      <FileName>Models\CompraItem.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Compra" />
+      <Property Name="Herramienta" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="AppForSEII2526.API.Models.Herramienta">
+    <Position X="5.75" Y="0.75" Width="1.5" />
+    <Members>
+      <Property Name="alquilarItems" Hidden="true" />
+      <Property Name="CompraItem" Hidden="true" />
+      <Property Name="compraItems" Hidden="true" />
+      <Property Name="Id" Hidden="true" />
+      <Property Name="itemsReparacion" Hidden="true" />
+      <Property Name="ItemsReparacion" Hidden="true" />
+      <Property Name="Material" Hidden="true" />
+      <Property Name="Nombre" Hidden="true" />
+      <Property Name="ofertaItems" Hidden="true" />
+      <Property Name="OfertaItems" Hidden="true" />
+      <Property Name="Precio" Hidden="true" />
+      <Property Name="TiempoReparacion" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AEQCAAAAAAAAAACAgAAAgABYGAAAGJgAEAAAAABAEgA=</HashCode>
+      <FileName>Models\Herramienta.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="fabricante" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="CompraItems" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="AppForSEII2526.API.Models.Fabricante">
+    <Position X="1.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAgAAAgAAAAAAgAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Fabricante.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="herramientas" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Enum Name="AppForSEII2526.API.Models.PaymentMethodTypes">
+    <Position X="13.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAAAABAAQAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Alquilar.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>
