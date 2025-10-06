@@ -23,7 +23,7 @@
             Clientes
         }
 
-        public List<OfertaItem> ofertaItems { get; set; }
+        public IList<OfertaItem> ofertaItems { get; set; }
 
     }
 

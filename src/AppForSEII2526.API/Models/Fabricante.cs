@@ -7,5 +7,7 @@
 
         public string Nombre { get; set; } 
 
+        public IList<Herramienta> herramientas { get; set; }
+
     }
 }
