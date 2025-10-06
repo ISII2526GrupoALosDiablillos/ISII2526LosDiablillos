@@ -29,21 +29,24 @@ public class Compra
 		Preciototal = preciototal;
 		Telefono = telefono;
 	}
-	public String telefono;
-	public String direccionEnvio;
-	public String apellidoCliente;
-	public String correoElectronico;
-	public DateTime fechaCompra;
-	public String nombreCliente;
-	public double preciototal;
+	public String telefono { get; set; }
+	public String direccionEnvio { get; set; }
+	public String apellidoCliente { get; set; }
+	public String correoElectronico { get; set; }
+	public DateTime fechaCompra { get; set; }
+	public String nombreCliente { get; set; }
+	public double preciototal { get; set; }
+
     public override bool Equals(object? obj)
     {
         return base.Equals(obj);
     }
+
     public override int GetHashCode()
     {
         return base.GetHashCode();
     }
+
 	public tiposMetodoPago metodoPago { get; set; }
 	public enum tiposMetodoPago
 	{
