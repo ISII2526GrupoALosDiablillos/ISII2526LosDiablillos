@@ -22,6 +22,9 @@
             Socios,
             Clientes
         }
+
+        public List<OfertaItem> ofertaItems { get; set; }
+
     }
 
 }

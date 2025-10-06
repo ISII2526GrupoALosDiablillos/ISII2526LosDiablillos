@@ -10,5 +10,8 @@
         public double porcentaje { get; set; }
         [Range(0.01, double.MaxValue, ErrorMessage = "El precio final debe ser mayor que 0.")]
         public double precioFinal {  get; set; }
+
+        public Herramienta herramienta { get; set; }
+        public Oferta oferta { get; set; }
     }
 }
