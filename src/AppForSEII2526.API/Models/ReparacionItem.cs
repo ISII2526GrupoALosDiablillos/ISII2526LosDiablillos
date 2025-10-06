@@ -33,6 +33,7 @@ namespace AppForSEII2526.API.Models
         public Herramienta Herramienta { get; set; }
         public Reparacion Reparacion { get; set; }
 
+
         public override bool Equals(object? obj)
         {
             return base.Equals(obj);
