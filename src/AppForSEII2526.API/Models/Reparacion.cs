@@ -8,7 +8,7 @@
     }
     public class Reparacion
     {
-        public int Id { get; set; }
+        public int Id { get; set; } 
         public string NombreCliente { get; set; }
         public string ApellidoCliente { get; set; }
         public DateTime FechaEntrega { get; set; }
