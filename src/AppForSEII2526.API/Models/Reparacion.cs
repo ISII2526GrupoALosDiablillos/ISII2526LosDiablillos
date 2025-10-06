@@ -6,7 +6,7 @@
         PayPal,
         Efectivo
     }
-    public class Reparacion
+    public class Reparacion  
     {
         public int Id { get; set; }
         [Required(AllowEmptyStrings = false, ErrorMessage = "Porfavor, introduzca su Nombre.")]  
