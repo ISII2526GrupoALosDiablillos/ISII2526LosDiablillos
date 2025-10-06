@@ -11,7 +11,8 @@ namespace AppForSEII2526.API.Models
     }
     public class Alquilar
     {
-        public int id {  get; set; }
+        [Key]
+        public int id {  get; set; } 
         public string apellidoCliente { get; set; }
         public string correo { get; set;}
         [DataType(System.ComponentModel.DataAnnotations.DataType.MultilineText)]
