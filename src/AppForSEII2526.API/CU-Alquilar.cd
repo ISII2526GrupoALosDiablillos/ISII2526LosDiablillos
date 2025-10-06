@@ -1,38 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="AppForSEII2526.API.Models.Alquilar">
-    <Position X="8" Y="0.5" Width="1.5" />
-    <Members>
-      <Property Name="ApellidoCliente" Hidden="true" />
-      <Property Name="Correo" Hidden="true" />
-      <Property Name="DireccionEnvio" Hidden="true" />
-      <Property Name="FechaAlquiler" Hidden="true" />
-      <Property Name="FechaFin" Hidden="true" />
-      <Property Name="FechaInicio" Hidden="true" />
-      <Property Name="Id" Hidden="true" />
-      <Property Name="NombreCliente" Hidden="true" />
-      <Property Name="NumeroTelefono" Hidden="true" />
-      <Property Name="Periodo" Hidden="true" />
-      <Property Name="PrecioTotal" Hidden="true" />
-    </Members>
-    <Compartments>
-      <Compartment Name="Nested Types" Collapsed="false" />
-    </Compartments>
-    <NestedTypes>
-      <Enum Name="AppForSEII2526.API.Models.Alquilar.PaymentMethodTypes">
-        <TypeIdentifier>
-          <NewMemberFileName>Models\Alquilar.cs</NewMemberFileName>
-        </TypeIdentifier>
-      </Enum>
-    </NestedTypes>
-    <TypeIdentifier>
-      <HashCode>ABQCSQAAAAkAAAAAgBCCAEAAAoBAAICAACCQAAAgEkA=</HashCode>
-      <FileName>Models\Alquilar.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsCollectionAssociation>
-      <Property Name="alquilarItems" />
-    </ShowAsCollectionAssociation>
-  </Class>
   <Class Name="AppForSEII2526.API.Models.AlquilarItem">
     <Position X="5.25" Y="0.5" Width="1.5" />
     <Members>
@@ -55,12 +22,45 @@
   <Class Name="AppForSEII2526.API.Models.Herramienta">
     <Position X="2.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAAAAAAAAAACAAAAAAAAAEAAQEAgAAAAAAABAEoA=</HashCode>
+      <HashCode>AEQCAAAAAAAAAACAgAAAgABYEAAQGJgAAAAAAABAEgA=</HashCode>
       <FileName>Models\Herramienta.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
       <Property Name="alquilarItems" />
     </ShowAsCollectionAssociation>
   </Class>
+  <Class Name="AppForSEII2526.API.Models.Alquilar">
+    <Position X="9.25" Y="0.5" Width="1.5" />
+    <Members>
+      <Property Name="ApellidoCliente" Hidden="true" />
+      <Property Name="Correo" Hidden="true" />
+      <Property Name="DireccionEnvio" Hidden="true" />
+      <Property Name="FechaAlquiler" Hidden="true" />
+      <Property Name="FechaFin" Hidden="true" />
+      <Property Name="FechaInicio" Hidden="true" />
+      <Property Name="Id" Hidden="true" />
+      <Property Name="NombreCliente" Hidden="true" />
+      <Property Name="NumeroTelefono" Hidden="true" />
+      <Property Name="Periodo" Hidden="true" />
+      <Property Name="PrecioTotal" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>ABQCSQAAAAkAAAAAgBCCAEAAAoBAAICAACCQAAAgEkA=</HashCode>
+      <FileName>Models\Alquilar.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="metodoPago" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="alquilarItems" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Enum Name="AppForSEII2526.API.Models.PaymentMethodTypes">
+    <Position X="9.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAAAABAAQAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Alquilar.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>
