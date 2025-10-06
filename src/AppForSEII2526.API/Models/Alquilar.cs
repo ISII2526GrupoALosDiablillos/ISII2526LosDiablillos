@@ -3,6 +3,12 @@ using System.Drawing.Printing;
 
 namespace AppForSEII2526.API.Models
 {
+    public enum PaymentMethodTypes
+    {
+        CreditCard,
+        PayPal,
+        Cash
+    }
     public class Alquilar
     {
         public int id {  get; set; }
@@ -64,13 +70,5 @@ namespace AppForSEII2526.API.Models
         {
             return base.GetHashCode();
         }
-        public enum PaymentMethodTypes
-        {
-            CreditCard,
-            PayPal,
-            Cash
-        }
-
-
     }
 }
