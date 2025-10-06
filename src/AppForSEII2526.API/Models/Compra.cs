@@ -16,9 +16,9 @@ public class Compra
 	public String NombreCliente { get; set; }
 	public double Preciototal { get; set; }
     public int Telefono { get; set; }
-	public List<CompraItem> ComprasItem { get; set; }
+	public IList<CompraItem> compraItem { get; set; }
 	public Compra() { }
-	public Compra(String apellidoCliente, String correoElectronico, String direccionEnvio, DateTime fechaCompra, int id, String nombreCliente, double preciototal, int telefono)
+	public Compra(String apellidoCliente, String correoElectronico, String direccionEnvio, DateTime fechaCompra, int id, String nombreCliente, double preciototal, int telefono, IList<CompraItem> compraItem)
 	{
 		ApellidoCliente = apellidoCliente;
 		CorreoElectronico = correoElectronico;
@@ -29,26 +29,23 @@ public class Compra
 		Preciototal = preciototal;
 		Telefono = telefono;
 	}
-	public String telefono;
-	public String direccionEnvio;
-	public String apellidoCliente;
-	public String correoElectronico;
-	public DateTime fechaCompra;
-	public String nombreCliente;
-	public double preciototal;
+	public String telefono { get; set; }
+	public String direccionEnvio { get; set; }
+	public String apellidoCliente { get; set; }
+	public String correoElectronico { get; set; }
+	public DateTime fechaCompra { get; set; }
+	public String nombreCliente { get; set; }
+	public double preciototal { get; set; }
+
     public override bool Equals(object? obj)
     {
         return base.Equals(obj);
     }
+
     public override int GetHashCode()
     {
         return base.GetHashCode();
     }
-	public tiposMetodoPago metodoPago { get; set; }
-	public enum tiposMetodoPago
-	{
-		TarjetaCredito,
-		PayPal,
-		Efectivo
-	}
+
+	public PaymentMethodTypes metodoPago { get; set; }
 }
