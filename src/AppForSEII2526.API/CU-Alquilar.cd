@@ -2,8 +2,31 @@
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="AppForSEII2526.API.Models.Alquilar">
     <Position X="8" Y="0.5" Width="1.5" />
+    <Members>
+      <Property Name="ApellidoCliente" Hidden="true" />
+      <Property Name="Correo" Hidden="true" />
+      <Property Name="DireccionEnvio" Hidden="true" />
+      <Property Name="FechaAlquiler" Hidden="true" />
+      <Property Name="FechaFin" Hidden="true" />
+      <Property Name="FechaInicio" Hidden="true" />
+      <Property Name="Id" Hidden="true" />
+      <Property Name="NombreCliente" Hidden="true" />
+      <Property Name="NumeroTelefono" Hidden="true" />
+      <Property Name="Periodo" Hidden="true" />
+      <Property Name="PrecioTotal" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="AppForSEII2526.API.Models.Alquilar.PaymentMethodTypes">
+        <TypeIdentifier>
+          <NewMemberFileName>Models\Alquilar.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
     <TypeIdentifier>
-      <HashCode>ABQAAAAAAAkAAAAAAACCAAAAAABAAACAACAQAAAAAkA=</HashCode>
+      <HashCode>ABQCSQAAAAkAAAAAgBCCAEAAAoBAAICAACCQAAAgEkA=</HashCode>
       <FileName>Models\Alquilar.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
@@ -12,13 +35,21 @@
   </Class>
   <Class Name="AppForSEII2526.API.Models.AlquilarItem">
     <Position X="5.25" Y="0.5" Width="1.5" />
+    <Members>
+      <Property Name="Alquilar" Hidden="true" />
+      <Property Name="Cantidad" Hidden="true" />
+      <Property Name="Herramienta" Hidden="true" />
+      <Property Name="IdAlquiler" Hidden="true" />
+      <Property Name="IdHerramienta" Hidden="true" />
+      <Property Name="Precio" Hidden="true" />
+    </Members>
     <TypeIdentifier>
-      <HashCode>AQAAAAAAAAAAAEAAAAAAEgAAAAAgEAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AQAAAAEAQAAAAEAAgAAAEgAQABIgEIAAIAAAAAAAAAA=</HashCode>
       <FileName>Models\AlquilarItem.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="alquilar" />
       <Property Name="herramienta" />
+      <Property Name="alquilar" />
     </ShowAsAssociation>
   </Class>
   <Class Name="AppForSEII2526.API.Models.Herramienta">
