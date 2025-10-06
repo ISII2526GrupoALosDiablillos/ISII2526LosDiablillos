@@ -21,19 +21,10 @@
         public int Id { get; set; }
         [Required(ErrorMessage = "El método de pago es obligatorio.")]
         public tiposMetodoPago metodoPago { get; set; }
-        public enum tiposMetodoPago
-        {
-            TarjetaCredito,
-            PayPal,
-            Efectivo
-        }
+        
         [Required(ErrorMessage = "Debe indicar a quién va dirigida la oferta.")]
         public tiposDirigidaOferta dirigidaOferta { get; set; }
-        public enum tiposDirigidaOferta
-        {
-            Socios,
-            Clientes
-        }
+        
 
         public IList<OfertaItem> ofertaItems { get; set; }
 
@@ -47,6 +38,17 @@
             return base.GetHashCode();
         }
 
+    }
+    public enum tiposMetodoPago
+    {
+        TarjetaCredito,
+        PayPal,
+        Efectivo
+    }
+    public enum tiposDirigidaOferta
+    {
+        Socios,
+        Clientes
     }
 
 }
