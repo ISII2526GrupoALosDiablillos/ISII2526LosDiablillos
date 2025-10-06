@@ -11,6 +11,7 @@ namespace AppForSEII2526.API.Models
     }
     public class Alquilar
     {
+        [Key]
         public int id {  get; set; }
         public string apellidoCliente { get; set; }
         public string correo { get; set;}
