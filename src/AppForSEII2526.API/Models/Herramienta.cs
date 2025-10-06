@@ -23,6 +23,7 @@
         public IList<AlquilarItem> alquilarItems { get; set; }
         public IList<OfertaItem> ofertaItems { get; set; }
         public IList<CompraItem> CompraItems { get; set; }
+        public IList<ReparacionItem> reparacionItems { get; set; }
         public Herramienta() { }
         public Herramienta(int compraItems,int id,int itemsReparación,string material,string nombre,int precio,int tiempoReparacion, Fabricante fabricante)
         {
