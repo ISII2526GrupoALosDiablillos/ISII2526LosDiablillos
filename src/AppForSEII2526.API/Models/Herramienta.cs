@@ -21,5 +21,6 @@
 
         public Fabricante Fabricante { get; set; }
         public IList<AlquilarItem> alquilarItems { get; set; }
+        public List<OfertaItem> ofertaItems { get; set; }
     }
 }
