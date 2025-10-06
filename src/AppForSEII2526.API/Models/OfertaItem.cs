@@ -2,6 +2,15 @@
 {
     public class OfertaItem
     {
+        public OfertaItem() { }
+        public OfertaItem(int idHerramienta, int idOferta, double porcentaje, double precioFinal)
+        {
+            this.idHerramienta = idHerramienta;
+            this.idOferta = idOferta;
+            this.porcentaje = porcentaje;
+            this.precioFinal = precioFinal;
+        }
+
         [Key]
         public int idHerramienta { get; set; }
         [Required]
@@ -13,5 +22,15 @@
 
         public Herramienta herramienta { get; set; }
         public Oferta oferta { get; set; }
+
+        public override bool Equals(object? obj)
+        {
+            return base.Equals(obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 }
