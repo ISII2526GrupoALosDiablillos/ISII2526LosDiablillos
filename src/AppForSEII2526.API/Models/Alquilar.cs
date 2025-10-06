@@ -13,18 +13,26 @@ namespace AppForSEII2526.API.Models
     {
         [Key]
         public int id {  get; set; } 
+        [StringLength(100, ErrorMessage = "El apellido no puede tener mas de 100 caracteres")]
         public string apellidoCliente { get; set; }
+        [DataType(System.ComponentModel.DataAnnotations.DataType.EmailAddress)]
         public string correo { get; set;}
         [DataType(System.ComponentModel.DataAnnotations.DataType.MultilineText)]
         [Display(Name = "Direccion de envio")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Por favor, pon tu direccion de envio")]
         public string direccionEnvio {  get; set; }
+
         public DateTime fechaAlquiler {  get; set; }
+
         public DateTime fechaFin {  get; set; }
         public DateTime fechaInicio {  get; set; }
+        [StringLength(100, ErrorMessage = "El nombre no puede tener mas de 100 caracteres")]
         public string nombreCliente {  get; set; }
+
         public int numeroTelefono { get; set; }
+
         public int periodo {  get; set; }
+        [DataType(System.ComponentModel.DataAnnotations.DataType.Currency)]
         public double precioTotal {  get; set; }
 
         public Alquilar()
@@ -33,31 +41,22 @@ namespace AppForSEII2526.API.Models
         }
         public Alquilar(int id, string apellidoCliente, string correo, string direccionEnvio, DateTime fechaAlquiler, DateTime fechaFin, DateTime fechaInicio, string nombreCliente, int numeroTelefono, int periodo, double precioTotal,IList<AlquilarItem>alquilarItems)
         {
-            PrecioTotal = precioTotal;
-            Id = id;
-            ApellidoCliente = apellidoCliente;
-            Correo = correo;
-            DireccionEnvio = direccionEnvio;
-            FechaAlquiler = fechaAlquiler;
-            FechaFin = fechaFin;
-            FechaInicio = fechaInicio;
-            NombreCliente = nombreCliente;
-            NumeroTelefono = numeroTelefono;
-            Periodo = periodo;
-            
-            
+            this.precioTotal = precioTotal;
+            this.id = id;
+            this.apellidoCliente = apellidoCliente;
+            this.correo = correo;
+            this.direccionEnvio = direccionEnvio;
+            this.fechaAlquiler = fechaAlquiler;
+            this.fechaFin = fechaFin;
+            this.fechaInicio = fechaInicio;
+            this.nombreCliente = nombreCliente;
+            this.numeroTelefono = numeroTelefono;
+            this.periodo = periodo;
+
+
+
         }
-        public int Id {  get; set; }
-        public string ApellidoCliente {  get; set; }
-        public string Correo { get; set; }
-        public string DireccionEnvio {  get; set; }
-        public DateTime FechaAlquiler {  get; set; }
-        public DateTime FechaFin { get; set; }
-        public DateTime FechaInicio { get; set; }
-        public string NombreCliente {get; set;}
-        public int NumeroTelefono { get; set;}
-        public int Periodo { get; set;}
-        public double PrecioTotal { get; set;}
+
 
         public PaymentMethodTypes metodoPago { get; set; }
 
