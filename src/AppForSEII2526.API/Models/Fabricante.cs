@@ -20,8 +20,5 @@
         {
             return base.GetHashCode();
         }
-
-        public IList<Herramienta> herramientas { get; set; }
-
     }
 }
