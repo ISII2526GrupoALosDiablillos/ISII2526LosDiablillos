@@ -6,6 +6,20 @@
         public int Id { get; set; }
 
         public string Nombre { get; set; } 
+        public IList<Herramienta> herramientas {  get; set; }
+        public Fabricante() { }
+        public Fabricante(int Id,string Nombre,IList<Herramienta>herramientas){
+            Id = Id;
+            Nombre = Nombre;
+        }
+        public override bool Equals(object? obj)
+        {
+            return base.Equals(obj);
+        }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
 
     }
 }
