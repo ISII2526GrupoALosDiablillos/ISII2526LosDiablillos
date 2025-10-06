@@ -7,7 +7,7 @@ namespace AppForSEII2526.API.Models
         public int Id { get; set; }
         public int IdReparacion { get; set; }
         public int IdHerramienta { get; set; }
-        [Required(AllowEmptyStrings =false, ErrorMessage ="Porfavor, introduzca la cantidad.")]
+        [Required(AllowEmptyStrings =false, ErrorMessage ="Porfavor, introduzca la cantidad.")]   
         public int Cantidad { get; set; }
         public string Descripcion { get; set; }
         public double Precio { get; set; }
