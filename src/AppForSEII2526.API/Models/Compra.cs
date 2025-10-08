@@ -29,13 +29,7 @@ public class Compra
 		Preciototal = preciototal;
 		Telefono = telefono;
 	}
-	public String telefono { get; set; }
-	public String direccionEnvio { get; set; }
-	public String apellidoCliente { get; set; }
-	public String correoElectronico { get; set; }
-	public DateTime fechaCompra { get; set; }
-	public String nombreCliente { get; set; }
-	public double preciototal { get; set; }
+	
 
     public override bool Equals(object? obj)
     {

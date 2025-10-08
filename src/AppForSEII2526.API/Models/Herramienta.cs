@@ -2,7 +2,7 @@
 {
     public class Herramienta
     {
-        public int compraItems {  get; set; }
+        
         [Key]
         public int id {  get; set; }
         [StringLength(100, ErrorMessage = "El nombre no puede tener mas de 100 caracteres")]
@@ -22,27 +22,22 @@
         public Fabricante fabricante { get; set; }
         public IList<AlquilarItem> alquilarItems { get; set; }
         public IList<OfertaItem> ofertaItems { get; set; }
-        public IList<CompraItem> CompraItems { get; set; }
+        public IList<CompraItem> compraItems { get; set; }
         public IList<ReparacionItem> reparacionItems { get; set; }
         public Herramienta() { }
-        public Herramienta(int compraItems,int id,int itemsReparación,string material,string nombre,int precio,int tiempoReparacion, Fabricante fabricante)
+        public Herramienta(int id,int itemsReparación,string material,string nombre,int precio,int tiempoReparacion, Fabricante fabricante)
         {
-            CompraItem=compraItems;
-            Id = id;
-            ItemsReparacion = itemsReparacion;
-            Material = material;
-            Nombre = nombre;
-            Precio = precio;
-            TiempoReparacion = tiempoReparacion;
+            
+            this.id = id;
+            this.itemsReparacion = itemsReparacion;
+            this.material = material;
+            this.nombre = nombre;
+            this.precio = precio;
+            this.tiempoReparacion = tiempoReparacion;
 
         }
-        public int Id {  get; set; }
-        public int CompraItem { get; set; }
-        public int ItemsReparacion { get;set; }
-        public string Material { get; set; }
-        public string Nombre { get; set; }
-        public int Precio { get; set; }
-        public int TiempoReparacion { get; set; }
+        
+        
         public override bool Equals(object? obj)
         {
             return base.Equals(obj);

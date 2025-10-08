@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppForSEII2526.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251006163928_CreateIdentitySchema")]
+    [Migration("20251008084054_CreateIdentitySchema")]
     partial class CreateIdentitySchema
     {
         /// <inheritdoc />
@@ -33,46 +33,10 @@ namespace AppForSEII2526.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
-                    b.Property<string>("ApellidoCliente")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Correo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DireccionEnvio")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("FechaAlquiler")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("FechaFin")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("FechaInicio")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("NombreCliente")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("NumeroTelefono")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Periodo")
-                        .HasColumnType("int");
-
-                    b.Property<double>("PrecioTotal")
-                        .HasColumnType("float");
-
                     b.Property<string>("apellidoCliente")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("correo")
                         .IsRequired()
@@ -96,7 +60,8 @@ namespace AppForSEII2526.API.Migrations
 
                     b.Property<string>("nombreCliente")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("numeroTelefono")
                         .HasColumnType("int");
@@ -234,33 +199,7 @@ namespace AppForSEII2526.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
-                    b.Property<int>("CompraItem")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ItemsReparacion")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Material")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("OfertaItems")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Precio")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TiempoReparacion")
-                        .HasColumnType("int");
-
-                    b.Property<int>("compraItems")
                         .HasColumnType("int");
 
                     b.Property<int>("fabricanteId")
@@ -391,35 +330,16 @@ namespace AppForSEII2526.API.Migrations
 
             modelBuilder.Entity("AppForSEII2526.API.Models.ReparacionItem", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Cantidad")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Descripcion")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
                     b.Property<int>("Herramientaid")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdHerramienta")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdReparacion")
-                        .HasColumnType("int");
-
-                    b.Property<double>("Precio")
-                        .HasColumnType("float");
-
                     b.Property<int>("ReparacionId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TiempoReparacion")
                         .HasColumnType("int");
 
                     b.Property<int>("cantidad")
@@ -435,10 +355,13 @@ namespace AppForSEII2526.API.Migrations
                     b.Property<int>("idReparacion")
                         .HasColumnType("int");
 
-                    b.Property<float>("precio")
-                        .HasColumnType("real");
+                    b.Property<double>("precio")
+                        .HasColumnType("float");
 
-                    b.HasKey("Id");
+                    b.Property<int>("tiempoReparacion")
+                        .HasColumnType("int");
+
+                    b.HasKey("id");
 
                     b.HasIndex("Herramientaid");
 
@@ -480,34 +403,8 @@ namespace AppForSEII2526.API.Migrations
                     b.Property<int>("Telefono")
                         .HasColumnType("int");
 
-                    b.Property<string>("apellidoCliente")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("correoElectronico")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("direccionEnvio")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("fechaCompra")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("metodoPago")
                         .HasColumnType("int");
-
-                    b.Property<string>("nombreCliente")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("preciototal")
-                        .HasColumnType("float");
-
-                    b.Property<string>("telefono")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -536,16 +433,6 @@ namespace AppForSEII2526.API.Migrations
                         .HasColumnType("int");
 
                     b.Property<double>("Precio")
-                        .HasColumnType("float");
-
-                    b.Property<int>("cantidad")
-                        .HasColumnType("int");
-
-                    b.Property<string>("descripcion")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("precio")
                         .HasColumnType("float");
 
                     b.HasKey("IdCompra", "IdHerramienta");
@@ -767,7 +654,7 @@ namespace AppForSEII2526.API.Migrations
                         .IsRequired();
 
                     b.HasOne("AppForSEII2526.API.Models.Herramienta", "Herramienta")
-                        .WithMany("CompraItems")
+                        .WithMany("compraItems")
                         .HasForeignKey("Herramientaid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -840,9 +727,9 @@ namespace AppForSEII2526.API.Migrations
 
             modelBuilder.Entity("AppForSEII2526.API.Models.Herramienta", b =>
                 {
-                    b.Navigation("CompraItems");
-
                     b.Navigation("alquilarItems");
+
+                    b.Navigation("compraItems");
 
                     b.Navigation("ofertaItems");
 
