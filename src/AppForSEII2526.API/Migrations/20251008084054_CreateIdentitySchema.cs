@@ -17,27 +17,16 @@ namespace AppForSEII2526.API.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    apellidoCliente = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    apellidoCliente = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     correo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     direccionEnvio = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     fechaAlquiler = table.Column<DateTime>(type: "datetime2", nullable: false),
                     fechaFin = table.Column<DateTime>(type: "datetime2", nullable: false),
                     fechaInicio = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    nombreCliente = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    nombreCliente = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     numeroTelefono = table.Column<int>(type: "int", nullable: false),
                     periodo = table.Column<int>(type: "int", nullable: false),
                     precioTotal = table.Column<double>(type: "float", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    ApellidoCliente = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Correo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DireccionEnvio = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FechaAlquiler = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    FechaFin = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    FechaInicio = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    NombreCliente = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NumeroTelefono = table.Column<int>(type: "int", nullable: false),
-                    Periodo = table.Column<int>(type: "int", nullable: false),
-                    PrecioTotal = table.Column<double>(type: "float", nullable: false),
                     metodoPago = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -97,13 +86,6 @@ namespace AppForSEII2526.API.Migrations
                     NombreCliente = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Preciototal = table.Column<double>(type: "float", nullable: false),
                     Telefono = table.Column<int>(type: "int", nullable: false),
-                    telefono = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    direccionEnvio = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    apellidoCliente = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    correoElectronico = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    fechaCompra = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    nombreCliente = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    preciototal = table.Column<double>(type: "float", nullable: false),
                     metodoPago = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -272,21 +254,13 @@ namespace AppForSEII2526.API.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    compraItems = table.Column<int>(type: "int", nullable: false),
                     itemsReparacion = table.Column<int>(type: "int", maxLength: 100, nullable: false),
                     material = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     nombre = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     OfertaItems = table.Column<int>(type: "int", nullable: false),
                     precio = table.Column<int>(type: "int", nullable: false),
                     tiempoReparacion = table.Column<int>(type: "int", nullable: false),
-                    fabricanteId = table.Column<int>(type: "int", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    CompraItem = table.Column<int>(type: "int", nullable: false),
-                    ItemsReparacion = table.Column<int>(type: "int", nullable: false),
-                    Material = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Precio = table.Column<int>(type: "int", nullable: false),
-                    TiempoReparacion = table.Column<int>(type: "int", nullable: false)
+                    fabricanteId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -337,9 +311,6 @@ namespace AppForSEII2526.API.Migrations
                     Cantidad = table.Column<int>(type: "int", nullable: false),
                     Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Precio = table.Column<double>(type: "float", nullable: false),
-                    cantidad = table.Column<int>(type: "int", nullable: false),
-                    descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    precio = table.Column<double>(type: "float", nullable: false),
                     CompraId = table.Column<int>(type: "int", nullable: false),
                     Herramientaid = table.Column<int>(type: "int", nullable: false)
                 },
@@ -393,25 +364,20 @@ namespace AppForSEII2526.API.Migrations
                 name: "ReparacionItems",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IdReparacion = table.Column<int>(type: "int", nullable: false),
-                    IdHerramienta = table.Column<int>(type: "int", nullable: false),
-                    Cantidad = table.Column<int>(type: "int", nullable: false),
-                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Precio = table.Column<double>(type: "float", nullable: false),
-                    TiempoReparacion = table.Column<int>(type: "int", nullable: false),
+                    idReparacion = table.Column<int>(type: "int", nullable: false),
+                    idHerramienta = table.Column<int>(type: "int", nullable: false),
                     cantidad = table.Column<int>(type: "int", nullable: false),
                     descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    idHerramienta = table.Column<int>(type: "int", nullable: false),
-                    idReparacion = table.Column<int>(type: "int", nullable: false),
-                    precio = table.Column<float>(type: "real", nullable: false),
+                    precio = table.Column<double>(type: "float", nullable: false),
+                    tiempoReparacion = table.Column<int>(type: "int", nullable: false),
                     Herramientaid = table.Column<int>(type: "int", nullable: false),
                     ReparacionId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ReparacionItems", x => x.Id);
+                    table.PrimaryKey("PK_ReparacionItems", x => x.id);
                     table.ForeignKey(
                         name: "FK_ReparacionItems_Herramientas_Herramientaid",
                         column: x => x.Herramientaid,
