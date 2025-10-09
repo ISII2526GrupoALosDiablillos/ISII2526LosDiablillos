@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="AppForSEII2526.API.Models.Fabricante">
-    <Position X="0.75" Y="1.75" Width="1.5" />
+    <Position X="0.75" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAAAAAAAAAAAAgAAAgAAAAAAgAIAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\Fabricante.cs</FileName>
@@ -12,6 +12,10 @@
   </Class>
   <Class Name="AppForSEII2526.API.Models.Herramienta">
     <Position X="3.5" Y="1.5" Width="1.5" />
+    <Members>
+      <Property Name="ofertaItems" Hidden="true" />
+      <Property Name="reparacionItems" Hidden="true" />
+    </Members>
     <TypeIdentifier>
       <HashCode>gAQAAAAAAAAAAACAgAAAAAAIEAAAEJgAEAAAAABAEgA=</HashCode>
       <FileName>Models\Herramienta.cs</FileName>
@@ -25,20 +29,23 @@
   </Class>
   <Class Name="Compra">
     <Position X="9.75" Y="1.5" Width="1.5" />
+    <Members>
+      <Property Name="id" Hidden="true" />
+    </Members>
     <TypeIdentifier>
       <HashCode>AAACAAAQAAAgAAAAgEIAAAAAAABAAIAAAAAAAAAAAgA=</HashCode>
       <FileName>Models\Compra.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="metodoPago" />
       <Property Name="atributos" />
+      <Property Name="metodoPago" />
     </ShowAsAssociation>
     <ShowAsCollectionAssociation>
       <Property Name="compraItem" />
     </ShowAsCollectionAssociation>
   </Class>
   <Class Name="CompraItem">
-    <Position X="6.5" Y="1.75" Width="1.5" />
+    <Position X="6.5" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AQAAAAAAAIAAAAAAgAEAAAAAAAAgEIQAAAAAAAAAIAA=</HashCode>
       <FileName>Models\CompraItem.cs</FileName>
@@ -49,7 +56,7 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="AppForSEII2526.API.Models.ApplicationUser">
-    <Position X="13.25" Y="1.75" Width="1.5" />
+    <Position X="13.25" Y="1.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAgAABAAAAAAAAAAAAAAAAAAAAAQAAgAAAI=</HashCode>
       <FileName>Models\ApplicationUser.cs</FileName>
