@@ -20,9 +20,7 @@ public class CompraItem
         Compra = compra;
         Herramienta = herramienta;
     }
-    public int cantidad { get; set; }
-    public String descripcion { get; set; }
-    public double precio { get; set; }
+    
     public Compra Compra { get; set; }
     public Herramienta Herramienta { get; set; }
     public override bool Equals(object? obj)

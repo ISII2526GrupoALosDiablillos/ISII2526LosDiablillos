@@ -4,10 +4,14 @@
     public class AlquilarItem
     {
         public int AlquilerId {  get; set; }
+        [Required]
         public Herramienta herramienta { get; set; }
+        [Required]
         public Alquilar alquilar { get; set; }
         public int HerramientaId{  set; get; }
+        [DataType(System.ComponentModel.DataAnnotations.DataType.Currency)]
         public int precio {  set; get; }
+        [Range(1, int.MaxValue, ErrorMessage = "La cantidad debe ser al menos 1.")]
         public int cantidad {  set; get; }
 
         public AlquilarItem()
