@@ -1,12 +1,12 @@
 ﻿namespace AppForSEII2526.API.Models
 {
-    
+    [PrimaryKey(nameof(HerramientaId),nameof(AlquilerId))]
     public class AlquilarItem
     {
-        public int idAlquiler {  get; set; }
+        public int AlquilerId {  get; set; }
         public Herramienta herramienta { get; set; }
         public Alquilar alquilar { get; set; }
-        public int idHerramienta {  set; get; }
+        public int HerramientaId{  set; get; }
         public int precio {  set; get; }
         public int cantidad {  set; get; }
 
@@ -15,22 +15,15 @@
 
         }
 
-        public AlquilarItem(int idAlquiler,Herramienta herramienta,Alquilar alquilar,int idHerramienta, int precio, int cantidad)
+        public AlquilarItem(int AlquilerId,Herramienta herramienta,Alquilar alquilar,int HerramientaId, int precio, int cantidad)
         {
-            IdAlquiler = idAlquiler;
-            Herramienta= herramienta;
-            Alquilar = alquilar;
-            IdHerramienta = idHerramienta;
-            Precio = precio;
-            Cantidad = cantidad;
+            this.AlquilerId = AlquilerId;
+            this.herramienta = herramienta;
+            this.alquilar = alquilar;
+            this.AlquilerId = AlquilerId;
+            this.precio = precio;
+            this.cantidad = cantidad;
         }
-        public int IdAlquiler { get; set; }
-        public Herramienta Herramienta { get; set; }
-        public Alquilar Alquilar { get;set; }
-        public int IdHerramienta { get; set; }
-        public int Precio { get; set; }
-        public int Cantidad { get; set; }
-
         public override bool Equals(object? obj)
         {
             return base.Equals(obj);

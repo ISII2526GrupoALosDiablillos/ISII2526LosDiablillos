@@ -1,51 +1,43 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="AppForSEII2526.API.Models.AlquilarItem">
-    <Position X="5.25" Y="0.5" Width="1.5" />
-    <Members>
-      <Property Name="Alquilar" Hidden="true" />
-      <Property Name="Cantidad" Hidden="true" />
-      <Property Name="Herramienta" Hidden="true" />
-      <Property Name="IdAlquiler" Hidden="true" />
-      <Property Name="IdHerramienta" Hidden="true" />
-      <Property Name="Precio" Hidden="true" />
-    </Members>
+  <Class Name="AppForSEII2526.API.Models.Fabricante">
+    <Position X="0.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AQAAAAEAQAAAAEAAgAAAEgAQABIgEIAAIAAAAAAAAAA=</HashCode>
-      <FileName>Models\AlquilarItem.cs</FileName>
+      <HashCode>AAACAAAAAAAAAAAAgAAAgAAAAAAgAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Fabricante.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="herramienta" />
-      <Property Name="alquilar" />
-    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="herramientas" />
+    </ShowAsCollectionAssociation>
   </Class>
   <Class Name="AppForSEII2526.API.Models.Herramienta">
-    <Position X="2.5" Y="0.5" Width="1.5" />
+    <Position X="3" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AEQCAAAAAAAAAACAgAAAgABYEAAQGJgAAAAAAABAEgA=</HashCode>
+      <HashCode>gEQCAAAAAAAAAACAgAAAgABYGAAAGJgAEAAAAABAEgA=</HashCode>
       <FileName>Models\Herramienta.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="fabricante" />
+    </ShowAsAssociation>
     <ShowAsCollectionAssociation>
       <Property Name="alquilarItems" />
     </ShowAsCollectionAssociation>
   </Class>
-  <Class Name="AppForSEII2526.API.Models.Alquilar">
-    <Position X="9.25" Y="0.5" Width="1.5" />
-    <Members>
-      <Property Name="ApellidoCliente" Hidden="true" />
-      <Property Name="Correo" Hidden="true" />
-      <Property Name="DireccionEnvio" Hidden="true" />
-      <Property Name="FechaAlquiler" Hidden="true" />
-      <Property Name="FechaFin" Hidden="true" />
-      <Property Name="FechaInicio" Hidden="true" />
-      <Property Name="Id" Hidden="true" />
-      <Property Name="NombreCliente" Hidden="true" />
-      <Property Name="NumeroTelefono" Hidden="true" />
-      <Property Name="Periodo" Hidden="true" />
-      <Property Name="PrecioTotal" Hidden="true" />
-    </Members>
+  <Class Name="AppForSEII2526.API.Models.AlquilarItem">
+    <Position X="6" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>ABQCSQAAAAkAAAAAgBCCAEAAAoBAAICAACCQAAAgEkA=</HashCode>
+      <HashCode>AQAAAAAEAAAAAECAgAAAAAAAAAAgEIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\AlquilarItem.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="alquilar" />
+      <Property Name="herramienta" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="AppForSEII2526.API.Models.Alquilar">
+    <Position X="9" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABQCAAAAAAEAAAAAgAACAAAAAABAAIAAACAAAAAAAkA=</HashCode>
       <FileName>Models\Alquilar.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -56,7 +48,7 @@
     </ShowAsCollectionAssociation>
   </Class>
   <Enum Name="AppForSEII2526.API.Models.PaymentMethodTypes">
-    <Position X="9.25" Y="5" Width="1.5" />
+    <Position X="9" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAQAAAAAAABAAQAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\Alquilar.cs</FileName>
