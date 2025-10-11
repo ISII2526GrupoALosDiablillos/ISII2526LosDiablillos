@@ -1,5 +1,6 @@
 ﻿namespace AppForSEII2526.API.Models
 {
+    [PrimaryKey(nameof(idHerramienta), nameof(idOferta))]
     public class OfertaItem
     {
         public OfertaItem() { }
@@ -11,9 +12,9 @@
             this.precioFinal = precioFinal;
         }
 
-        [Key]
+        
         public int idHerramienta { get; set; }
-        [Required]
+        
         public int idOferta { get; set; }
         [Range(0.01, 99.99, ErrorMessage = "El porcentaje debe estar entre 0 y 100.")]
         public double porcentaje { get; set; }
