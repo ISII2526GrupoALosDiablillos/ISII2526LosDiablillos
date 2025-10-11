@@ -1,28 +1,28 @@
 ﻿using System;
 
-[PrimaryKey(nameof(IdCompra), nameof(IdHerramienta))]
+[PrimaryKey(nameof(compraId), nameof(herramientaId))]
 public class CompraItem
 {
-    public int Cantidad { get; set; }
+    public int cantidad { get; set; }
     [Required(AllowEmptyStrings = false, ErrorMessage = "Por favor, introduzca una descripción.")]
-    public String Descripcion { get; set; }
-    public int IdCompra { get; set; }
-    public int IdHerramienta { get; set; }
-    public double Precio { get; set; }
+    public String descripcion { get; set; }
+    public int compraId { get; set; }
+    public int herramientaId { get; set; }
+    public double precio { get; set; }
     public CompraItem() { }
     public CompraItem(int cantidad, String descripcion, int idCompra, int idHerramienta, double precio, Compra compra, Herramienta herramienta)
     {
-        Cantidad = cantidad;
-        Descripcion = descripcion;
-        IdCompra = compra.Id;
-        IdHerramienta = herramienta.id;
-        Precio = precio;
-        Compra = compra;
-        Herramienta = herramienta;
+        this.cantidad = cantidad;
+        this.descripcion = descripcion;
+        this.compraId = compra.Id;
+        this.herramientaId = herramienta.id;
+        this.precio = precio;
+        this.compra = compra;
+        this.herramienta = herramienta;
     }
     
-    public Compra Compra { get; set; }
-    public Herramienta Herramienta { get; set; }
+    public Compra compra { get; set; }
+    public Herramienta herramienta { get; set; }
     public override bool Equals(object? obj)
     {
         return base.Equals(obj);
