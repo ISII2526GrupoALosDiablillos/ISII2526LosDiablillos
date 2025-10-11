@@ -13,9 +13,7 @@ namespace AppForSEII2526.API.Models
     {
         [Key]
         public int id {  get; set; } 
-        [StringLength(100, ErrorMessage = "El apellido no puede tener mas de 100 caracteres")]
         public string apellidoCliente { get; set; }
-        [DataType(System.ComponentModel.DataAnnotations.DataType.EmailAddress)]
         public string correo { get; set;}
         [DataType(System.ComponentModel.DataAnnotations.DataType.MultilineText)]
         [Display(Name = "Direccion de envio")]
@@ -26,9 +24,7 @@ namespace AppForSEII2526.API.Models
 
         public DateTime fechaFin {  get; set; }
         public DateTime fechaInicio {  get; set; }
-        [StringLength(100, ErrorMessage = "El nombre no puede tener mas de 100 caracteres")]
         public string nombreCliente {  get; set; }
-
         public int numeroTelefono { get; set; }
 
         public int periodo {  get; set; }
@@ -43,20 +39,14 @@ namespace AppForSEII2526.API.Models
         {
             this.precioTotal = precioTotal;
             this.id = id;
-            this.apellidoCliente = apellidoCliente;
-            this.correo = correo;
             this.direccionEnvio = direccionEnvio;
             this.fechaAlquiler = fechaAlquiler;
             this.fechaFin = fechaFin;
             this.fechaInicio = fechaInicio;
-            this.nombreCliente = nombreCliente;
-            this.numeroTelefono = numeroTelefono;
             this.periodo = periodo;
 
 
-
         }
-
 
         public PaymentMethodTypes metodoPago { get; set; }
 

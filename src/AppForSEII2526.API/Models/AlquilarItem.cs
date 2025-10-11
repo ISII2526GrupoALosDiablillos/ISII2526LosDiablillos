@@ -1,16 +1,14 @@
 ﻿namespace AppForSEII2526.API.Models
 {
-    
+    [PrimaryKey(nameof(HerramientaId),nameof(AlquilerId))]
     public class AlquilarItem
     {
-        [Key]
-        public int idAlquiler {  get; set; }
+        public int AlquilerId {  get; set; }
         [Required]
         public Herramienta herramienta { get; set; }
         [Required]
         public Alquilar alquilar { get; set; }
-        [Required]
-        public int idHerramienta {  set; get; }
+        public int HerramientaId{  set; get; }
         [DataType(System.ComponentModel.DataAnnotations.DataType.Currency)]
         public int precio {  set; get; }
         [Range(1, int.MaxValue, ErrorMessage = "La cantidad debe ser al menos 1.")]
@@ -21,17 +19,15 @@
 
         }
 
-        public AlquilarItem(int idAlquiler,Herramienta herramienta,Alquilar alquilar,int idHerramienta, int precio, int cantidad)
+        public AlquilarItem(int AlquilerId,Herramienta herramienta,Alquilar alquilar,int HerramientaId, int precio, int cantidad)
         {
-            this.idAlquiler = idAlquiler;
-            this.herramienta= herramienta;
+            this.AlquilerId = AlquilerId;
+            this.herramienta = herramienta;
             this.alquilar = alquilar;
-            this.idHerramienta = idHerramienta;
+            this.AlquilerId = AlquilerId;
             this.precio = precio;
             this.cantidad = cantidad;
         }
-        
-
         public override bool Equals(object? obj)
         {
             return base.Equals(obj);
