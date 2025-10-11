@@ -1,21 +1,21 @@
 ﻿namespace AppForSEII2526.API.Models
 {
-    [PrimaryKey(nameof(idHerramienta), nameof(idOferta))]
+    [PrimaryKey(nameof(herramientaId), nameof(ofertaId))]
     public class OfertaItem
     {
         public OfertaItem() { }
-        public OfertaItem(int idHerramienta, int idOferta, double porcentaje, double precioFinal)
+        public OfertaItem(int herramientaId, int ofertaId, double porcentaje, double precioFinal)
         {
-            this.idHerramienta = idHerramienta;
-            this.idOferta = idOferta;
+            this.herramientaId = herramientaId;
+            this.ofertaId = ofertaId;
             this.porcentaje = porcentaje;
             this.precioFinal = precioFinal;
         }
 
         
-        public int idHerramienta { get; set; }
+        public int herramientaId { get; set; }
         
-        public int idOferta { get; set; }
+        public int ofertaId { get; set; }
         [Range(0.01, 99.99, ErrorMessage = "El porcentaje debe estar entre 0 y 100.")]
         public double porcentaje { get; set; }
         [Range(0.01, double.MaxValue, ErrorMessage = "El precio final debe ser mayor que 0.")]
