@@ -19,5 +19,6 @@ public class ApplicationUser : IdentityUser {
         this.telefono = telefono;
     }
     public IList<Compra> compras { get; set; }
+    public IList<Reparacion> reparaciones { get; set; }
     public IList<Alquilar> alquilar { get; set; }
 }

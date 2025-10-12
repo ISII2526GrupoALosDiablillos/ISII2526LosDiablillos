@@ -1,24 +1,49 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="AppForSEII2526.API.Models.Fabricante">
+    <Position X="1.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAgAAAgAAAAAAgAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Fabricante.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="herramientas" />
+    </ShowAsCollectionAssociation>
+  </Class>
   <Class Name="AppForSEII2526.API.Models.Herramienta">
-    <Position X="2.75" Y="0.5" Width="1.5" />
+    <Position X="4.25" Y="0.75" Width="1.5" />
     <Members>
-      <Property Name="itemsReparación" Hidden="true" />
-      <Property Name="ofertaItems" Hidden="true" />
+      <Property Name="itemsReparacion" Hidden="true" />
+      <Property Name="OfertaItems" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>gAQAAAAAAAAAAACAAAAAAAAAEAAQEBgAAAAAAABAEoA=</HashCode>
+      <HashCode>gAQAAAAAAAAAAACAgAAAAAAIEAAAEJgAEAAAAABAEgA=</HashCode>
       <FileName>Models\Herramienta.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="Fabricante" />
+      <Property Name="fabricante" />
     </ShowAsAssociation>
     <ShowAsCollectionAssociation>
       <Property Name="reparacionItems" />
     </ShowAsCollectionAssociation>
   </Class>
+  <Class Name="AppForSEII2526.API.Models.ReparacionItem">
+    <Position X="7.25" Y="0.75" Width="1.5" />
+    <Members>
+      <Property Name="id" Hidden="true" />
+      <Property Name="tiempoReparacion" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AQAgAAAAAAAAAACAgAEAAAAAAAAAEIAAIAAAAAAAEkA=</HashCode>
+      <FileName>Models\ReparacionItem.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Reparacion" />
+      <Property Name="Herramienta" />
+    </ShowAsAssociation>
+  </Class>
   <Class Name="AppForSEII2526.API.Models.Reparacion">
-    <Position X="8.25" Y="0.5" Width="1.5" />
+    <Position X="11.25" Y="0.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACCAAAAAAAAACAgBAAAAAAAAQAAIAAAAAAAsAAEAA=</HashCode>
       <FileName>Models\Reparacion.cs</FileName>
@@ -30,38 +55,8 @@
       <Property Name="ReparacionItems" />
     </ShowAsCollectionAssociation>
   </Class>
-  <Class Name="AppForSEII2526.API.Models.ReparacionItem">
-    <Position X="5.25" Y="0.5" Width="1.5" />
-    <Members>
-      <Property Name="Cantidad" Hidden="true" />
-      <Property Name="Descripcion" Hidden="true" />
-      <Property Name="Id" Hidden="true" />
-      <Property Name="idHerramienta" Hidden="true" />
-      <Property Name="IdReparacion" Hidden="true" />
-      <Property Name="Precio" Hidden="true" />
-      <Property Name="TiempoReparacion" Hidden="true" />
-    </Members>
-    <TypeIdentifier>
-      <HashCode>AQACAAEAAAAAAAAAgAEAEAARABAAEIgAIAAIAAAAAEA=</HashCode>
-      <FileName>Models\ReparacionItem.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="Reparacion" />
-      <Property Name="Herramienta" />
-    </ShowAsAssociation>
-  </Class>
-  <Class Name="AppForSEII2526.API.Models.Fabricante">
-    <Position X="0.5" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAACAAAAAAAAAAAAAAAAgAAAAAAgAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Models\Fabricante.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsCollectionAssociation>
-      <Property Name="herramientas" />
-    </ShowAsCollectionAssociation>
-  </Class>
   <Enum Name="AppForSEII2526.API.Models.MetodosPago">
-    <Position X="8.25" Y="4.25" Width="1.5" />
+    <Position X="10" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAgAAAAAAAABAAA=</HashCode>
       <FileName>Models\Reparacion.cs</FileName>
