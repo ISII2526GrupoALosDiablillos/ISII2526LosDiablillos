@@ -2,11 +2,12 @@
 
 namespace AppForSEII2526.API.Models
 {
+    [PrimaryKey(nameof(HerramientaId), nameof(ReparacionId))]
     public class ReparacionItem
     {
         public int id { get; set; }
-        public int idReparacion { get; set; }
-        public int idHerramienta { get; set; }
+        public int ReparacionId { get; set; }
+        public int HerramientaId { get; set; }
         [Required(AllowEmptyStrings =false, ErrorMessage ="Porfavor, introduzca la cantidad.")]   
         public int cantidad { get; set; }
         public string descripcion { get; set; }
@@ -17,8 +18,8 @@ namespace AppForSEII2526.API.Models
         public ReparacionItem(int id, int idReparacion, int idherramienta, int cantidad, double precio, int tiempoReparacion, string descripcion)
         {
             this.id = id;
-            this.idReparacion = idReparacion;
-            this.idHerramienta = idherramienta;
+            this.ReparacionId = ReparacionId;
+            this.HerramientaId = HerramientaId;
             this.cantidad = cantidad;
             this.precio = precio;
             this.tiempoReparacion = tiempoReparacion;
