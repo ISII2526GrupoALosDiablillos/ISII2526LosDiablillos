@@ -3,34 +3,22 @@ using System.Security.Cryptography.X509Certificates;
 
 public class Compra
 {
-    
-    [Required(AllowEmptyStrings = false, ErrorMessage = "Por favor, introduzca su apellido.")]
-    public String ApellidoCliente {  get; set; }
-    [Required(AllowEmptyStrings = false, ErrorMessage = "Por favor, introduzca su correo electrónico.")]
-    public String CorreoElectronico { get; set; }
+	public int id {  get; set; }
     [Required(AllowEmptyStrings = false, ErrorMessage = "Por favor, introduzca su dirección")]
-    public String DireccionEnvio { get; set; }
-	public DateTime FechaCompra {  get; set; }
+    public String direccionEnvio { get; set; }
+	public DateTime fechaCompra {  get; set; }
 	public int Id {  get; set; }
-	[Required(AllowEmptyStrings = false, ErrorMessage = "Por favor, introduzca su nombre.")]
-	public String NombreCliente { get; set; }
-	public double Preciototal { get; set; }
-    public int Telefono { get; set; }
+	public double preciototal { get; set; }
 	public IList<CompraItem> compraItem { get; set; }
 	public Compra() { }
-	public Compra(String apellidoCliente, String correoElectronico, String direccionEnvio, DateTime fechaCompra, int id, String nombreCliente, double preciototal, int telefono, IList<CompraItem> compraItem)
+	public Compra(String direccionEnvio, DateTime fechaCompra, int id, double preciototal, IList<CompraItem> compraItem, ApplicationUser atributos)
 	{
-		ApellidoCliente = apellidoCliente;
-		CorreoElectronico = correoElectronico;
-		DireccionEnvio = direccionEnvio;
-		FechaCompra = fechaCompra;
-		Id = id;
-		NombreCliente = nombreCliente;
-		Preciototal = preciototal;
-		Telefono = telefono;
+		this.direccionEnvio = direccionEnvio;
+		this.fechaCompra = fechaCompra;
+		this.id = id;
+		this.preciototal = preciototal;
 	}
-	
-
+	public ApplicationUser atributos {  get; set; }
     public override bool Equals(object? obj)
     {
         return base.Equals(obj);
