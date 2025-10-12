@@ -34,19 +34,6 @@
       <Property Name="alquilar" />
     </ShowAsAssociation>
   </Class>
-  <Class Name="AppForSEII2526.API.Models.Alquilar">
-    <Position X="9" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>ABQCAAAAAAEAAAAAgAACEAAAAABAAIAAACAAAAAAAkA=</HashCode>
-      <FileName>Models\Alquilar.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="metodoPago" />
-    </ShowAsAssociation>
-    <ShowAsCollectionAssociation>
-      <Property Name="alquilarItems" />
-    </ShowAsCollectionAssociation>
-  </Class>
   <Class Name="AppForSEII2526.API.Models.ApplicationUser">
     <Position X="11.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
@@ -57,8 +44,22 @@
       <Property Name="alquilar" />
     </ShowAsCollectionAssociation>
   </Class>
+  <Class Name="AppForSEII2526.API.Models.Alquilar">
+    <Position X="8.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABQCAAAAAAEAAAAAgAACEAAAAABAAIAAACAAAAAAAkA=</HashCode>
+      <FileName>Models\Alquilar.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="metodoPago" />
+      <Property Name="applicationUser" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="alquilarItems" />
+    </ShowAsCollectionAssociation>
+  </Class>
   <Enum Name="AppForSEII2526.API.Models.PaymentMethodTypes">
-    <Position X="9" Y="4.5" Width="1.5" />
+    <Position X="8.75" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAQAAAAAAABAAQAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\Alquilar.cs</FileName>
