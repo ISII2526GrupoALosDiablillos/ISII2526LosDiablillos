@@ -14,8 +14,8 @@ public class CompraItem
     {
         this.cantidad = cantidad;
         this.descripcion = descripcion;
-        this.compraId = compra.Id;
-        this.herramientaId = herramienta.id;
+        this.compraId = compraId;
+        this.herramientaId = herramientaId;
         this.precio = precio;
         this.compra = compra;
         this.herramienta = herramienta;

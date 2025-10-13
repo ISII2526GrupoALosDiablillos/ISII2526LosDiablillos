@@ -11,6 +11,7 @@ public class ApplicationUser : IdentityUser {
     [Required(AllowEmptyStrings = false, ErrorMessage = "Por favor, introduzca su nombre.")]
     public String nombreCliente { get; set; }
     public int telefono { get; set; }
+    public ApplicationUser() { }
     public ApplicationUser(String apellidoCliente, String correoElectronico, String nombreCliente, int telefono, IList<Compra> compras)
     {
         this.apellidoCliente = apellidoCliente;

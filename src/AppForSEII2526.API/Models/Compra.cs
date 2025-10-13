@@ -3,11 +3,11 @@ using System.Security.Cryptography.X509Certificates;
 
 public class Compra
 {
-	public int id {  get; set; }
+	[Key]
+    public int id {  get; set; }
     [Required(AllowEmptyStrings = false, ErrorMessage = "Por favor, introduzca su dirección")]
     public String direccionEnvio { get; set; }
 	public DateTime fechaCompra {  get; set; }
-	public int Id {  get; set; }
 	public double preciototal { get; set; }
 	public IList<CompraItem> compraItem { get; set; }
 	public Compra() { }

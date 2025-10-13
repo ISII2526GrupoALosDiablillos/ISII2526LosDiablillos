@@ -30,14 +30,8 @@ namespace AppForSEII2526.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
-                    b.Property<string>("apellidoCliente")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("correo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("applicationUserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("direccionEnvio")
                         .IsRequired()
@@ -55,14 +49,6 @@ namespace AppForSEII2526.API.Migrations
                     b.Property<int>("metodoPago")
                         .HasColumnType("int");
 
-                    b.Property<string>("nombreCliente")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int>("numeroTelefono")
-                        .HasColumnType("int");
-
                     b.Property<int>("periodo")
                         .HasColumnType("int");
 
@@ -71,16 +57,18 @@ namespace AppForSEII2526.API.Migrations
 
                     b.HasKey("id");
 
+                    b.HasIndex("applicationUserId");
+
                     b.ToTable("Alquileres");
                 });
 
             modelBuilder.Entity("AppForSEII2526.API.Models.AlquilarItem", b =>
                 {
-                    b.Property<int>("idAlquiler")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("HerramientaId")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("idAlquiler"));
+                    b.Property<int>("AlquilerId")
+                        .HasColumnType("int");
 
                     b.Property<int>("alquilarid")
                         .HasColumnType("int");
@@ -88,20 +76,12 @@ namespace AppForSEII2526.API.Migrations
                     b.Property<int>("cantidad")
                         .HasColumnType("int");
 
-                    b.Property<int>("herramientaid")
-                        .HasColumnType("int");
-
-                    b.Property<int>("idHerramienta")
-                        .HasColumnType("int");
-
                     b.Property<int>("precio")
                         .HasColumnType("int");
 
-                    b.HasKey("idAlquiler");
+                    b.HasKey("HerramientaId", "AlquilerId");
 
                     b.HasIndex("alquilarid");
-
-                    b.HasIndex("herramientaid");
 
                     b.ToTable("AlquilarItems");
                 });
@@ -157,6 +137,21 @@ namespace AppForSEII2526.API.Migrations
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("apellidoCliente")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("correoElectronico")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("nombreCliente")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("telefono")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -236,6 +231,9 @@ namespace AppForSEII2526.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("applicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("dirigidaOferta")
                         .HasColumnType("int");
 
@@ -253,21 +251,14 @@ namespace AppForSEII2526.API.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("applicationUserId");
+
                     b.ToTable("Ofertas");
                 });
 
             modelBuilder.Entity("AppForSEII2526.API.Models.OfertaItem", b =>
                 {
-                    b.Property<int>("idHerramienta")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("idHerramienta"));
-
-                    b.Property<int>("herramientaid")
-                        .HasColumnType("int");
-
-                    b.Property<int>("idOferta")
+                    b.Property<int>("herramientaId")
                         .HasColumnType("int");
 
                     b.Property<int>("ofertaId")
@@ -279,9 +270,7 @@ namespace AppForSEII2526.API.Migrations
                     b.Property<double>("precioFinal")
                         .HasColumnType("float");
 
-                    b.HasKey("idHerramienta");
-
-                    b.HasIndex("herramientaid");
+                    b.HasKey("herramientaId", "ofertaId");
 
                     b.HasIndex("ofertaId");
 
@@ -299,6 +288,9 @@ namespace AppForSEII2526.API.Migrations
                     b.Property<string>("ApellidoCliente")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("FechaEntrega")
                         .HasColumnType("datetime2");
@@ -322,18 +314,14 @@ namespace AppForSEII2526.API.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ApplicationUserId");
+
                     b.ToTable("Reparaciones");
                 });
 
             modelBuilder.Entity("AppForSEII2526.API.Models.ReparacionItem", b =>
                 {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
-
-                    b.Property<int>("Herramientaid")
+                    b.Property<int>("HerramientaId")
                         .HasColumnType("int");
 
                     b.Property<int>("ReparacionId")
@@ -346,10 +334,7 @@ namespace AppForSEII2526.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("idHerramienta")
-                        .HasColumnType("int");
-
-                    b.Property<int>("idReparacion")
+                    b.Property<int>("id")
                         .HasColumnType("int");
 
                     b.Property<double>("precio")
@@ -358,9 +343,7 @@ namespace AppForSEII2526.API.Migrations
                     b.Property<int>("tiempoReparacion")
                         .HasColumnType("int");
 
-                    b.HasKey("id");
-
-                    b.HasIndex("Herramientaid");
+                    b.HasKey("HerramientaId", "ReparacionId");
 
                     b.HasIndex("ReparacionId");
 
@@ -369,74 +352,56 @@ namespace AppForSEII2526.API.Migrations
 
             modelBuilder.Entity("Compra", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
-                    b.Property<string>("ApellidoCliente")
+                    b.Property<string>("atributosId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("direccionEnvio")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CorreoElectronico")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DireccionEnvio")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("FechaCompra")
+                    b.Property<DateTime>("fechaCompra")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("NombreCliente")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("Preciototal")
-                        .HasColumnType("float");
-
-                    b.Property<int>("Telefono")
-                        .HasColumnType("int");
 
                     b.Property<int>("metodoPago")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.Property<double>("preciototal")
+                        .HasColumnType("float");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("atributosId");
 
                     b.ToTable("Compras");
                 });
 
             modelBuilder.Entity("CompraItem", b =>
                 {
-                    b.Property<int>("IdCompra")
+                    b.Property<int>("compraId")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdHerramienta")
+                    b.Property<int>("herramientaId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Cantidad")
+                    b.Property<int>("cantidad")
                         .HasColumnType("int");
 
-                    b.Property<int>("CompraId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Descripcion")
+                    b.Property<string>("descripcion")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Herramientaid")
-                        .HasColumnType("int");
-
-                    b.Property<double>("Precio")
+                    b.Property<double>("precio")
                         .HasColumnType("float");
 
-                    b.HasKey("IdCompra", "IdHerramienta");
+                    b.HasKey("compraId", "herramientaId");
 
-                    b.HasIndex("CompraId");
-
-                    b.HasIndex("Herramientaid");
+                    b.HasIndex("herramientaId");
 
                     b.ToTable("CompraItems");
                 });
@@ -574,17 +539,26 @@ namespace AppForSEII2526.API.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("AppForSEII2526.API.Models.Alquilar", b =>
+                {
+                    b.HasOne("AppForSEII2526.API.Models.ApplicationUser", "applicationUser")
+                        .WithMany("alquilar")
+                        .HasForeignKey("applicationUserId");
+
+                    b.Navigation("applicationUser");
+                });
+
             modelBuilder.Entity("AppForSEII2526.API.Models.AlquilarItem", b =>
                 {
-                    b.HasOne("AppForSEII2526.API.Models.Alquilar", "alquilar")
+                    b.HasOne("AppForSEII2526.API.Models.Herramienta", "herramienta")
                         .WithMany("alquilarItems")
-                        .HasForeignKey("alquilarid")
+                        .HasForeignKey("HerramientaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AppForSEII2526.API.Models.Herramienta", "herramienta")
+                    b.HasOne("AppForSEII2526.API.Models.Alquilar", "alquilar")
                         .WithMany("alquilarItems")
-                        .HasForeignKey("herramientaid")
+                        .HasForeignKey("alquilarid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -604,11 +578,20 @@ namespace AppForSEII2526.API.Migrations
                     b.Navigation("fabricante");
                 });
 
+            modelBuilder.Entity("AppForSEII2526.API.Models.Oferta", b =>
+                {
+                    b.HasOne("AppForSEII2526.API.Models.ApplicationUser", "applicationUser")
+                        .WithMany("ofertas")
+                        .HasForeignKey("applicationUserId");
+
+                    b.Navigation("applicationUser");
+                });
+
             modelBuilder.Entity("AppForSEII2526.API.Models.OfertaItem", b =>
                 {
                     b.HasOne("AppForSEII2526.API.Models.Herramienta", "herramienta")
                         .WithMany("ofertaItems")
-                        .HasForeignKey("herramientaid")
+                        .HasForeignKey("herramientaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -623,11 +606,18 @@ namespace AppForSEII2526.API.Migrations
                     b.Navigation("oferta");
                 });
 
+            modelBuilder.Entity("AppForSEII2526.API.Models.Reparacion", b =>
+                {
+                    b.HasOne("AppForSEII2526.API.Models.ApplicationUser", null)
+                        .WithMany("reparaciones")
+                        .HasForeignKey("ApplicationUserId");
+                });
+
             modelBuilder.Entity("AppForSEII2526.API.Models.ReparacionItem", b =>
                 {
                     b.HasOne("AppForSEII2526.API.Models.Herramienta", "Herramienta")
                         .WithMany("reparacionItems")
-                        .HasForeignKey("Herramientaid")
+                        .HasForeignKey("HerramientaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -642,23 +632,32 @@ namespace AppForSEII2526.API.Migrations
                     b.Navigation("Reparacion");
                 });
 
+            modelBuilder.Entity("Compra", b =>
+                {
+                    b.HasOne("AppForSEII2526.API.Models.ApplicationUser", "atributos")
+                        .WithMany("compras")
+                        .HasForeignKey("atributosId");
+
+                    b.Navigation("atributos");
+                });
+
             modelBuilder.Entity("CompraItem", b =>
                 {
-                    b.HasOne("Compra", "Compra")
+                    b.HasOne("Compra", "compra")
                         .WithMany("compraItem")
-                        .HasForeignKey("CompraId")
+                        .HasForeignKey("compraId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AppForSEII2526.API.Models.Herramienta", "Herramienta")
+                    b.HasOne("AppForSEII2526.API.Models.Herramienta", "herramienta")
                         .WithMany("compraItems")
-                        .HasForeignKey("Herramientaid")
+                        .HasForeignKey("herramientaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Compra");
+                    b.Navigation("compra");
 
-                    b.Navigation("Herramienta");
+                    b.Navigation("herramienta");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -715,6 +714,17 @@ namespace AppForSEII2526.API.Migrations
             modelBuilder.Entity("AppForSEII2526.API.Models.Alquilar", b =>
                 {
                     b.Navigation("alquilarItems");
+                });
+
+            modelBuilder.Entity("AppForSEII2526.API.Models.ApplicationUser", b =>
+                {
+                    b.Navigation("alquilar");
+
+                    b.Navigation("compras");
+
+                    b.Navigation("ofertas");
+
+                    b.Navigation("reparaciones");
                 });
 
             modelBuilder.Entity("AppForSEII2526.API.Models.Fabricante", b =>
