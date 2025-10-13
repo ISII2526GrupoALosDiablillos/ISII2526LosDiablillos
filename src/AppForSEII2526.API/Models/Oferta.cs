@@ -24,7 +24,8 @@
         
         [Required(ErrorMessage = "Debe indicar a quién va dirigida la oferta.")]
         public tiposDirigidaOferta dirigidaOferta { get; set; }
-        
+        public ApplicationUser applicationUser { get; set; }
+
 
         public IList<OfertaItem> ofertaItems { get; set; }
 

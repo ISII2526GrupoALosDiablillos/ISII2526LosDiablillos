@@ -16,11 +16,11 @@
       <Property Name="OfertaItems" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AEQCAAAAAAAAAACAgAAAgABYEAAQGJgAAAAAAABAEgA=</HashCode>
+      <HashCode>gAQAAAAAAAAAAACAgAAAAAAIEAAAEJgAEAAAAABAEgA=</HashCode>
       <FileName>Models\Herramienta.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="Fabricante" />
+      <Property Name="fabricante" />
     </ShowAsAssociation>
     <ShowAsCollectionAssociation>
       <Property Name="ofertaItems" />
@@ -29,7 +29,7 @@
   <Class Name="AppForSEII2526.API.Models.OfertaItem">
     <Position X="6.5" Y="1.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAgAAAEAAAAAAgIIABAAgAAAAAgAA=</HashCode>
+      <HashCode>AAABAAAAAIAAAAAAgAAAAAAAAAAgIIABAAgAAAAAAAA=</HashCode>
       <FileName>Models\OfertaItem.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -40,15 +40,26 @@
   <Class Name="AppForSEII2526.API.Models.Oferta">
     <Position X="9.75" Y="1.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>EAACAAAAAAAAAAAAgAACAIAAAAAAQJAAAAAAAAAAAAA=</HashCode>
+      <HashCode>EAACAAAAAAAAAAAAgAACEIAAAAAAQJAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\Oferta.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="dirigidaOferta" />
       <Property Name="metodoPago" />
+      <Property Name="dirigidaOferta" />
+      <Property Name="applicationUser" />
     </ShowAsAssociation>
     <ShowAsCollectionAssociation>
       <Property Name="ofertaItems" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="AppForSEII2526.API.Models.ApplicationUser">
+    <Position X="14" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAAFJAAAAAAAAAAAAAAAAAAAAQAAgAAAI=</HashCode>
+      <FileName>Models\ApplicationUser.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="ofertas" />
     </ShowAsCollectionAssociation>
   </Class>
   <Enum Name="AppForSEII2526.API.Models.tiposMetodoPago">
