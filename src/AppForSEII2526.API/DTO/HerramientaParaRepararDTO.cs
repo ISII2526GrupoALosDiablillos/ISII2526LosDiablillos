@@ -1,8 +1,7 @@
 ﻿namespace AppForSEII2526.API.DTO
 {
-    public class HerramientaDTO
+    public class HerramientaParaRepararDTO
     {
-        private Fabricante fabricante;
 
         [Key]
         public int id { get; set; }
@@ -19,15 +18,5 @@
         [Range(0.5, float.MaxValue, ErrorMessage = "Precio mínimo es 0.5")]
         public int precio { get; set; }
         public int tiempoReparacion { get; set; }
-
-        public HerramientaDTO(int id, String nombre, String material, Fabricante fabricante, int precio)
-        {
-            this.id = id;
-            this.nombre = nombre;
-            this.material = material;
-            this.fabricante = fabricante;
-            this.precio = precio;
-        }
     }
-}
 }

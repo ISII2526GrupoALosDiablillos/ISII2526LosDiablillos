@@ -2,6 +2,7 @@
 using AppForSEII2526.API.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace AppForSEII2526.API.Controllers
 {
@@ -35,6 +36,7 @@ namespace AppForSEII2526.API.Controllers
         [Route("[action]")]
         [ProducesResponseType(typeof(decimal), (int)HttpStatusCode.OK)]
         
+
         public async Task<ActionResult> GetHerramientas_sinDTOs()
         {
             IList<Herramienta> herramienta = await _context.Herramientas.ToListAsync();
@@ -58,8 +60,10 @@ namespace AppForSEII2526.API.Controllers
         {
             var herramientas = await _context.Herramientas
                 .Where(c => c.material.Contains(filtroMaterial)|| filtroMaterial==null)
+                .Where(c => c.material.Contains(filtroMaterial) || filtroMaterial == null)
                 .Select(c => new HerramientaDTO(c.id, c.nombre, c.material, c.fabricante, c.precio)).ToListAsync();
             return Ok(herramientas);
         }
     }
+}
 }
