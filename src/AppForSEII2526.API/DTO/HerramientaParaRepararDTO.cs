@@ -10,7 +10,7 @@
         public string material { get; set; }
         [StringLength(100, ErrorMessage = "El nombre no puede tener mas de 100 caracteres")]
 
-        public string nombre { get; set; }
+        public string nombre { get; set; }  
         [DataType(System.ComponentModel.DataAnnotations.DataType.Currency)]
         [Range(0.5, float.MaxValue, ErrorMessage = "Precio mínimo es 0.5")]
         public int OfertaItems { get; set; }

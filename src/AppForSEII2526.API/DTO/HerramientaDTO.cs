@@ -7,7 +7,7 @@
         [Key]
         public int id { get; set; }
         [StringLength(100, ErrorMessage = "El nombre no puede tener mas de 100 caracteres")]
-        public int itemsReparacion { get; set; }
+        public int itemsReparacion { get; set; }  
         public string material { get; set; }
         [StringLength(100, ErrorMessage = "El nombre no puede tener mas de 100 caracteres")]
 
