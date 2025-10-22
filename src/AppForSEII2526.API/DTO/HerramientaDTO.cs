@@ -3,8 +3,8 @@
     public class HerramientaDTO
     {
         private Fabricante fabricante;
-          
-        [Key]  
+
+        [Key]
         public int id { get; set; }
         [StringLength(100, ErrorMessage = "El nombre no puede tener mas de 100 caracteres")]
         public int itemsReparacion { get; set; }

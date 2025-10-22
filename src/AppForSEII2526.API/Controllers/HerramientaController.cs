@@ -2,7 +2,8 @@
 using AppForSEII2526.API.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-   
+using System.Linq;
+
 namespace AppForSEII2526.API.Controllers
 {
     [Route("api/[controller]")]
@@ -28,7 +29,7 @@ namespace AppForSEII2526.API.Controllers
                 _logger.LogError($"{DateTime.Now} Exception: op2=0, division by 0");
                 return BadRequest("op2 must be different from 0");
             }
-            decimal result = decimal.Round(op1 / op2, 2);    
+            decimal result = decimal.Round(op1 / op2, 2);
             return Ok(result);
         }
         [HttpGet]
