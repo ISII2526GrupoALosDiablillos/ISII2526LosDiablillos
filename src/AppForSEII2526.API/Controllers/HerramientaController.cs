@@ -41,6 +41,7 @@ namespace AppForSEII2526.API.Controllers
         [HttpGet]
         [Route("[action]")]
         [ProducesResponseType(typeof(decimal), (int)HttpStatusCode.OK)]
+        
 
         public async Task<ActionResult> GetHerramientas_sinDTOs()
         {
@@ -68,6 +69,7 @@ namespace AppForSEII2526.API.Controllers
         public async Task<ActionResult> GetHerramienta_FILTRO_MATERIAL_DTO(string? filtroMaterial)
         {
             var herramientas = await _context.Herramientas
+                .Where(c => c.material.Contains(filtroMaterial)|| filtroMaterial==null)
                 .Where(c => c.material.Contains(filtroMaterial) || filtroMaterial == null)
                 .Select(c => new HerramientaDTO(c.id, c.nombre, c.material, c.fabricante, c.precio)).ToListAsync();
             return Ok(herramientas);
