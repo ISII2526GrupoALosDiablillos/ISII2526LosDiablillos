@@ -41,6 +41,10 @@ namespace AppForSEII2526.API.Models
             return base.GetHashCode();
         }
 
+        internal static double Sum(Func<object, object> value)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 
