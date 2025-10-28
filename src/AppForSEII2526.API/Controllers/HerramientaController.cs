@@ -1,4 +1,4 @@
-﻿using AppForSEII2526.API.DTO;
+﻿using AppForSEII2526.API.DTO.HerramientasDTOs;
 using AppForSEII2526.API.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -38,7 +38,7 @@ namespace AppForSEII2526.API.Controllers
 
         public async Task<ActionResult> GetHerramientas_sinDTOs()
         {
-            IList<Herramienta> herramienta = await _context.Herramientas.ToListAsync();
+            IList<Models.Herramienta> herramienta = await _context.Herramientas.ToListAsync();
             return Ok(herramienta);
         }
 

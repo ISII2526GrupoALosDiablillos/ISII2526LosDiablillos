@@ -1,4 +1,4 @@
-﻿namespace AppForSEII2526.API.DTO
+﻿namespace AppForSEII2526.API.DTO.HerramientasDTOs
 {
     public class HerramientaDTO
     {
@@ -20,7 +20,7 @@
         public int precio { get; set; }
         public int tiempoReparacion { get; set; }
 
-        public HerramientaDTO(int id, String nombre, String material, Fabricante fabricante, int precio)
+        public HerramientaDTO(int id, string nombre, string material, Fabricante fabricante, int precio)
         {
             this.id = id;
             this.nombre = nombre;
