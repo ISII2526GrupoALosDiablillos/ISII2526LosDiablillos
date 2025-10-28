@@ -1,4 +1,4 @@
-﻿namespace AppForSEII2526.API.HerramientaParaAlquilatDTO
+﻿namespace AppForSEII2526.API.DTO.HerramientaDTOs
 {
     public class HerramientaParaAlquilarDTO
     {
