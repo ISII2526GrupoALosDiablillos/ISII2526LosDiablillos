@@ -1,4 +1,4 @@
-﻿using AppForSEII2526.API.DTO;
+﻿using AppForSEII2526.API.DTO.HerramientaDTOs;
 using AppForSEII2526.API.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -41,11 +41,9 @@ namespace AppForSEII2526.API.Controllers
         [HttpGet]
         [Route("[action]")]
         [ProducesResponseType(typeof(decimal), (int)HttpStatusCode.OK)]
-        
-
         public async Task<ActionResult> GetHerramientas_sinDTOs()
         {
-            IList<Herramienta> herramienta = await _context.Herramientas.ToListAsync();
+            IList<Models.Herramienta> herramienta = await _context.Herramientas.ToListAsync();
             return Ok(herramienta);
         }
 
@@ -53,11 +51,11 @@ namespace AppForSEII2526.API.Controllers
 
         [HttpGet]
         [Route("[action]")]
-        [ProducesResponseType(typeof(IList<HerramientaDTO>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IList<HerramientaParaComprarDTO>), (int)HttpStatusCode.OK)]
         public async Task<ActionResult> GetHerramientas_conTodosLosDatosDTOs()
         {
             var herramientas = await _context.Herramientas
-                .Select(c => new HerramientaDTO(c.id, c.nombre, c.material, c.fabricante, c.precio)).ToListAsync();
+                .Select(c => new HerramientaParaComprarDTO(c.id, c.nombre, c.material, c.fabricante, c.precio)).ToListAsync();
             return Ok(herramientas);
         }
 
@@ -65,36 +63,45 @@ namespace AppForSEII2526.API.Controllers
 
         [HttpGet]
         [Route("[action]")]
-        [ProducesResponseType(typeof(IList<HerramientaDTO>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IList<HerramientaParaComprarDTO>), (int)HttpStatusCode.OK)]
         public async Task<ActionResult> GetHerramienta_FILTRO_MATERIAL_DTO(string? filtroMaterial)
         {
             var herramientas = await _context.Herramientas
                 .Where(c => c.material.Contains(filtroMaterial)|| filtroMaterial==null)
-                .Where(c => c.material.Contains(filtroMaterial) || filtroMaterial == null)
-                .Select(c => new HerramientaDTO(c.id, c.nombre, c.material, c.fabricante, c.precio)).ToListAsync();
+                .Select(c => new HerramientaParaComprarDTO(c.id, c.nombre, c.material, c.fabricante, c.precio)).ToListAsync();
             return Ok(herramientas);
         }
 
+        [HttpGet]
+        [Route("[action]")]
+        [ProducesResponseType(typeof(IList<HerramientaParaComprarDTO>), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult> GetHerramienta_FILTRO_PRECIO_DTO(string? filtroPrecio)
+        {
+            var herramientas = await _context.Herramientas
+                .Where(c => c.precio.ToString().Contains(filtroPrecio) || filtroPrecio == null)
+                .Select(c => new HerramientaParaComprarDTO(c.id, c.nombre, c.material, c.fabricante, c.precio)).ToListAsync();
+            return Ok(herramientas);
+        }
 
         [HttpGet]
         [Route("[action]")]
-        [ProducesResponseType(typeof(IList<HerramientaDTO>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IList<HerramientaParaComprarDTO>), (int)HttpStatusCode.OK)]
         public async Task<ActionResult> GetHerramienta_FILTRO_NOMBRE_DTO(string? filtroNombre)
         {
             var herramientas = await _context.Herramientas
                 .Where(c => c.material.Contains(filtroNombre) || filtroNombre == null)
-                .Select(c => new HerramientaDTO(c.id, c.nombre, c.material, c.fabricante, c.precio)).ToListAsync();
+                .Select(c => new HerramientaParaComprarDTO(c.id, c.nombre, c.material, c.fabricante, c.precio)).ToListAsync();
             return Ok(herramientas);
         }
 
         [HttpGet]
         [Route("[action]")]
-        [ProducesResponseType(typeof(IList<HerramientaDTO>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IList<HerramientaParaComprarDTO>), (int)HttpStatusCode.OK)]
         public async Task<ActionResult> GetHerramienta_FILTRO_TIEMPOREPARACION_DTO(string? filtroTiempoReparacion)
         {
             var herramientas = await _context.Herramientas
                 .Where(c => c.material.Contains(filtroTiempoReparacion) || filtroTiempoReparacion == null)
-                .Select(c => new HerramientaDTO(c.id, c.nombre, c.material, c.fabricante, c.precio)).ToListAsync();
+                .Select(c => new HerramientaParaComprarDTO(c.id, c.nombre, c.material, c.fabricante, c.precio)).ToListAsync();
             return Ok(herramientas);
         }
     }
