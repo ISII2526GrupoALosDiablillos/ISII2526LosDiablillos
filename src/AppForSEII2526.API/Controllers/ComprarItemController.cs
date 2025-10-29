@@ -43,10 +43,15 @@ namespace AppForSEII2526.API.Controllers
                     o.atributos.apellidoCliente,
                     o.direccionEnvio,
                     o.preciototal,
-                    o.fechaCompra
-                ))
-                .ToListAsync();
-
+                    o.fechaCompra,
+                    o.compraItem.Select(oi => new CompraItemDTO(
+                        oi.herramienta.nombre,
+                        oi.herramienta.material,
+                        oi.herramienta.precio,
+                        oi.descripcion,
+                        oi.cantidad)).ToList()
+                    ))
+                 .ToListAsync();
 
             if (compraDetalles == null)
             {
