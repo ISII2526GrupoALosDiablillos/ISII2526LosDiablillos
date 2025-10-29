@@ -43,7 +43,7 @@ namespace AppForSEII2526.API.Controllers
         [ProducesResponseType(typeof(decimal), (int)HttpStatusCode.OK)]
         public async Task<ActionResult> GetHerramientas_sinDTOs()
         {
-            IList<Herramienta> herramienta = await _context.Herramientas.ToListAsync();
+            IList<Models.Herramienta> herramienta = await _context.Herramientas.ToListAsync();
             return Ok(herramienta);
         }
 

@@ -1,4 +1,8 @@
+<<<<<<<< HEAD:src/AppForSEII2526.API/DTO/HerramientasDTOs/HerramientaDTO.cs
+﻿namespace AppForSEII2526.API.DTO.HerramientasDTOs
+========
 ﻿namespace AppForSEII2526.API.DTO.HerramientaDTOs
+>>>>>>>> origin/development:src/AppForSEII2526.API/DTO/HerramientaDTOs/HerramientaParaComprarDTO.cs
 {
     public class HerramientaParaComprarDTO
     {
@@ -20,7 +24,11 @@
         public int precio { get; set; }
         public int tiempoReparacion { get; set; }
 
+<<<<<<<< HEAD:src/AppForSEII2526.API/DTO/HerramientasDTOs/HerramientaDTO.cs
+        public HerramientaDTO(int id, string nombre, string material, Fabricante fabricante, int precio)
+========
         public HerramientaParaComprarDTO(int id, string nombre, string material, Fabricante fabricante, int precio)
+>>>>>>>> origin/development:src/AppForSEII2526.API/DTO/HerramientaDTOs/HerramientaParaComprarDTO.cs
         {
             this.id = id;
             this.nombre = nombre;
