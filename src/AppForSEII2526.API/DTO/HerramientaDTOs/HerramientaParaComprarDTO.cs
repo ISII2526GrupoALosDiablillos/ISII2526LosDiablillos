@@ -16,12 +16,12 @@
 
         public HerramientaParaComprarDTO() { }
 
-        public HerramientaParaComprarDTO(int id, string nombre, string material, Fabricante fabricante, int precio)
+        public HerramientaParaComprarDTO(int id, string nombre, string material, String fabricante, int precio)
         {
             this.id = id;
             this.nombre = nombre;
             this.material = material;
-            this.fabricante = fabricante;
+            this.fabricante.Nombre = fabricante;
             this.precio = precio;
         }
     }
