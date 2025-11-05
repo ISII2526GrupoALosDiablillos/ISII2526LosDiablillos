@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 
-namespace AppForSEII2526.API.Controllers   
+namespace AppForSEII2526.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -23,17 +23,13 @@ namespace AppForSEII2526.API.Controllers
 
         [HttpGet]
         [Route("[action]")]
-        [ProducesResponseType(typeof(decimal), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(string), (int)HttpStatusCode.BadRequest)]
-        public async Task<ActionResult> ComputeDivision(decimal op1, decimal op2)
+        [ProducesResponseType(typeof(IList<HerramientaParaAlquilarDTO>), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult> GetHerramientaParaAlquilarDTO(string filtroMateiral, string filtroNombre) 
         {
-            if (op2 == 0)
-            {
-                _logger.LogError($"{DateTime.Now} Exception: op2=0, division by 0");
-                return BadRequest("op2 must be different from 0");
-            }
-            decimal result = decimal.Round(op1 / op2, 2);
-            return Ok(result);
+            var herramientas = await _context.Herramientas
+                .Where(c => (filtroMateiral == null || c.material.Contains(filtroMateiral)) && (filtroNombre == null || c.nombre.Contains(filtroNombre)))
+                .Select(c => new HerramientaParaAlquilarDTO(c.id, c.nombre, c.material, c.fabricante.Nombre, c.precio)).ToListAsync();
+            return Ok(herramientas);
         }
 
 
@@ -67,7 +63,7 @@ namespace AppForSEII2526.API.Controllers
         public async Task<ActionResult> GetHerramienta_FILTRO_MATERIAL_DTO(string? filtroMaterial)
         {
             var herramientas = await _context.Herramientas
-                .Where(c => c.material.Contains(filtroMaterial)|| filtroMaterial==null)
+                .Where(c => c.material.Contains(filtroMaterial) || filtroMaterial == null)
                 .Select(c => new HerramientaParaComprarDTO(c.id, c.nombre, c.material, c.fabricante, c.precio)).ToListAsync();
             return Ok(herramientas);
         }

@@ -1,16 +1,15 @@
-﻿namespace AppForSEII2526.API.DTO.HerramientasDTOs
+﻿namespace AppForSEII2526.API.DTO.HerramientaDTOs
 {
     public class HerramientaParaAlquilarDTO
     {
         public HerramientaParaAlquilarDTO() { }
-        public HerramientaParaAlquilarDTO(int id, string nombre, string material, string fabricante, double precio, DateTime fechaAlquiler)
+        public HerramientaParaAlquilarDTO(int id, string nombre, string material, string fabricante, double precio)
         {
             Id = id;
             Nombre = nombre;
             Material = material;
             Fabricante = fabricante;
             Precio = precio;
-            FechaAlquiler= fechaAlquiler;
         }
         public int Id { get; set; }
         [StringLength(50, ErrorMessage = "El nombre tiene que tener una longitud maxima de 50 caracteres")]
@@ -23,10 +22,7 @@
         [Range(1, float.MaxValue, ErrorMessage = "El precio minimo es 1 ")]
         [Display(Name = "Precio por alquilar")]
         public double Precio { get; set; }
-        [DataType(System.ComponentModel.DataAnnotations.DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
-        [Display(Name = "Fecha Alquiler")]
-        public DateTime FechaAlquiler { get; set; }
+ 
 
         public override bool Equals(object? obj)
         {
@@ -35,12 +31,11 @@
                    Nombre == dTO.Nombre &&
                    Material == dTO.Material &&
                    Fabricante == dTO.Fabricante &&
-                   Precio == dTO.Precio &&
-                   FechaAlquiler == dTO.FechaAlquiler;
+                   Precio == dTO.Precio;
         }
         public override int GetHashCode()
         {
-            return HashCode.Combine(Id, Nombre, Material, Fabricante, Precio, FechaAlquiler);
+            return HashCode.Combine(Id, Nombre, Material, Fabricante, Precio);
         }
 
     }

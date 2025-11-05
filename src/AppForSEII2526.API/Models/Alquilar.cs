@@ -23,23 +23,23 @@ namespace AppForSEII2526.API.Models
         public int periodo {  get; set; }
         [DataType(System.ComponentModel.DataAnnotations.DataType.Currency)]
         public double precioTotal {  get; set; }
+        public string correo { get; set; }
+        public int numeroTelefono { get; set; }
         public ApplicationUser applicationUser { get; set; }
 
         public Alquilar()
         {
 
         }
-        public Alquilar(int id, string apellidoCliente, string correo, string direccionEnvio, DateTime fechaAlquiler, DateTime fechaFin, DateTime fechaInicio, string nombreCliente, int numeroTelefono, int periodo, double precioTotal,IList<AlquilarItem>alquilarItems, ApplicationUser applicationUser)
+        public Alquilar(string nombreCliente, string apellidoCliente, string direccionEnvio, DateTime fechaAlquiler, PaymentMethodTypes metodoPago, DateTime fechaFin, DateTime fechaInicio, IList<AlquilarItem>alquilarItems, ApplicationUser applicationUser)
         {
-            PrecioTotal = precioTotal;
-            Id = id;
+            PrecioTotal = alquilarItems.Sum(ri => ri.herramienta.precio * periodo);
             DireccionEnvio = direccionEnvio;
             FechaAlquiler = fechaAlquiler;
             FechaFin = fechaFin;
             FechaInicio = fechaInicio;
-            Periodo = periodo;
             ApplicationUser = applicationUser;
-
+            MetodoPago = metodoPago;
 
         }
         public int Id { get; set; }
@@ -52,7 +52,7 @@ namespace AppForSEII2526.API.Models
         public ApplicationUser ApplicationUser { get; set; }
 
 
-        public PaymentMethodTypes metodoPago { get; set; }
+        public PaymentMethodTypes MetodoPago { get; set; }
         public IList<AlquilarItem> alquilarItems { get; set; }
         public override bool Equals(object? obj)
         {
