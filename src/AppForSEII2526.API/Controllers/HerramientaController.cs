@@ -55,7 +55,7 @@ namespace AppForSEII2526.API.Controllers
         public async Task<ActionResult> GetHerramientas_conTodosLosDatosDTOs()
         {
             var herramientas = await _context.Herramientas
-                .Select(c => new HerramientaParaComprarDTO(c.id, c.nombre, c.material, c.fabricante, c.precio)).ToListAsync();
+                .Select(c => new HerramientaParaComprarDTO(c.id, c.nombre, c.material, c.fabricante.Nombre, c.precio)).ToListAsync();
             return Ok(herramientas);
         }
 
@@ -68,7 +68,7 @@ namespace AppForSEII2526.API.Controllers
         {
             var herramientas = await _context.Herramientas
                 .Where(c => c.material.Contains(filtroMaterial)|| filtroMaterial==null)
-                .Select(c => new HerramientaParaComprarDTO(c.id, c.nombre, c.material, c.fabricante, c.precio)).ToListAsync();
+                .Select(c => new HerramientaParaComprarDTO(c.id, c.nombre, c.material, c.fabricante.Nombre, c.precio)).ToListAsync();
             return Ok(herramientas);
         }
 
@@ -79,7 +79,7 @@ namespace AppForSEII2526.API.Controllers
         {
             var herramientas = await _context.Herramientas
                 .Where(c => c.precio.ToString().Contains(filtroPrecio) || filtroPrecio == null)
-                .Select(c => new HerramientaParaComprarDTO(c.id, c.nombre, c.material, c.fabricante, c.precio)).ToListAsync();
+                .Select(c => new HerramientaParaComprarDTO(c.id, c.nombre, c.material, c.fabricante.Nombre, c.precio)).ToListAsync();
             return Ok(herramientas);
         }
 
@@ -90,7 +90,7 @@ namespace AppForSEII2526.API.Controllers
         {
             var herramientas = await _context.Herramientas
                 .Where(c => c.material.Contains(filtroNombre) || filtroNombre == null)
-                .Select(c => new HerramientaParaComprarDTO(c.id, c.nombre, c.material, c.fabricante, c.precio)).ToListAsync();
+                .Select(c => new HerramientaParaComprarDTO(c.id, c.nombre, c.material, c.fabricante.Nombre, c.precio)).ToListAsync();
             return Ok(herramientas);
         }
 
@@ -101,7 +101,7 @@ namespace AppForSEII2526.API.Controllers
         {
             var herramientas = await _context.Herramientas
                 .Where(c => c.material.Contains(filtroTiempoReparacion) || filtroTiempoReparacion == null)
-                .Select(c => new HerramientaParaComprarDTO(c.id, c.nombre, c.material, c.fabricante, c.precio)).ToListAsync();
+                .Select(c => new HerramientaParaComprarDTO(c.id, c.nombre, c.material, c.fabricante.Nombre, c.precio)).ToListAsync();
             return Ok(herramientas);
         }
     }
