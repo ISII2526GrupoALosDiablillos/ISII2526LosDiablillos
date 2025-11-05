@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 
-namespace AppForSEII2526.API.Controllers   
+namespace AppForSEII2526.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -19,12 +19,31 @@ namespace AppForSEII2526.API.Controllers
             _logger = logger;
         }
 
+
+
+        [HttpGet]
+        [Route("[action]")]
+        [ProducesResponseType(typeof(decimal), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(string), (int)HttpStatusCode.BadRequest)]
+        public async Task<ActionResult> ComputeDivision(decimal op1, decimal op2)
+        {
+            if (op2 == 0)
+            {
+                _logger.LogError($"{DateTime.Now} Exception: op2=0, division by 0");
+                return BadRequest("op2 must be different from 0");
+            }
+            decimal result = decimal.Round(op1 / op2, 2);
+            return Ok(result);
+        }
+
+
+
         [HttpGet]
         [Route("[action]")]
         [ProducesResponseType(typeof(decimal), (int)HttpStatusCode.OK)]
         public async Task<ActionResult> GetHerramientas_sinDTOs()
         {
-            IList<Herramienta> herramienta = await _context.Herramientas.ToListAsync();
+            IList<Models.Herramienta> herramienta = await _context.Herramientas.ToListAsync();
             return Ok(herramienta);
         }
 

@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DTO\CompraDTOs\**" />
+    <Content Remove="DTO\CompraDTOs\**" />
+    <EmbeddedResource Remove="DTO\CompraDTOs\**" />
+    <None Remove="DTO\CompraDTOs\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.DataAnnotations.Validation" Version="3.2.0-rc1.20223.4" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.16" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.17" />
@@ -30,7 +37,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DTO\CompraDTOs\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
 

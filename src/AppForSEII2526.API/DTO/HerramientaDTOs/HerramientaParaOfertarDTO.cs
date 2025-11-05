@@ -1,6 +1,6 @@
 ﻿namespace AppForSEII2526.API.DTO.HerramientaDTOs
 {
-    public class HerramientaParaOfertar
+    public class HerramientaParaOfertarDTO
     {
         [Key]
         public int id { get; set; }
