@@ -1,10 +1,10 @@
 ﻿namespace AppForSEII2526.API.DTO.RepararDTOs
 {
-    public class RepararDetailDTO
+    public class RepararDetailDTO : ReparacionForCreateDTO
     {
-        public RepararDetailDTO(int id, string nombreCliente, string apellidoCliente, DateTime fechaRecogida,
-            DateTime fechaEntrega, IList<ReparacionItem> reparacionItems)
-            : base(nombreCliente,
+        public RepararDetailDTO(int id,string nombreCliente, string apellidoCliente, DateTime fechaRecogida,
+            DateTime fechaEntrega, IList<RepararItemDTO> reparacionItems): base(
+                   nombreCliente,
                    apellidoCliente,
                    fechaRecogida,
                    fechaEntrega,
@@ -14,11 +14,11 @@
             Id = id;
         }
         public int Id { get; set; }
-        public decimal PrecioTotal
+        public double PrecioTotal
         {
             get
             {
-                decimal total = 0;
+                double total = 0;
                 foreach (var item in ReparacionItems)
                 {
                     total += item.Precio;
