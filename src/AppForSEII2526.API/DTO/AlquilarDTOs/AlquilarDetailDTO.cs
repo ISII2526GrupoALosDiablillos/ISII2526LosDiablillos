@@ -15,7 +15,7 @@
             return obj is AlquilarDetailDTO dTO &&
                    base.Equals(obj) &&
                    Id == dTO.Id &&
-                   //PrecioTotal == dTO.PrecioTotal &&
+                   PrecioTotal == dTO.PrecioTotal &&
                    CompareDate(AlquilerFecha, dTO.AlquilerFecha);
         }
         public override int GetHashCode()
