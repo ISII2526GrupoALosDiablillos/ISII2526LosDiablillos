@@ -3,7 +3,7 @@
     [PrimaryKey(nameof(HerramientaId),nameof(AlquilerId))]
     public class AlquilarItem
     {
-        public int AlquilerId {  get; set; }
+        public int alquilerid {  get; set; }
         [Required]
         public Herramienta herramienta { get; set; }
         [Required]
@@ -24,7 +24,7 @@
             this.AlquilerId = AlquilerId;
             this.herramienta = herramienta;
             this.alquilar = alquilar;
-            this.AlquilerId = AlquilerId;
+            this.HerramientaId = HerramientaId;
             this.precio = precio;
             this.cantidad = cantidad;
         }

@@ -46,17 +46,17 @@ namespace AppForSEII2526.API.DTO.AlquilarDTOs
             }
         }
 
-        public IList<AlquilarItemDTO> AlquilarItem { get; set; } 
+        public IList<AlquilarItemDTO> AlquilarItem { get; set; }
 
-        //[Display(Name = "Precio total")]
-        //[JsonPropertyName("PrecioTotal")]
-        //public double TotalPrice
-        //{
-        //    get
-        //    {
-        //        return AlquilarItem.Sum(ri => ri.precio * NumberOfDays);
-        //    }
-        //}
+        [Display(Name = "Precio total")]
+        [JsonPropertyName("PrecioTotal")]
+        public double PrecioTotal
+        {
+            get
+            {
+                return AlquilarItem.Sum(ri => ri.Precio * NumeroDiasAlquiler);
+            }
+        }
 
         protected bool CompareDate(DateTime date1, DateTime date2)
         {
@@ -71,6 +71,7 @@ namespace AppForSEII2526.API.DTO.AlquilarDTOs
                    PaymentMethod == dto.PaymentMethod && 
                 ApellidoCliente == dto.ApellidoCliente &&
                    NombreCliente == dto.NombreCliente &&
+                   PrecioTotal == dto.PrecioTotal &&
                      AlquilarItem.SequenceEqual(dto.AlquilarItem);
 
         }
