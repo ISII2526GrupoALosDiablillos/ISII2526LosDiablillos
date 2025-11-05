@@ -2,7 +2,7 @@
 {
     public class ReparacionForCreateDTO
     {
-        public ReparacionForCreateDTO(int id, string nombreCliente, string apellidoCliente, DateTime fechaRecogida,
+        public ReparacionForCreateDTO(string nombreCliente, string apellidoCliente, DateTime fechaRecogida,
             DateTime fechaEntrega, IList<RepararItemDTO> reparacionItems)
         {
             NombreCliente = nombreCliente ?? throw new ArgumentNullException(nameof(nombreCliente));
@@ -34,6 +34,7 @@
 
         public IList<RepararItemDTO> ReparacionItems { get; set; }
 
+       
 
         [Display(Name = "Precio Total")]
         [JsonPropertyName("PrecioTotal")]
@@ -41,7 +42,7 @@
         {
             get
             {
-                return ReparacionItem.Sum(ri => ri.Precio * Cantidad);
+                return ReparacionItem.Sum(ri => Precio * Cantidad);
             }
         }
 

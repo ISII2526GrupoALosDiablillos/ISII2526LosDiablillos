@@ -23,22 +23,22 @@ namespace AppForSEII2526.API.Controllers
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<ActionResult> GetReparacionDetail(int id)
         {
-            if (_context.Reparacion == null)
+            if (_context.Reparaciones == null)
             {
                 _logger.LogError("Error: Reparaciones table does not exist");
                 return NotFound();
             }
 
-            var reparacion = await _context.Reparacion
+            var reparacion = await _context.Reparaciones
              .Where(r => r.Id == id)
                  .Include(r => r.ReparacionItems)
                     .ThenInclude(ri => ri.Herramienta)
-                        .ThenInclude(herramienta => herramienta.Fabricante)
-             .Select(r => new RepararDetailDTO(r.Id, r.ApplicationUser.NombreCliente, r.ApplicationUser.ApellidoCliente,
+                        .ThenInclude(herramienta => herramienta.fabricante)
+             .Select(r => new RepararDetailDTO(r.Id, r.NombreCliente, r.ApellidoCliente,
                     r.FechaRecogida, r.FechaEntrega,
                     r.ReparacionItems
-                        .Select(ri => new RepararItemDTO(ri.Herramienta.Id,
-                                ri.Herramienta.Nombre, ri.Herramienta.Precio,
+                        .Select(ri => new RepararItemDTO(ri.Herramienta.id,
+                                ri.Herramienta.nombre, ri.Herramienta.precio,
                                 ri.cantidad, ri.descripcion)).ToList<RepararItemDTO>()))
              .FirstOrDefaultAsync();
 
