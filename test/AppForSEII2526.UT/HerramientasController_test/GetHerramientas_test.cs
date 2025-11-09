@@ -46,9 +46,9 @@ namespace AppForSEII2526.UT.HerramientasController_Test
         {
 
             var herraiemntaDTOs = new List<HerramientaParaAlquilarDTO>() {
-                new HerramientaParaAlquilarDTO(1,"Serrucho", "aluminio", "Aluminios Manolo", 25, new DateTime(2015,03,2)),
-                new HerramientaParaAlquilarDTO(2,"Martillo","madera", "Maderas Juan",15 , new DateTime(1988, 02, 23)),
-                new HerramientaParaAlquilarDTO(3, "Clavos", "Metal", "Aceros Manolo", 20, new DateTime(2007, 04, 04)),
+                new HerramientaParaAlquilarDTO(1,"Serrucho", "aluminio", "Aluminios Manolo", 25),
+                new HerramientaParaAlquilarDTO(2,"Martillo","madera", "Maderas Juan",15),
+                new HerramientaParaAlquilarDTO(3, "Clavos", "Metal", "Aceros Manolo", 20),
             };
 
             var herramientaDTOsTC1 = new List<HerramientaParaAlquilarDTO>() { herraiemntaDTOs[1], herraiemntaDTOs[2] }
@@ -109,7 +109,7 @@ namespace AppForSEII2526.UT.HerramientasController_Test
             var controller = new HerramientaController(_context, logger);
 
             // Act
-            var result = await controller.GetHerramientaParaAlquilar(null, null, DateTime.Today.AddDays(5), DateTime.Today.AddDays(1));
+            var result = await controller.GetHerramientaParaAlquilarDTO(null, null);
 
             //Assert
             //we check that the response type is OK and obtain the list of movies
