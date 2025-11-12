@@ -57,6 +57,7 @@ namespace AppForSEII2526.API.Controllers
                 .Where(c => (filtroTiempoReparacion == null || c.tiempoReparacion == filtroTiempoReparacion) && (filtroNombre == null || c.nombre.Contains(filtroNombre)))
                 .Select(c => new HerramientaParaRepararDTO(c.id, c.nombre, c.material, c.fabricante.Nombre, c.precio, c.tiempoReparacion)).ToListAsync();
             return Ok(herramientas);
+       
         }
 
         [HttpGet]

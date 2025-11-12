@@ -52,6 +52,8 @@
             return obj is ReparacionForCreateDTO dTO &&
                    NombreCliente == dTO.NombreCliente &&
                    ApellidoCliente == dTO.ApellidoCliente &&
+                     FechaRecogida == dTO.FechaRecogida &&
+                     FechaEntrega == dTO.FechaEntrega &&
                    ReparacionItems.SequenceEqual(dTO.ReparacionItems) &&
                    PrecioTotal == dTO.PrecioTotal;
         }
