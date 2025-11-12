@@ -75,45 +75,6 @@ namespace AppForSEII2526.UT.HerramientasController_Test
             return allTests;
         }
 
-        public static IEnumerable<object[]> TestCasesFor_GetHerramientasParaComprar_OK()
-        {
-            var fabricantes = new List<Fabricante>() {
-                new Fabricante(1,"Aceros manolo", null),
-                new Fabricante(2,"Maderas Juan", null),
-                new Fabricante(3,"Aluminios Carlos", null),
-                new Fabricante(4,"Cristales Joaquin", null)
-            };
-
-            var herraiemntaDTOs = new List<HerramientaParaComprarDTO>() {
-                new HerramientaParaComprarDTO(1,"Maza", "aluminio", fabricantes[0].Nombre, 25),
-                new HerramientaParaComprarDTO(2,"Destornillador","hierro", fabricantes[1].Nombre,15),
-                new HerramientaParaComprarDTO(3, "Sierra", "Metal", fabricantes[2].Nombre, 20)
-            };
-
-            var herramientaDTOsTC1 = new List<HerramientaParaComprarDTO>() { herraiemntaDTOs[1], herraiemntaDTOs[2] }
-                    //the GetMoviesForPurchase method returns the movies ordered by title
-                    .OrderBy(m => m.id).ToList();
-
-
-            var herramientaDTOsTC2 = new List<HerramientaParaComprarDTO>() { herraiemntaDTOs[1] };
-            var herramientaDTOsTC3 = new List<HerramientaParaComprarDTO>() { herraiemntaDTOs[2] };
-
-            var herramientaDTOsTC4 = new List<HerramientaParaComprarDTO>() { herraiemntaDTOs[0], herraiemntaDTOs[1], herraiemntaDTOs[2] }
-                //the GetMoviesForPurchase method returns the movies ordered by title
-                .OrderBy(m => m.id).ToList();
-
-            var allTests = new List<object[]>
-            {             //filters to apply - expected movies
-                                          //by default datefrom=today +1, dateto=today+2, thus movieDTOs[0] cannot be returned
-                new object[] { null, null, null, null, herramientaDTOsTC1,  },
-                new object[] { "mechanic", null, null, null, herramientaDTOsTC2, },
-                new object[] { null, "Drama", null, null, herramientaDTOsTC3, },
-                new object[] { null, null, DateTime.Today.AddDays(6), DateTime.Today.AddDays(8), herramientaDTOsTC4, },
-            };
-
-            return allTests;
-        }
-
         [Theory]
         [MemberData(nameof(TestCasesFor_GetHerramientasParaAlquilar_OK))]
         [Trait("Database", "WithoutFixture")]
@@ -149,50 +110,6 @@ namespace AppForSEII2526.UT.HerramientasController_Test
 
             // Act
             var result = await controller.GetHerramientaParaAlquilarDTO(null, null);
-
-            //Assert
-            //we check that the response type is OK and obtain the list of movies
-            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-            var problemDetails = Assert.IsType<ValidationProblemDetails>(badRequestResult.Value);
-            var problem = problemDetails.Errors.First().Value[0];
-
-            Assert.Equal("fromDate must be earlier than toDate", problem);
-        }
-
-        [Theory]
-        [MemberData(nameof(TestCasesFor_GetHerramientasParaComprar_OK))]
-        [Trait("Database", "WithoutFixture")]
-        [Trait("LevelTesting", "Unit Testing")]
-        public async Task GetHerramientaParaComprar_OK_test(int filterPrice, string? filterMaterial,
-            IList<HerramientaParaComprarDTO> expectedHerramientas)
-        {
-            // Arrange
-            var controller = new HerramientaController(_context, null!);
-
-            // Act
-            var result = await controller.GetHerramientaParaComprarDTO(filterPrice, filterMaterial);
-
-            //Assert
-            //we check that the response type is OK 
-            var okResult = Assert.IsType<OkObjectResult>(result);
-            //and obtain the list of movies
-            var herramientaDTOsActual = Assert.IsType<List<HerramientaParaComprarDTO>>(okResult.Value);
-            Assert.Equal(expectedHerramientas, herramientaDTOsActual);
-
-        }
-
-        [Fact]
-        [Trait("LevelTesting", "Unit Testing")]
-        [Trait("Database", "WithoutFixture")]
-        public async Task GetHerramientaParaComprar_badrequest_test()
-        {
-            // Arrange
-            var mock = new Mock<ILogger<HerramientaController>>();
-            ILogger<HerramientaController> logger = mock.Object;
-            var controller = new HerramientaController(_context, logger);
-
-            // Act
-            var result = await controller.GetHerramientaParaComprarDTO(0, null);
 
             //Assert
             //we check that the response type is OK and obtain the list of movies

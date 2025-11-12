@@ -2,6 +2,7 @@
 {
     public class CompraDetailDTO
     {
+        public int id {  get; set; }
         public String nombre_cliente { get; set; }
         public String apellido_cliente { get; set; }
         public String direccion { get; set; }
@@ -9,8 +10,9 @@
         public DateTime fechaCompra { get; set; }
         public IList<CompraItemDTO> compraItems { get; set; }
         public CompraDetailDTO() { }
-        public CompraDetailDTO(String nombre_cliente, String apellido_cliente, String direccion, double preciototal, DateTime fechaCompra, IList<CompraItemDTO> compraItems)
+        public CompraDetailDTO(int id, String nombre_cliente, String apellido_cliente, String direccion, double preciototal, DateTime fechaCompra, IList<CompraItemDTO> compraItems)
         {
+            this.id = id;
             this.nombre_cliente = nombre_cliente;
             this.apellido_cliente = apellido_cliente;
             this.direccion = direccion;
@@ -22,6 +24,7 @@
         public override bool Equals(object? obj)
         {
             return obj is CompraDetailDTO dTO &&
+                   id == dTO.id &&
                    nombre_cliente == dTO.nombre_cliente &&
                    apellido_cliente == dTO.apellido_cliente &&
                    direccion == dTO.direccion &&
@@ -32,7 +35,7 @@
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(nombre_cliente, apellido_cliente, direccion, preciototal, fechaCompra, compraItems);
+            return HashCode.Combine(id, nombre_cliente, apellido_cliente, direccion, preciototal, fechaCompra, compraItems);
         }
     }
 }
