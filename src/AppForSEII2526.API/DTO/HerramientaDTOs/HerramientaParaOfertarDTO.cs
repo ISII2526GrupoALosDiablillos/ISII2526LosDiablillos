@@ -1,4 +1,6 @@
-﻿namespace AppForSEII2526.API.DTO.HerramientaDTOs
+﻿using static System.Runtime.InteropServices.JavaScript.JSType;
+
+namespace AppForSEII2526.API.DTO.HerramientaDTOs
 {
     public class HerramientaParaOfertarDTO
     {
@@ -17,5 +19,15 @@
         [Range(0.5, float.MaxValue, ErrorMessage = "Precio mínimo es 0.5")]
         public int precio { get; set; }
         public int tiempoReparacion { get; set; }
+        public string fabricante { get; set; }
+
+        public HerramientaParaOfertarDTO(int id, string nombre, string material, string fabricante, double precio)
+        {
+            id = id;
+            nombre = nombre;
+            material = material;
+            fabricante = fabricante;
+            precio = precio;
+        }
     }
 }

@@ -81,5 +81,19 @@ namespace AppForSEII2526.API.Controllers
                 .Select(c => new HerramientaParaComprarDTO(c.id, c.nombre, c.material, c.fabricante.Nombre, c.precio)).ToListAsync();
             return Ok(herramientas);
         }
+
+
+        [HttpGet]
+        [Route("[action]")]
+        [ProducesResponseType(typeof(IList<HerramientaParaOfertarDTO>), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult> GetHerramientaParaOfertarDTO(int filtroPrecio, string filtroFabricante)
+        {
+            var herramientas = await _context.Herramientas
+                .Include(c => c.fabricante)
+                .Where(c => (filtroPrecio == 0 || c.precio == filtroPrecio) && (filtroFabricante == null || c.fabricante.Nombre.Contains(filtroFabricante)))
+                .Select(c => new HerramientaParaOfertarDTO(c.id, c.nombre, c.material, c.fabricante.Nombre, c.precio)).ToListAsync();
+            return Ok(herramientas);
+        }
+
     }
 }
