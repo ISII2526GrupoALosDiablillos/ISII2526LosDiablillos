@@ -1,5 +1,6 @@
 using Microsoft.Data.Sqlite;
 using System.Data.Common;
+using TodoApi.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,7 +41,8 @@ switch (connection2Database) {
             options.UseSqlServer(connectionString));
         break;
 }
-
+builder.Logging.AddRabbitMQ(builder.Configuration.GetSection("RabbitMQ"));
+//”RabbitMQ” coincide con el nombre del bloque de propiedades en appsettings.json
 //Add Identity services to the container
 builder.Services.AddAuthorization();
 //Activate Identity APIs 
@@ -75,6 +77,8 @@ var app = builder.Build();
 //Map Identity routes
 //app.MapIdentityApi<IdentityUser>();
 var logger = app.Services.GetRequiredService<ILogger<Program>>();
+
+
 
 using (var scope = app.Services.CreateScope()) {
     try {

@@ -20,7 +20,6 @@ namespace AppForSEII2526.API.Controllers
         }
 
 
-
         [HttpGet]
         [Route("[action]")]
         [ProducesResponseType(typeof(decimal), (int)HttpStatusCode.OK)]
@@ -29,8 +28,8 @@ namespace AppForSEII2526.API.Controllers
         {
             if (op2 == 0)
             {
-                _logger.LogError($"{DateTime.Now} Exception: op2=0, division by 0");
-                return BadRequest("op2 must be different from 0");
+                _logger.LogError($"{DateTime.Now} Exception: op2=0, divido por 0");
+                return BadRequest("op2 debe ser diferente de 0");
             }
             decimal result = decimal.Round(op1 / op2, 2);
             return Ok(result);
