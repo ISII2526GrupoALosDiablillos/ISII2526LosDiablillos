@@ -416,3 +416,4 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+/test/AppForSEII2526.UT/HerramientasController_test/GetHerramientas_test.cs

@@ -1,21 +1,43 @@
-﻿namespace AppForSEII2526.API.DTO.ComprarDTOs
+﻿using Humanizer;
+
+namespace AppForSEII2526.API.DTO.ComprarDTOs
 {
     public class CompraForCreateDTO
     {
         public CompraForCreateDTO() {
             CompraItems = new List<CompraItemForCreateDTO>();
         }
-        private String nombre {  get; set; }
-        private String material { get; set; }
-        private double precio { get; set; }
-        private String nombre_cliente { get; set; }
-        private String apellidos_cliente { get; set; }
-        private String direccionEnvio { get; set; }
-        private PaymentMethodTypes pago { get; set; }
-        private int? telefono { get; set; }
-        private String? correoElectronico { get; set; }
+        public int Id { get; set; }
+        public String Nombre {  get; set; }
+        public String Material { get; set; }
+        public double Precio { get; set; }
+        public String Nombre_cliente { get; set; }
+        public String Apellidos_cliente { get; set; }
+        public String DireccionEnvio { get; set; }
+        public PaymentMethodTypes Pago { get; set; }
+        public int? Telefono { get; set; }
+        public String? CorreoElectronico { get; set; }
         public List<CompraItemForCreateDTO> CompraItems { get; set; }
+        public DateTime FechaCompra { get; set; }
+        public DateTime FechaRecibo { get; set; }
+        public IList<CompraItem> compraObjetos { get; set; }
 
+        public CompraForCreateDTO(int id, string nombre, string material, double precio, string nombre_cliente, string apellidos_cliente, string direccionEnvio, PaymentMethodTypes pago, int? telefono, string? correoElectronico, List<CompraItemForCreateDTO> compraItems, DateTime fechaCompra, DateTime fechaRecibo)
+        {
+            Id = id;
+            Nombre = nombre;
+            Material = material;
+            Precio = precio;
+            Nombre_cliente = nombre_cliente;
+            Apellidos_cliente = apellidos_cliente;
+            DireccionEnvio = direccionEnvio;
+            Pago = pago;
+            Telefono = telefono;
+            CorreoElectronico = correoElectronico;
+            CompraItems = compraItems;
+            FechaCompra = fechaCompra;
+            FechaRecibo = fechaRecibo;
+        }
     }
 
     public class CompraItemForCreateDTO()

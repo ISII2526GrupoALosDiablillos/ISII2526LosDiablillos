@@ -6,7 +6,7 @@
             DateTime fechaEntrega, IList<RepararItemDTO> reparacionItems): base(
                    nombreCliente,
                    apellidoCliente,
-                   fechaRecogida,
+                   fechaRecogida,    
                    fechaEntrega,
                    reparacionItems
                   )

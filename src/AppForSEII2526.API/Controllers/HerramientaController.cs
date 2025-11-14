@@ -53,7 +53,7 @@ namespace AppForSEII2526.API.Controllers
         public async Task<ActionResult> GetHerramientaParaRepararDTO(int filtroTiempoReparacion, string filtroNombre)
         {
             var herramientas = await _context.Herramientas
-                .Where(c => (filtroTiempoReparacion == null || c.tiempoReparacion==filtroTiempoReparacion) && (filtroNombre == null || c.nombre.Contains(filtroNombre)))
+                .Where(c => (filtroTiempoReparacion == null || c.tiempoReparacion == filtroTiempoReparacion) && (filtroNombre == null || c.nombre.Contains(filtroNombre)))
                 .Select(c => new HerramientaParaRepararDTO(c.id, c.nombre, c.material, c.fabricante.Nombre, c.precio, c.tiempoReparacion)).ToListAsync();
             return Ok(herramientas);
        
@@ -67,6 +67,17 @@ namespace AppForSEII2526.API.Controllers
             var herramientas = await _context.Herramientas
                 .Where(c => (filtroMateiral == null || c.material.Contains(filtroMateiral)) && (filtroNombre == null || c.nombre.Contains(filtroNombre)))
                 .Select(c => new HerramientaParaAlquilarDTO(c.id, c.nombre, c.material, c.fabricante.Nombre, c.precio)).ToListAsync();
+            return Ok(herramientas);
+        }
+
+        [HttpGet]
+        [Route("[action]")]
+        [ProducesResponseType(typeof(IList<HerramientaParaComprarDTO>), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult> GetHerramientaParaComprarDTO(int filtroPrecio, String filtroMaterial)
+        {
+            var herramientas = await _context.Herramientas
+                .Where(c => (filtroPrecio == null || c.precio==filtroPrecio) && (filtroMaterial == null || c.material.Contains(filtroMaterial)))
+                .Select(c => new HerramientaParaComprarDTO(c.id, c.nombre, c.material, c.fabricante.Nombre, c.precio)).ToListAsync();
             return Ok(herramientas);
         }
     }
