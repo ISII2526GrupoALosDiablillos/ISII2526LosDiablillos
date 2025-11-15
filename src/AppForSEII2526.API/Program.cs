@@ -1,6 +1,7 @@
 using System.Reflection;
 using System.Text.Json.Serialization;
 using System.Data.Common;
+using TodoApi.Logging;
 
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
@@ -45,8 +46,14 @@ switch (connection2Database)
             options.UseSqlServer(connectionString));
         break;
 }
+<<<<<<< HEAD
+builder.Logging.AddRabbitMQ(builder.Configuration.GetSection("RabbitMQ"));
+//”RabbitMQ” coincide con el nombre del bloque de propiedades en appsettings.json
+//Add Identity services to the container
+=======
 
 // --- Identity ---
+>>>>>>> origin/development
 builder.Services.AddAuthorization();
 builder.Services.AddIdentityApiEndpoints<ApplicationUser>()
     .AddRoles<IdentityRole>()
@@ -78,11 +85,25 @@ var app = builder.Build();
 var startupLogger = app.Services.GetRequiredService<ILogger<Program>>();
 startupLogger.LogInformation("API arrancada en {Env} a {Time}", app.Environment.EnvironmentName, DateTime.UtcNow);
 
+<<<<<<< HEAD
+
+
+//Map Identity routes
+//app.MapIdentityApi<IdentityUser>();
+var logger = app.Services.GetRequiredService<ILogger<Program>>();
+
+
+
+using (var scope = app.Services.CreateScope()) {
+    try {
+
+=======
 // --- Inicialización BD ---
 using (var scope = app.Services.CreateScope())
 {
     try
     {
+>>>>>>> origin/development
         var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
         if (connection2Database == "SQLite")
