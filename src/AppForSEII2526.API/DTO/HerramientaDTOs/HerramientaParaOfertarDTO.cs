@@ -1,33 +1,43 @@
-﻿using static System.Runtime.InteropServices.JavaScript.JSType;
+﻿using System;
 
 namespace AppForSEII2526.API.DTO.HerramientaDTOs
 {
     public class HerramientaParaOfertarDTO
     {
-        [Key]
+        // Mantener nombres/atributos existentes si ya están en tu fichero original.
         public int id { get; set; }
-        [StringLength(100, ErrorMessage = "El nombre no puede tener mas de 100 caracteres")]
         public int itemsReparacion { get; set; }
-        public string material { get; set; }  
-        [StringLength(100, ErrorMessage = "El nombre no puede tener mas de 100 caracteres")]
-
+        public string material { get; set; }
         public string nombre { get; set; }
-        [DataType(System.ComponentModel.DataAnnotations.DataType.Currency)]
-        [Range(0.5, float.MaxValue, ErrorMessage = "Precio mínimo es 0.5")]
         public int OfertaItems { get; set; }
-        [DataType(System.ComponentModel.DataAnnotations.DataType.Currency)]
-        [Range(0.5, float.MaxValue, ErrorMessage = "Precio mínimo es 0.5")]
-        public int precio { get; set; }
+        public double precio { get; set; }
         public int tiempoReparacion { get; set; }
         public string fabricante { get; set; }
 
+        // Constructor con la firma que indica el código base: (id, nombre, material, fabricante, precio)
         public HerramientaParaOfertarDTO(int id, string nombre, string material, string fabricante, double precio)
         {
-            id = id;
-            nombre = nombre;
-            material = material;
-            fabricante = fabricante;
-            precio = precio;
+            this.id = id;
+            this.nombre = nombre;
+            this.material = material;
+            this.fabricante = fabricante;
+            this.precio = precio;
+        }
+
+        // Implementación de igualdad por valor para que Assert.Equal funcione en los tests
+        public override bool Equals(object? obj)
+        {
+            if (obj is not HerramientaParaOfertarDTO other) return false;
+            return id == other.id
+                && string.Equals(nombre, other.nombre, StringComparison.Ordinal)
+                && string.Equals(material, other.material, StringComparison.Ordinal)
+                && string.Equals(fabricante, other.fabricante, StringComparison.Ordinal)
+                && Math.Abs(precio - other.precio) < 0.001;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(id, nombre ?? string.Empty, material ?? string.Empty, fabricante ?? string.Empty, precio);
         }
     }
 }

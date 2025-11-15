@@ -3,6 +3,8 @@ using AppForSEII2526.API.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using System.Net;
 
 namespace AppForSEII2526.API.Controllers
 {
@@ -93,6 +95,33 @@ namespace AppForSEII2526.API.Controllers
                 .Where(c => (filtroPrecio == 0 || c.precio == filtroPrecio) && (filtroFabricante == null || c.fabricante.Nombre.Contains(filtroFabricante)))
                 .Select(c => new HerramientaParaOfertarDTO(c.id, c.nombre, c.material, c.fabricante.Nombre, c.precio)).ToListAsync();
             return Ok(herramientas);
+        }
+
+        // Método añadido para resolver el error: definición ausente GetHerramientasPorFabricantePrecio
+        [HttpGet]
+        [Route("[action]")]
+        [ProducesResponseType(typeof(IList<HerramientaParaOfertarDTO>), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult> GetHerramientasPorFabricantePrecio(string? fabricante, float? precio)
+        {
+            var query = _context.Herramientas.Include(h => h.fabricante).AsQueryable();
+
+            if (!string.IsNullOrEmpty(fabricante))
+            {
+                query = query.Where(h => h.fabricante != null && h.fabricante.Nombre.Contains(fabricante));
+            }
+
+            if (precio.HasValue)
+            {
+                // comparar convirtiendo el precio almacenado (int) a float para evitar problemas de tipos
+                float buscado = precio.Value;
+                query = query.Where(h => (float)h.precio == buscado);
+            }
+
+            var resultado = await query
+                .Select(h => new HerramientaParaOfertarDTO(h.id, h.nombre, h.material, h.fabricante != null ? h.fabricante.Nombre : string.Empty, (double)h.precio))
+                .ToListAsync();
+
+            return Ok(resultado);
         }
 
     }
