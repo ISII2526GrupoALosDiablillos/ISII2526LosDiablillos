@@ -13,6 +13,7 @@ namespace AppForSEII2526.API.Models
         public string descripcion { get; set; }
         public double precio { get; set; }
         public int tiempoReparacion { get; set; }
+        
         public ReparacionItem() { }
 
         public ReparacionItem(int id, int idReparacion, int idherramienta, int cantidad, double precio, int tiempoReparacion, string descripcion)
