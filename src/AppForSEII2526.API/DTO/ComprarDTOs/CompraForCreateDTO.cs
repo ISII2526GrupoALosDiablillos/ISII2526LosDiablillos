@@ -1,11 +1,12 @@
-﻿using Humanizer;
+﻿using AppForSEII2526.API.DTOs;
+using Humanizer;
 
 namespace AppForSEII2526.API.DTO.ComprarDTOs
 {
     public class CompraForCreateDTO
     {
         public CompraForCreateDTO() {
-            CompraItems = new List<CompraItemForCreateDTO>();
+            CompraItems = new List<CompraItemDTO>();
         }
         public int Id { get; set; }
         public String Nombre {  get; set; }
@@ -17,12 +18,11 @@ namespace AppForSEII2526.API.DTO.ComprarDTOs
         public PaymentMethodTypes Pago { get; set; }
         public int? Telefono { get; set; }
         public String? CorreoElectronico { get; set; }
-        public List<CompraItemForCreateDTO> CompraItems { get; set; }
         public DateTime FechaCompra { get; set; }
         public DateTime FechaRecibo { get; set; }
-        public IList<CompraItem> compraObjetos { get; set; }
+        public IList<CompraItemDTO> CompraItems { get; set; }
 
-        public CompraForCreateDTO(int id, string nombre, string material, double precio, string nombre_cliente, string apellidos_cliente, string direccionEnvio, PaymentMethodTypes pago, int? telefono, string? correoElectronico, List<CompraItemForCreateDTO> compraItems, DateTime fechaCompra, DateTime fechaRecibo)
+        public CompraForCreateDTO(int id, string nombre, string material, double precio, string nombre_cliente, string apellidos_cliente, string direccionEnvio, PaymentMethodTypes pago, int? telefono, string? correoElectronico, List<CompraItemDTO> compraItems, DateTime fechaCompra, DateTime fechaRecibo)
         {
             Id = id;
             Nombre = nombre;
@@ -38,11 +38,5 @@ namespace AppForSEII2526.API.DTO.ComprarDTOs
             FechaCompra = fechaCompra;
             FechaRecibo = fechaRecibo;
         }
-    }
-
-    public class CompraItemForCreateDTO()
-    {
-        public int cantidad { get; set; }
-        public String descripcion { get; set; }
     }
 }
