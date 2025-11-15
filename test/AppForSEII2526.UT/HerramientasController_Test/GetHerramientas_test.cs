@@ -69,7 +69,7 @@ namespace AppForSEII2526.UT.HerramientasController_Test
                 new object[] { null, null, null, null, herramientaDTOsTC1,  },
                 new object[] { "mechanic", null, null, null, herramientaDTOsTC2, },
                 new object[] { null, "Drama", null, null, herramientaDTOsTC3, },
-                //new object[] { null, null, DateTime.Today.AddDays(6), DateTime.Today.AddDays(8), herramientaDTOsTC4, },
+                
             };
 
             return allTests;
