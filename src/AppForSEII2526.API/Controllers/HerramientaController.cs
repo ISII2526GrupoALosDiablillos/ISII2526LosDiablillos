@@ -20,7 +20,6 @@ namespace AppForSEII2526.API.Controllers
         }
 
 
-
         [HttpGet]
         [Route("[action]")]
         [ProducesResponseType(typeof(decimal), (int)HttpStatusCode.OK)]
@@ -29,8 +28,8 @@ namespace AppForSEII2526.API.Controllers
         {
             if (op2 == 0)
             {
-                _logger.LogError($"{DateTime.Now} Exception: op2=0, division by 0");
-                return BadRequest("op2 must be different from 0");
+                _logger.LogError($"{DateTime.Now} Exception: op2=0, divido por 0");
+                return BadRequest("op2 debe ser diferente de 0");
             }
             decimal result = decimal.Round(op1 / op2, 2);
             return Ok(result);
@@ -69,6 +68,17 @@ namespace AppForSEII2526.API.Controllers
             var herramientas = await _context.Herramientas
                 .Where(c => (filtroMateiral == null || c.material.Contains(filtroMateiral)) && (filtroNombre == null || c.nombre.Contains(filtroNombre)))
                 .Select(c => new HerramientaParaAlquilarDTO(c.id, c.nombre, c.material, c.fabricante.Nombre, c.precio)).ToListAsync();
+            return Ok(herramientas);
+        }
+
+        [HttpGet]
+        [Route("[action]")]
+        [ProducesResponseType(typeof(IList<HerramientaParaComprarDTO>), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult> GetHerramientaParaComprarDTO(int filtroPrecio, String filtroMaterial)
+        {
+            var herramientas = await _context.Herramientas
+                .Where(c => (filtroPrecio == null || c.precio==filtroPrecio) && (filtroMaterial == null || c.material.Contains(filtroMaterial)))
+                .Select(c => new HerramientaParaComprarDTO(c.id, c.nombre, c.material, c.fabricante.Nombre, c.precio)).ToListAsync();
             return Ok(herramientas);
         }
     }

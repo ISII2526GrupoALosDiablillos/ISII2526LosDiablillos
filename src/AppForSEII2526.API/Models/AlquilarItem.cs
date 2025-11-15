@@ -19,10 +19,9 @@
 
         }
 
-        public AlquilarItem(int AlquilerId,Herramienta herramienta,Alquilar alquilar,int HerramientaId, int precio, int cantidad)
+        public AlquilarItem(int AlquilerId, Alquilar alquilar,int HerramientaId, int precio, int cantidad)
         {
             this.alquilerId = AlquilerId;
-            this.herramienta = herramienta;
             this.alquilar = alquilar;
             this.HerramientaId = HerramientaId;
             this.precio = precio;

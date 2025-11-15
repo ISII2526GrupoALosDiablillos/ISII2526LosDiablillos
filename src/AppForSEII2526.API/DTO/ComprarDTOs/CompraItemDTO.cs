@@ -7,14 +7,16 @@
         public double precio { get; set; }
         public String descripcion { get; set; }
         public int cantidad { get; set; }
+        public int herramientaId { get; set; }
 
-        public CompraItemDTO(String nombre, String material, double precio, String descripcion, int cantidad)
+        public CompraItemDTO(String nombre, String material, double precio, String descripcion, int cantidad, int herramientaId)
         {
             this.nombre = nombre;
             this.material = material;
             this.precio = precio;
             this.descripcion = descripcion;
             this.cantidad = cantidad;
+            this.herramientaId = herramientaId;
         }
 
         public override bool Equals(object? obj)
