@@ -32,7 +32,7 @@ namespace AppForSEII2526.UT.HerramientasController_Test
 
                
             _context.AddRange(fabricantes);
-            _context.AddRange(herramientas);
+            _context.AddRange(herramientas);  
 
             _context.SaveChanges();
         }
