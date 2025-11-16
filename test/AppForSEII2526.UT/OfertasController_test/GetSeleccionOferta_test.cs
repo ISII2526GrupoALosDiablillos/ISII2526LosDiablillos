@@ -1,7 +1,7 @@
 ﻿using AppForMovies.UT;
 using AppForSEII2526.API.Controllers;
 using AppForSEII2526.API.DTO.HerramientaDTOs;
-using AppForSEII2526.API.DTOs;
+using AppForSEII2526.API.DTO;
 using AppForSEII2526.API.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
