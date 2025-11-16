@@ -14,7 +14,9 @@ namespace AppForSEII2526.API.Controllers
         {
             _context = context;
             _logger = logger;
+            _logger.LogInformation("Alquiler initialized");
         }
+
 
         [HttpGet]
         [Route("[action]")]
@@ -24,7 +26,7 @@ namespace AppForSEII2526.API.Controllers
         {
             if (_context.Alquileres == null)
             {
-                _logger.LogError("Error: Rentals table does not exist");
+                _logger.LogError("Error: Las tablas de alquilar no existen");
                 return NotFound();
             }
             var alquiler = await _context.Alquileres
@@ -38,7 +40,7 @@ namespace AppForSEII2526.API.Controllers
 
             if (alquiler == null)
             {
-                _logger.LogError($"Error: Rental with id {alquilerId} not found");
+                _logger.LogError($"Error: Alquiler con id {alquilerId} no encontrado");
                 return NotFound();
             }
 
@@ -54,13 +56,13 @@ namespace AppForSEII2526.API.Controllers
         {
             //any validation defined in PurchaseForCreate is checked before running the method so they don't have to be checked again
             if (alquilarForCreateDTO.FechaInicio <= DateTime.Today)
-                ModelState.AddModelError("RentalDateFrom", "Error! Your rental date must start later than today");
+                ModelState.AddModelError("AlquilerDateFrom", "Error! Tu fecha de alquiler debe ser mas tarde que hoy");
 
             if (alquilarForCreateDTO.FechaInicio >= alquilarForCreateDTO.FechaFin)
-                ModelState.AddModelError("RentalDateFrom&RentalDateTo", "Error! Your rental must end later than it starts");
+                ModelState.AddModelError("RentalDateFrom&RentalDateTo", "Error! Tu alquiler debe acabar antes de iniciar");
 
             if (alquilarForCreateDTO.AlquilarItem.Count == 0)
-                ModelState.AddModelError("RentalItems", "Error! You must include at least one movie to be rented");
+                ModelState.AddModelError("RentalItems", "Error! Tu deberias incluir una herramienta para alquilar");
             
             var user = _context.ApplicationUsers.FirstOrDefault(au => au.UserName == alquilarForCreateDTO.NombreCliente);
             if (user == null)
@@ -102,7 +104,7 @@ namespace AppForSEII2526.API.Controllers
                 }
                 else
                 {
-                    //alquilar.alquilarItems.Add(new AlquilarItem(herramienta.id, alquilar, herramienta.precio, ));
+                    alquilar.alquilarItems.Add(new AlquilarItem(alquilar.id, alquilar, herramienta.id,herramienta.precio,10));
                     item.Precio = herramienta.precio;
                 }
                 alquilar.PrecioTotal = alquilar.alquilarItems.Sum(ri => ri.precio * numeroDiasAlquiler);

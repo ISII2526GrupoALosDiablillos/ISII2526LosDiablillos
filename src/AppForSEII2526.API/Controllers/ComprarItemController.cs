@@ -13,8 +13,8 @@ namespace AppForSEII2526.API.Controllers
     public class ComprasController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-        private readonly ILogger<HerramientaController> _logger;
-        public ComprasController(ApplicationDbContext context, ILogger<HerramientaController> logger)
+        private readonly ILogger<ComprasController> _logger;
+        public ComprasController(ApplicationDbContext context, ILogger<ComprasController> logger)
         {
             _context = context;
             _logger = logger;
@@ -39,6 +39,7 @@ namespace AppForSEII2526.API.Controllers
                     .ThenInclude(h => h.fabricante)
                 .OrderBy(o => o.id)
                 .Select(o => new CompraDetailDTO(
+                    o.id,
                     o.atributos.nombreCliente,
                     o.atributos.apellidoCliente,
                     o.direccionEnvio,
@@ -49,7 +50,8 @@ namespace AppForSEII2526.API.Controllers
                         oi.herramienta.material,
                         oi.herramienta.precio,
                         oi.descripcion,
-                        oi.cantidad)).ToList()
+                        oi.cantidad,
+                        oi.herramienta.id)).ToList()
                     ))
                  .ToListAsync();
 
@@ -71,16 +73,22 @@ namespace AppForSEII2526.API.Controllers
         {
             //any validation defined in PurchaseForCreate is checked before running the method so they don't have to be checked again
             if (compraForCreateDTO.CompraItems.Count == 0)
-                ModelState.AddModelError("CompraItems", "Error! Debes incluir un item en la compra");
+                ModelState.AddModelError("ComprarNingúnItem", "Error! No quedan items en ");
 
-            var user = _context.ApplicationUsers.FirstOrDefault(au => au.UserName == compraForCreateDTO.Nombre);
+            if (compraForCreateDTO.FechaCompra <= DateTime.Now)
+                ModelState.AddModelError("ComprarAntesDeTiempo", "Error! Tu fecha de compra debe ser después de este momento actual.");
+
+            if (compraForCreateDTO.FechaCompra >= compraForCreateDTO.FechaRecibo)
+                ModelState.AddModelError("RecibirAntesDeComprar", "Error! Cómo vas a recibir algo antes de comprarlo?");
+
+            var user = _context.ApplicationUsers.FirstOrDefault(au => au.UserName == compraForCreateDTO.Nombre_cliente);
             if (user == null)
-                ModelState.AddModelError("ComprarApplicationUser", "Error! Nombre de usuario no registrado");
+                ModelState.AddModelError("NoRegistrado", "Error! Nombre de usuario no registrado.");
 
             if (ModelState.ErrorCount > 0)
                 return BadRequest(new ValidationProblemDetails(ModelState));
 
-            var herramientasIds = compraForCreateDTO.compraObjetos.Select(ri => ri.herramientaId).ToList();
+            var herramientasIds = compraForCreateDTO.CompraItems.Select(ri => ri.herramientaId).ToList();
 
             var herramientas = _context.Herramientas.Include(h => h.compraItems)
                 .ThenInclude(ri => ri.compra)
@@ -98,22 +106,21 @@ namespace AppForSEII2526.API.Controllers
             })
                 .ToList();
 
-            Compra comprar = new Compra(compraForCreateDTO.DireccionEnvio, DateTime.Now, compraForCreateDTO.Id, compraForCreateDTO.Precio, compraForCreateDTO.compraObjetos, user);
+            Compra comprar = new Compra(compraForCreateDTO.DireccionEnvio, DateTime.Now, compraForCreateDTO.Id, compraForCreateDTO.Precio, new List<CompraItem>(), user);
 
             comprar.preciototal = 0;
 
             var numeroDiasAlquiler = (compraForCreateDTO.FechaRecibo - compraForCreateDTO.FechaCompra).Days;
 
-            foreach (var item in compraForCreateDTO.compraObjetos)
+            foreach (var item in compraForCreateDTO.CompraItems)
             {
                 var herramienta = herramientas.FirstOrDefault(h => h.id == item.herramientaId);
                 if (herramienta == null)
                 {
-                    ModelState.AddModelError("ComprarItems", $"Error! La herramienta con el id {item.herramientaId} no existe");
+                    ModelState.AddModelError("ComprarItems", $"Error! La herramienta con el nombre {item.herramientaId} no existe");
                 }
                 else
                 {
-                    //alquilar.alquilarItems.Add(new AlquilarItem(herramienta.id, alquilar, herramienta.precio, ));
                     item.precio = herramienta.precio;
                 }
                 comprar.preciototal = comprar.compraItem.Sum(ri => ri.precio * numeroDiasAlquiler);
@@ -136,13 +143,13 @@ namespace AppForSEII2526.API.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                ModelState.AddModelError("Alquilar", $"Error! Hubo un error mientras se guardaba tu alquiler, por favor, intentalo de nuevo mas tarde");
+                ModelState.AddModelError("Compra", $"Error! Hubo un error mientras se guardaba tu compra, por favor, intentalo de nuevo mas tarde");
                 return Conflict("Error" + ex.Message);
 
             }
 
-            //Faltan un par de cosas por implementar, si da error no pasa nada, luego lo cambio
-            return Ok();
+            var comprarDetailDTO = new CompraDetailDTO(comprar.id, comprar.atributos.nombreCliente, comprar.atributos.apellidoCliente, comprar.direccionEnvio, comprar.preciototal, comprar.fechaCompra, compraForCreateDTO.CompraItems);
+            return CreatedAtAction(nameof(CreateCompra), new { Id = comprarDetailDTO.id }, comprarDetailDTO);
         }
     }
 
