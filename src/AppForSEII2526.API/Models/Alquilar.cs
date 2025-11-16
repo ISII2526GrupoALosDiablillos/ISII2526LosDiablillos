@@ -38,7 +38,7 @@ namespace AppForSEII2526.API.Models
             FechaAlquiler = fechaAlquiler;
             FechaFin = fechaFin;
             FechaInicio = fechaInicio;
-            ApplicationUser = applicationUser;
+            
             MetodoPago = metodoPago;
 
         }
@@ -49,7 +49,7 @@ namespace AppForSEII2526.API.Models
         public DateTime FechaInicio { get; set; }
         public int Periodo { get; set; }
         public double PrecioTotal { get; set; }
-        public ApplicationUser ApplicationUser { get; set; }
+        
 
 
         public PaymentMethodTypes MetodoPago { get; set; }
