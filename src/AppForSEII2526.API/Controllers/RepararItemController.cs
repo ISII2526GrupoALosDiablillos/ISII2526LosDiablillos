@@ -99,7 +99,7 @@ namespace AppForSEII2526.API.Controllers
                 ApellidoCliente = repararForCreateDTO.ApellidoCliente,
                 FechaRecogida = repararForCreateDTO.FechaRecogida,
                 FechaEntrega = repararForCreateDTO.FechaEntrega,
-                MetodosPago = repararForCreateDTO.MetodosPago,
+                MetodosPago = repararForCreateDTO.MetodosPago,  
                 Telefono = repararForCreateDTO.Telefono,
                 ReparacionItems = new List<ReparacionItem>()
             };
