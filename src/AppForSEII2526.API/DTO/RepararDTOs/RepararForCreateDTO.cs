@@ -23,6 +23,7 @@
         public int Cantidad { get; set; }
         public float Precio { get; set; }
         public int Telefono { get; set; }
+        public MetodosPago MetodosPago { get; set; }
 
         [Required]
         public MetodosPago PaymentMethod { get; set; }
