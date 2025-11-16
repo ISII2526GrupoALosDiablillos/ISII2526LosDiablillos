@@ -51,16 +51,16 @@ namespace AppForSEII2526.UT.ComprarItemController_Test
             };
 
             var herraiemntaDTOs = new List<HerramientaParaComprarDTO>() {
-                new Herramienta(1,5,"aluminio", "Serrucho", 25, 50, null),
-                new Herramienta(2, 10, "madera", "Martillo", 15, 40, null),
-                new Herramienta(3, 15, "acero", "Clavos", 20, 50, null),
-                new Herramienta(4, 20, "acero", "Desatornillador", 100, 100, null)
+                new HerramientaParaComprarDTO(1, "Serrucho", "aluminio", null, 25),
+                new HerramientaParaComprarDTO(2, "Martillo", "madera", null, 15),
+                new HerramientaParaComprarDTO(3, "Clavos", "acero", null, 20),
+                new HerramientaParaComprarDTO(4, "Desatornillador", "acero", null, 100)
             };
 
             var herramientaDTOsTC1 = new List<HerramientaParaComprarDTO>() { herraiemntaDTOs[1], herraiemntaDTOs[2] }
-                    .OrderBy(m => m.id).ToList()
+                    .OrderBy(m => m.id).ToList();
             var herramientaDTOsTC2 = new List<HerramientaParaComprarDTO>() { herraiemntaDTOs[1] };
-            var herramientaDTOsTC3 = new List<HerramientaParaComprarDTO>() { herraiemntaDTOs[2] }
+            var herramientaDTOsTC3 = new List<HerramientaParaComprarDTO>() { herraiemntaDTOs[2] };
             var herramientaDTOsTC4 = new List<HerramientaParaComprarDTO>() { herraiemntaDTOs[0], herraiemntaDTOs[1], herraiemntaDTOs[2] }
                 .OrderBy(m => m.id).ToList();
 
