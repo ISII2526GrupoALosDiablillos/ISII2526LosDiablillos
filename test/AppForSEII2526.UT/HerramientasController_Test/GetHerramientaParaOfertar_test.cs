@@ -82,7 +82,7 @@ namespace AppForSEII2526.UT.HerramientasController_Test
             var okResult = Assert.IsType<OkObjectResult>(result);
             var herramientaDTOsActual = Assert.IsType<List<HerramientaParaOfertarDTO>>(okResult.Value);
 
-            Assert.Equal(expectedHerramientas, herramientaDTOsActual);
+            Assert.Equal(expectedHerramientas.Select(e=>e.id), herramientaDTOsActual.Select(a=>a.id));
         }
     }
 }

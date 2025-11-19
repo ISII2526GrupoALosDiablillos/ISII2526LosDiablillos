@@ -2,14 +2,15 @@
 {
     public class HerramientaParaComprarDTO
     {
-        private Fabricante fabricante;
+        private string fabricante;
 
         [Key]
         public int id { get; set; }
         public string material { get; set; }
-        [StringLength(100, ErrorMessage = "El nombre no puede tener mas de 100 caracteres")]
 
+        [StringLength(100, ErrorMessage = "El nombre no puede tener más de 100 caracteres")]
         public string nombre { get; set; }
+
         [DataType(System.ComponentModel.DataAnnotations.DataType.Currency)]
         [Range(0.5, float.MaxValue, ErrorMessage = "Precio mínimo es 0.5")]
         public int precio { get; set; }
@@ -21,7 +22,7 @@
             this.id = id;
             this.nombre = nombre;
             this.material = material;
-            this.fabricante.Nombre = fabricante;
+            this.fabricante = fabricante;
             this.precio = precio;
         }
     }

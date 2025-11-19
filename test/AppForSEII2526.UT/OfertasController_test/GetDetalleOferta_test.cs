@@ -17,18 +17,18 @@ namespace AppForSEII2526.UT.OfertaController_test
         public GetDetalleOferta_test()
         {
             var user = new ApplicationUser(
-                apellidoCliente: "TestApellido",
-                correoElectronico: "test@tests.com",
-                nombreCliente: "TestNombre",
+                apellidoCliente: "Ortega",
+                correoElectronico: "alejandro.ortega@tests.com",
+                nombreCliente: "Alejandro",
                 telefono: 123456789,
                 compras: new List<Compra>()
             )
             {
-                Id = "test-user",
-                UserName = "test@tests.com",
-                NormalizedUserName = "TEST@TESTS.COM",
-                Email = "test@tests.com",
-                NormalizedEmail = "TEST@TESTS.COM",
+                Id = "alexmendoza",
+                UserName = "alejandro@tests.com",
+                NormalizedUserName = "ALEJANDRO@TESTS.COM",
+                Email = "alejandro.ortega@tests.com",
+                NormalizedEmail = "ALEJANDRO.ORTEGA@TESTS.COM",
                 EmailConfirmed = true
             };
 
