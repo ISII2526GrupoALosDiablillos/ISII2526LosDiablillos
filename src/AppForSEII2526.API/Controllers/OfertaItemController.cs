@@ -75,7 +75,6 @@ namespace AppForSEII2526.API.Controllers
                 return BadRequest(new ValidationProblemDetails(ModelState));
             }
 
-            // Validaciones básicas
             if (ofertaForCreate.FechaInicio == default)
                 ModelState.AddModelError("FechaInicio", "Error! Fecha Inicio es un campo obligatorio");
 
@@ -94,7 +93,6 @@ namespace AppForSEII2526.API.Controllers
             if (ModelState.ErrorCount > 0)
                 return BadRequest(new ValidationProblemDetails(ModelState));
 
-            // Obtener herramientas por id (OfertaItemForCreateDTO tiene HerramientaId)
             var herramientaIds = ofertaForCreate.OfertaItems.Select(i => i.HerramientaId).Distinct().ToList();
 
             var herramientas = await _context.Herramientas
@@ -102,7 +100,6 @@ namespace AppForSEII2526.API.Controllers
                 .Where(h => herramientaIds.Contains(h.id))
                 .ToListAsync();
 
-            // Crear nueva oferta (pasamos 0 como id; EF lo generará)
             var nuevaOferta = new Oferta(
                 ofertaForCreate.FechaFinal,
                 ofertaForCreate.FechaInicio,
@@ -112,13 +109,12 @@ namespace AppForSEII2526.API.Controllers
                 ofertaForCreate.DirigidaOferta,
                 new List<OfertaItem>());
 
-            // Construir items
             foreach (var itemDto in ofertaForCreate.OfertaItems)
             {
                 var herramienta = herramientas.FirstOrDefault(h => h.id == itemDto.HerramientaId);
                 if (herramienta == null)
                 {
-                    ModelState.AddModelError("OfertaItems", $"La herramienta con id {itemDto.HerramientaId} no fue encontrada.");
+                    ModelState.AddModelError("OfertaItems", $"La herramienta con id {itemDto.HerramientaId} no fue encontrada");
                     continue;
                 }
 
@@ -128,7 +124,6 @@ namespace AppForSEII2526.API.Controllers
                     continue;
                 }
 
-                // Usar el PrecioFinal proporcionado por el DTO (o calcular si lo deseas)
                 var ofertaItem = new OfertaItem(itemDto.HerramientaId, 0, itemDto.Porcentaje, itemDto.PrecioFinal);
                 ofertaItem.herramienta = herramienta;
                 ofertaItem.oferta = nuevaOferta;
@@ -138,6 +133,10 @@ namespace AppForSEII2526.API.Controllers
 
             if (ModelState.ErrorCount > 0)
                 return BadRequest(new ValidationProblemDetails(ModelState));
+
+            
+            var user = await _context.Users.FirstOrDefaultAsync();
+            nuevaOferta.applicationUser = user;
 
             _context.Ofertas.Add(nuevaOferta);
 
@@ -152,7 +151,7 @@ namespace AppForSEII2526.API.Controllers
                 return Conflict("Error: " + ex.Message);
             }
 
-            // Construir DTO de respuesta (ajustado al constructor existente)
+
             var ofertaCreada = new OfertaDetailDTO(
                 nuevaOferta.fechaInicio,
                 nuevaOferta.fechaFinal,

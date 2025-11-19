@@ -38,7 +38,7 @@ namespace AppForSEII2526.UT.AlquilerController_Test
             ApplicationUser user = new ApplicationUser(_customerNameSurname, _userName, "", 675171341, null);
 
             var alquilar = new Alquilar(_customerNameSurname, "Garcia", _deliveryAddress, DateTime.Now, PaymentMethodTypes.PayPal, DateTime.Today.AddDays(2), DateTime.Today.AddDays(7), null, user);
-            alquilar.alquilarItems.Add(new AlquilarItem(alquilar.Id, alquilar, 1, 25, 30));
+            alquilar.alquilarItems.Add(new AlquilarItem(alquilar.id, alquilar, 1, 25, 30));
 
             _context.ApplicationUsers.Add(user);
             _context.AddRange(fabricante);

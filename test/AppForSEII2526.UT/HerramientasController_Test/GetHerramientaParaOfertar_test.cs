@@ -1,79 +1,88 @@
 ﻿using AppForMovies.UT;
 using AppForSEII2526.API.Controllers;
 using AppForSEII2526.API.DTO.HerramientaDTOs;
-using AppForSEII2526.API.DTOs;
-using Microsoft.EntityFrameworkCore;
-using System;
+using AppForSEII2526.API.DTO;
+using AppForSEII2526.API.Models;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace AppForSEII2526.UT.HerramientasController_test
+namespace AppForSEII2526.UT.HerramientasController_Test
 {
-    public class GetHerramientaParaOferta_test : AppForMovies4SqliteUT
+    public class GetHerramientaParaOfertar_test : AppForMovies4SqliteUT
     {
-        public GetHerramientaParaOferta_test()
+        public GetHerramientaParaOfertar_test()
         {
-            var fabricante = new List<Fabricante>
+            var fabricantes = new List<Fabricante>
             {
-                new Fabricante (1, "Ferretería López", null),
-                new Fabricante (2, "Ferretería García", null),
-                new Fabricante (3, "Ferretería Ruiz", null)
+                new Fabricante(1, "Makita", new List<Herramienta>()),
+                new Fabricante(2, "Milwaukee", new List<Herramienta>()),
+                new Fabricante(3, "Stanley", new List<Herramienta>())
             };
 
-            var herramientas = new List<Herramienta>
+            var herramientas = new List<Herramienta>()
             {
-                new Herramienta(1,5,"aluminio", "Serrucho", 25, 50, null),
-                new Herramienta(2,10,"madera", "Martillo", 15, 40, null),
-                new Herramienta(3,15,"acero", "Clavos", 20, 50, null)
+                new Herramienta(1, 1, "Acero", "Martillo", 23, 30, fabricantes[0]),
+                new Herramienta(2, 1, "Hierro", "Llave inglesa", 16, 30, fabricantes[1]),
+                new Herramienta(3, 1, "Acero y Plastico", "Destornillador", 20, 30, fabricantes[2])
             };
 
-            _context.AddRange(fabricante);
+            _context.AddRange(fabricantes);
             _context.AddRange(herramientas);
             _context.SaveChanges();
-
         }
 
-        public static IEnumerable<object?[]> TestCasesFor_GetHerramientasParaOferta_OK()
+        public static IEnumerable<object[]> TestCasesFor_GetHerramientasPorFabricantePrecio()
         {
-            var herramientasDTOs = new List<HerramientaParaOfertarDTO>
+            var herramientaDTOs = new List<HerramientaParaOfertarDTO>()
             {
-                new HerramientaParaOfertarDTO (1, "Martillo", "Madera", "Ferretería López", 5),
-                new HerramientaParaOfertarDTO (2, "Taladro", "Acero", "Ferretería García", 30),
-                new HerramientaParaOfertarDTO (3, "Alicates", "Hierro", "Ferretería Ruiz", 4)
+                new HerramientaParaOfertarDTO(1, "Martillo", "Acero", "Makita", 23.0),
+                new HerramientaParaOfertarDTO(2, "Llave inglesa", "Hierro", "Milwaukee", 16.0),
+                new HerramientaParaOfertarDTO(3, "Destornillador", "Acero y Plastico", "Stanley", 20.0)
             };
 
-            var herramientasDTOs_TC1 = new List<HerramientaParaOfertarDTO> { herramientasDTOs[0], herramientasDTOs[1], herramientasDTOs[2] };
-
-            var herramientasDTOs_TC2 = new List<HerramientaParaOfertarDTO> { herramientasDTOs[1] };
-            var herramientasDTOs_TC3 = new List<HerramientaParaOfertarDTO> { herramientasDTOs[2] };
-
-            var allTestCases = new List<object?[]>
+            var herramientaDTOsTC1 = new List<HerramientaParaOfertarDTO>()
             {
-                new object[] { null, null, herramientasDTOs_TC1 },
-                new object[] { "Ferretería García", null, herramientasDTOs_TC2 },
-                new object[] { null, 4, herramientasDTOs_TC3 }
+                herramientaDTOs[0],
+                herramientaDTOs[1],
+                herramientaDTOs[2]
             };
-            return allTestCases;
+
+            var herramientaDTOsTC2 = new List<HerramientaParaOfertarDTO>()
+            {
+                herramientaDTOs[1]
+            };
+
+            var herramientaDTOsTC3 = new List<HerramientaParaOfertarDTO>()
+            {
+                herramientaDTOs[2]
+            };
+
+            var allTest = new List<object[]>()
+            {
+                new object[] { null, null, herramientaDTOsTC1 },
+                new object[] { "Milwaukee", null, herramientaDTOsTC2 },
+                new object[] { null, 20.0f, herramientaDTOsTC3 }
+            };
+
+            return allTest;
         }
 
         [Theory]
-        [MemberData(nameof(TestCasesFor_GetHerramientasParaOferta_OK))]
+        [MemberData(nameof(TestCasesFor_GetHerramientasPorFabricantePrecio))]
         [Trait("Database", "WithoutFixture")]
-        [Trait("LevelTesting", "Unit Testing")]
-        public async Task GetHerramientaParaOferta_OK_test(string? fabricante, int? precio, IList<HerramientaParaOfertarDTO> herramientasDTOEsperado)
+        [Trait("LevelTesting", "Unit testing")]
+        public async Task GetHerramientasPorFabricantePrecio_test(string? fabricante, float? precio, List<HerramientaParaOfertarDTO> expectedHerramientas)
         {
-            // Arrange
-            var controller = new HerramientaController(_context, null);
+            var controller = new HerramientaController(_context, null!);
 
-            // Act
-            var result = await controller.GetHerramientaParaOfertarDTO(precio, fabricante);
+            var result = await controller.GetHerramientasPorFabricantePrecio(fabricante, precio);
 
-            // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
-            var herramientasDTOActual = Assert.IsType<List<HerramientaParaOfertarDTO>>(okResult.Value);
-            Assert.Equal(herramientasDTOEsperado, herramientasDTOActual);
+            var herramientaDTOsActual = Assert.IsType<List<HerramientaParaOfertarDTO>>(okResult.Value);
+
+            Assert.Equal(expectedHerramientas, herramientaDTOsActual);
         }
     }
 }
