@@ -1,16 +1,23 @@
-﻿namespace AppForSEII2526.API.Models
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
+namespace AppForSEII2526.API.Models
 {
     public class Fabricante
     {
         [Key]
         public int Id { get; set; }
 
-        public string Nombre { get; set; } 
-        public IList<Herramienta> herramientas {  get; set; }
+        public string Nombre { get; set; }
+        public IList<Herramienta> herramientas { get; set; }
+
         public Fabricante() { }
-        public Fabricante(int Id,string Nombre,IList<Herramienta>herramientas){
-            Id = Id;
-            Nombre = Nombre;
+
+        public Fabricante(int Id, string Nombre, IList<Herramienta> herramientas)
+        {
+            this.Id = Id;
+            this.Nombre = Nombre;
+            this.herramientas = herramientas;
         }
         public override bool Equals(object? obj)
         {
