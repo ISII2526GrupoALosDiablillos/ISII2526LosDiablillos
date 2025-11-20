@@ -74,7 +74,7 @@ namespace AppForSEII2526.UT.OfertaController_test
             var ofertaNoItem = new OfertaForCreateDTO
             {
                 FechaInicio = DateTime.Today.AddDays(2),
-                FechaFinal = DateTime.Today.AddDays(5),
+                FechaFinal = DateTime.Today.AddDays(10),
                 MetodoPago = tiposMetodoPago.PayPal,
                 DirigidaOferta = tiposDirigidaOferta.Clientes,
                 OfertaItems = new List<OfertaItemForCreateDTO>()
@@ -106,7 +106,7 @@ namespace AppForSEII2526.UT.OfertaController_test
             var ofertaHerramientaNoDisponible = new OfertaForCreateDTO
             {
                 FechaInicio = DateTime.Today.AddDays(2),
-                FechaFinal = DateTime.Today.AddDays(5),
+                FechaFinal = DateTime.Today.AddDays(10),
                 MetodoPago = tiposMetodoPago.PayPal,
                 DirigidaOferta = tiposDirigidaOferta.Clientes,
                 OfertaItems = new List<OfertaItemForCreateDTO>()
@@ -118,7 +118,7 @@ namespace AppForSEII2526.UT.OfertaController_test
             var ofertaPorcentajeNoValido = new OfertaForCreateDTO
             {
                 FechaInicio = DateTime.Today.AddDays(2),
-                FechaFinal = DateTime.Today.AddDays(5),
+                FechaFinal = DateTime.Today.AddDays(10),
                 MetodoPago = tiposMetodoPago.PayPal,
                 DirigidaOferta = tiposDirigidaOferta.Clientes,
                 OfertaItems = new List<OfertaItemForCreateDTO>()
@@ -139,6 +139,15 @@ namespace AppForSEII2526.UT.OfertaController_test
             var ofertaSinFechaInicio = new OfertaForCreateDTO
             {
                 FechaInicio = DateTime.MinValue,
+                FechaFinal = DateTime.Today.AddDays(10),
+                MetodoPago = tiposMetodoPago.PayPal,
+                DirigidaOferta = tiposDirigidaOferta.Clientes,
+                OfertaItems = ofertaItemsValidos
+            };
+
+            var ofertaFechaFinalNoMayorOIgual7Dias = new OfertaForCreateDTO
+            {
+                FechaInicio = DateTime.Today.AddDays(2),
                 FechaFinal = DateTime.Today.AddDays(5),
                 MetodoPago = tiposMetodoPago.PayPal,
                 DirigidaOferta = tiposDirigidaOferta.Clientes,
@@ -152,9 +161,10 @@ namespace AppForSEII2526.UT.OfertaController_test
                 new object[]{ofertaFromBeforeToday, "Error! La fecha de inicio de tu oferta debe ser posterior a hoy"},
                 new object[]{ofertaToBeforeFrom, "Error! Tu oferta debe terminar después de que empiece"},
                 new object[]{ofertaHerramientaNoDisponible, "La herramienta con id 999 no fue encontrada"},
-                new object[]{ofertaPorcentajeNoValido, "Error: El porcentaje debe estar entre 0 y 100"},
+                new object[]{ofertaPorcentajeNoValido, "Error! El porcentaje debe estar entre 0 y 100"},
                 new object[]{ofertaSinFechaFinal, "Error! Fecha Final es un campo obligatorio"},
                 new object[]{ofertaSinFechaInicio, "Error! Fecha Inicio es un campo obligatorio"},
+                new object[]{ofertaFechaFinalNoMayorOIgual7Dias, "¡Error!, la oferta debe durar al menos una semana"},
             };
         }
 
@@ -193,7 +203,7 @@ namespace AppForSEII2526.UT.OfertaController_test
             var dto = new OfertaForCreateDTO
             {
                 FechaInicio = DateTime.Today.AddDays(2),
-                FechaFinal = DateTime.Today.AddDays(5),
+                FechaFinal = DateTime.Today.AddDays(10),
                 MetodoPago = tiposMetodoPago.PayPal,
                 DirigidaOferta = tiposDirigidaOferta.Clientes,
                 OfertaItems = new List<OfertaItemForCreateDTO>
