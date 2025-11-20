@@ -97,7 +97,6 @@ namespace AppForSEII2526.API.Controllers
             return Ok(herramientas);
         }
 
-        // Método añadido para resolver el error: definición ausente GetHerramientasPorFabricantePrecio
         [HttpGet]
         [Route("[action]")]
         [ProducesResponseType(typeof(IList<HerramientaParaOfertarDTO>), (int)HttpStatusCode.OK)]

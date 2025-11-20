@@ -1,17 +1,7 @@
 ﻿using AppForMovies.UT;
 using AppForSEII2526.API.Controllers;
 using AppForSEII2526.API.DTO.ComprarDTOs;
-using AppForSEII2526.API.DTO.HerramientaDTOs;
 using AppForSEII2526.API.DTOs;
-using AppForSEII2526.API.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Xunit;
 
 namespace AppForSEII2526.UT.ComprarItemController_Test
 {
@@ -61,13 +51,11 @@ namespace AppForSEII2526.UT.ComprarItemController_Test
             _context.Add(compra);
             _context.SaveChanges();
         }
-
         public static IEnumerable<object[]> TestCasesFor_CompraMétodoPost_OK()
         {
             var micompra = new CompraForCreateDTO(4, "Clavos", "acero", 20, "Gonzalo", "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", new List<CompraItemDTO>(), DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
             micompra.CompraItems.Add(new CompraItemDTO("Clavos", "acero", 20, "Muy afilados", 20, 3));
             var CompraItems = micompra.CompraItems;
-
 
             var SinNombreHerr = new CompraForCreateDTO(4, null, "acero", 20, "Gonzalo", "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
             var SinMaterial = new CompraForCreateDTO(4, "Clavos", null, 20, "Gonzalo", "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
@@ -86,7 +74,6 @@ namespace AppForSEII2526.UT.ComprarItemController_Test
                 new object[] { SinNombreUsuario, "Error. Nombre de usuario no registrado." }
             };
         }
-
 
         [Theory]
         [MemberData(nameof(TestCasesFor_CompraMétodoPost_OK))]
@@ -127,11 +114,48 @@ namespace AppForSEII2526.UT.ComprarItemController_Test
         [Trait("Database", "WithoutFixture")]
         public async Task CrearCompraExitosa_test()
         {
+            // Usuario completo con todos los campos requeridos y UserName = "Gonzalo"
+            var usuario = new ApplicationUser(
+                apellidoCliente: "Ortiz",
+                correoElectronico: "gonzalo@alu.uclm.es",
+                nombreCliente: "Gonzalo",
+                telefono: 684512269,
+                compras: new List<Compra>())
+            {
+                UserName = "Gonzalo",
+                Email = "gonzalo@alu.uclm.es",
+                PhoneNumber = "684512269"
+            };
+
+            _context.ApplicationUsers.Add(usuario);
+
+            var herramientaExistente = _context.Herramientas.Local.FirstOrDefault(h => h.id == 3);
+            if (herramientaExistente == null)
+            {
+                var herramienta = new Herramienta
+                {
+                    id = 3,
+                    nombre = "Clavos",
+                    material = "acero",
+                    precio = 20
+                };
+                _context.Herramientas.Add(herramienta);
+            }
+
+            await _context.SaveChangesAsync();
+
             var morck = new Mock<ILogger<ComprasController>>();
             ILogger<ComprasController> logger = morck.Object;
             var controller = new ComprasController(_context, logger);
 
-            var compraDTO = new CompraForCreateDTO(4, "Clavos", "acero", 400, "Gonzalo", "Ortiz", "Mi casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", new List<CompraItemDTO> { new CompraItemDTO("Clavos", "acero", 400, "Muy afilados", 20, 3) }, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
+            var compraDTO = new CompraForCreateDTO(
+                4, "Clavos", "acero", 400, "Gonzalo", "Ortiz", "Mi casa",
+                PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es",
+                new List<CompraItemDTO> {
+                    new CompraItemDTO("Clavos", "acero", 400, "Muy afilados", 20, 3)
+                },
+                DateTime.Today.AddDays(1), DateTime.Today.AddDays(2)
+            );
 
             var result = await controller.CreateCompra(compraDTO);
 
@@ -143,6 +167,7 @@ namespace AppForSEII2526.UT.ComprarItemController_Test
             Assert.Equal(compraDTO.Apellidos_cliente, actualCompraDetailDTO.apellido_cliente);
             Assert.Equal(compraDTO.DireccionEnvio, actualCompraDetailDTO.direccion);
             Assert.Single(actualCompraDetailDTO.compraItems);
+
             var item = actualCompraDetailDTO.compraItems[0];
             Assert.Equal("Clavos", item.nombre);
             Assert.Equal("acero", item.material);

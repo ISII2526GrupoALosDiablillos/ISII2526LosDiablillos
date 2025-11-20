@@ -4,7 +4,6 @@ namespace AppForSEII2526.API.DTO.HerramientaDTOs
 {
     public class HerramientaParaOfertarDTO
     {
-        // Mantener nombres/atributos existentes si ya están en tu fichero original.
         public int id { get; set; }
         public int itemsReparacion { get; set; }
         public string material { get; set; }
@@ -13,8 +12,6 @@ namespace AppForSEII2526.API.DTO.HerramientaDTOs
         public double precio { get; set; }
         public int tiempoReparacion { get; set; }
         public string fabricante { get; set; }
-
-        // Constructor con la firma que indica el código base: (id, nombre, material, fabricante, precio)
         public HerramientaParaOfertarDTO(int id, string nombre, string material, string fabricante, double precio)
         {
             this.id = id;
@@ -24,7 +21,6 @@ namespace AppForSEII2526.API.DTO.HerramientaDTOs
             this.precio = precio;
         }
 
-        // Implementación de igualdad por valor para que Assert.Equal funcione en los tests
         public override bool Equals(object? obj)
         {
             if (obj is not HerramientaParaOfertarDTO other) return false;
