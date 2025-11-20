@@ -18,18 +18,18 @@ namespace AppForSEII2526.UT.OfertaController_test
         public PostOferta_test()
         {
             var user = new ApplicationUser(
-                apellidoCliente: "TestApellido",
-                correoElectronico: "test@tests.com",
-                nombreCliente: "TestNombre",
+                apellidoCliente: "Ortega",
+                correoElectronico: "alejandro.ortega@tests.com",
+                nombreCliente: "Alejandro",
                 telefono: 123456789,
                 compras: new List<Compra>()
             )
             {
-                Id = "test-user",
-                UserName = "test@tests.com",
-                NormalizedUserName = "TEST@TESTS.COM",
-                Email = "test@tests.com",
-                NormalizedEmail = "TEST@TESTS.COM",
+                Id = "alexmendoza",
+                UserName = "alejandro@tests.com",
+                NormalizedUserName = "ALEJANDRO@TESTS.COM",
+                Email = "alejandro.ortega@tests.com",
+                NormalizedEmail = "ALEJANDRO.ORTEGA@TESTS.COM",
                 EmailConfirmed = true
             };
 
@@ -71,7 +71,6 @@ namespace AppForSEII2526.UT.OfertaController_test
 
         public static IEnumerable<object[]> TestCasesFor_CreateOferta()
         {
-            // 1) Sin items 
             var ofertaNoItem = new OfertaForCreateDTO
             {
                 FechaInicio = DateTime.Today.AddDays(2),
@@ -86,7 +85,6 @@ namespace AppForSEII2526.UT.OfertaController_test
                 new OfertaItemForCreateDTO { HerramientaId = 1, Porcentaje = 50.0, PrecioFinal = 10.0 }
             };
 
-            // 2) Fecha inicio antes de hoy 
             var ofertaFromBeforeToday = new OfertaForCreateDTO
             {
                 FechaInicio = DateTime.Today.AddDays(-1),
@@ -96,7 +94,6 @@ namespace AppForSEII2526.UT.OfertaController_test
                 OfertaItems = ofertaItemsValidos
             };
 
-            // 3) Fecha final antes de inicio
             var ofertaToBeforeFrom = new OfertaForCreateDTO
             {
                 FechaInicio = DateTime.Today.AddDays(5),
@@ -106,7 +103,6 @@ namespace AppForSEII2526.UT.OfertaController_test
                 OfertaItems = ofertaItemsValidos
             };
 
-            // 4) Herramienta inexistente
             var ofertaHerramientaNoDisponible = new OfertaForCreateDTO
             {
                 FechaInicio = DateTime.Today.AddDays(2),
@@ -119,7 +115,6 @@ namespace AppForSEII2526.UT.OfertaController_test
                 }
             };
 
-            // 5) Porcentaje fuera de rango
             var ofertaPorcentajeNoValido = new OfertaForCreateDTO
             {
                 FechaInicio = DateTime.Today.AddDays(2),
@@ -132,7 +127,6 @@ namespace AppForSEII2526.UT.OfertaController_test
                 }
             };
 
-            // 6) Sin fecha final
             var ofertaSinFechaFinal = new OfertaForCreateDTO
             {
                 FechaInicio = DateTime.Today.AddDays(2),
@@ -142,7 +136,6 @@ namespace AppForSEII2526.UT.OfertaController_test
                 OfertaItems = ofertaItemsValidos
             };
 
-            // 7) Sin fecha inicio
             var ofertaSinFechaInicio = new OfertaForCreateDTO
             {
                 FechaInicio = DateTime.MinValue,

@@ -19,6 +19,7 @@ public class Compra
 		this.fechaCompra = fechaCompra;
 		this.id = id;
 		this.preciototal = preciototal;
+		this.compraItem = compraItem ?? new List<CompraItem>();
 	}
 	public ApplicationUser atributos {  get; set; }
     public override bool Equals(object? obj)

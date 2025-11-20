@@ -16,8 +16,6 @@ namespace AppForSEII2526.API.Models
         [StringLength(100, ErrorMessage = "El nombre no puede tener mas de 100 caracteres")]
         public string nombre { get; set; }
 
-        // ELIMINADA: public int OfertaItems { get; set; } <--- ESTA DABA CONFLICTO
-
         [DataType(System.ComponentModel.DataAnnotations.DataType.Currency)]
         [Range(0.5, float.MaxValue, ErrorMessage = "Precio mínimo es 0.5")]
         public int precio { get; set; }
