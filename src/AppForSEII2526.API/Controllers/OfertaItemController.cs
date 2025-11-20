@@ -80,6 +80,13 @@ namespace AppForSEII2526.API.Controllers
 
             if (ofertaForCreate.FechaFinal == default)
                 ModelState.AddModelError("FechaFinal", "Error! Fecha Final es un campo obligatorio");
+            else if (!(ofertaForCreate.FechaInicio <= DateTime.Today) &&!(ofertaForCreate.FechaInicio >= ofertaForCreate.FechaFinal) && (ofertaForCreate.FechaFinal <= DateTime.Today.AddDays(7)))
+            {
+                ModelState.AddModelError("FechaFinal&FechaInicio", "¡Error!, la oferta debe durar al menos una semana");
+                return BadRequest(new ValidationProblemDetails(ModelState));
+            }
+                
+                
 
             if (ofertaForCreate.FechaInicio <= DateTime.Today)
                 ModelState.AddModelError("FechaInicio", "Error! La fecha de inicio de tu oferta debe ser posterior a hoy");
@@ -120,7 +127,7 @@ namespace AppForSEII2526.API.Controllers
 
                 if (itemDto.Porcentaje < 0 || itemDto.Porcentaje > 100)
                 {
-                    ModelState.AddModelError("Porcentaje", "Error: El porcentaje debe estar entre 0 y 100");
+                    ModelState.AddModelError("Porcentaje", "Error! El porcentaje debe estar entre 0 y 100");
                     continue;
                 }
 
