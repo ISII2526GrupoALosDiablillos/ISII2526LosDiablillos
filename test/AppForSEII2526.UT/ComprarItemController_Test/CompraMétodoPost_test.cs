@@ -53,25 +53,29 @@ namespace AppForSEII2526.UT.ComprarItemController_Test
         }
         public static IEnumerable<object[]> TestCasesFor_CompraMétodoPost_OK()
         {
-            var micompra = new CompraForCreateDTO(4, "Clavos", "acero", 20, "Gonzalo", "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", new List<CompraItemDTO>(), DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
+            var micompra = new CompraForCreateDTO(4, "Clavos", "acero", 20, "gonormu", "Gonzalo", "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", new List<CompraItemDTO>(), DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
             micompra.CompraItems.Add(new CompraItemDTO("Clavos", "acero", 20, "Muy afilados", 20, 3));
             var CompraItems = micompra.CompraItems;
 
-            var SinNombreHerr = new CompraForCreateDTO(4, null, "acero", 20, "Gonzalo", "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
-            var SinMaterial = new CompraForCreateDTO(4, "Clavos", null, 20, "Gonzalo", "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
-            var SinPrecio = new CompraForCreateDTO(4, "Clavos", "acero", 0, "Gonzalo", "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
-            var SinApellido = new CompraForCreateDTO(4, "Clavos", "acero", 20, "Gonzalo", null, "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
-            var SinDireccion = new CompraForCreateDTO(4, "Clavos", "acero", 20, "Gonzalo", "Ortiz", null, PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
-            var SinNombreUsuario = new CompraForCreateDTO(4, "Clavos", "acero", 20, null, "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
+            var SinNombreHerr = new CompraForCreateDTO(4, null, "acero", 20, "gonormu", "Gonzalo", "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
+            var SinMaterial = new CompraForCreateDTO(4, "Clavos", null, 20, "gonormu", "Gonzalo", "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
+            var SinPrecio = new CompraForCreateDTO(4, "Clavos", "acero", 0, "gonormu","Gonzalo", "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
+            var SinApellido = new CompraForCreateDTO(4, "Clavos", "acero", 20, "gonormu", "Gonzalo", null, "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
+            var SinDireccion = new CompraForCreateDTO(4, "Clavos", "acero", 20, "gonormu", "Gonzalo", "Ortiz", null, PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
+            var SinNombreUsuario = new CompraForCreateDTO(4, "Clavos", "acero", 20, null, "Gonzalo", "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
+            var SinNombre = new CompraForCreateDTO(4, "Clavos", "acero", 20, "gonormu", null, "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
+            var MuchasHerramientas = new CompraForCreateDTO(4, "Clavos", "acero", 20, "gonormu", "Gonzalo", "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", new List<CompraItemDTO>() { new CompraItemDTO("Clavos", "acero", 20, "", 3, 3) }, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
 
             return new List<object[]>
             {
                 new object[] { SinNombreHerr, "Error. Introduzca el nombre de la herramienta que desea." },
                 new object[] { SinMaterial, "Error. Introduzca el material de la herramienta que desea." },
                 new object[] { SinPrecio, "Error. La compra no puede costar 0 euros sin códigos de descuento ni cheques de regalo." },
-                new object[] { SinApellido, "Error. Nombre de usuario no registrado." },
-                new object[] { SinDireccion, "Error. Nombre de usuario no registrado." },
-                new object[] { SinNombreUsuario, "Error. Nombre de usuario no registrado." }
+                new object[] { SinApellido, "Error. Apellido no registrado." },
+                new object[] { SinDireccion, "Error. Dirección no registrada." },
+                new object[] { SinNombreUsuario, "Error. Nombre de usuario no registrado." },
+                new object[] { SinNombre, "Error. Nombre no registrado." },
+                new object[] { MuchasHerramientas, "¡Error! Estas comprando demasiadas herramientas sin descripción." }
             };
         }
 
@@ -91,13 +95,16 @@ namespace AppForSEII2526.UT.ComprarItemController_Test
             {
                 var createdResult = Assert.IsType<CreatedAtActionResult>(result);
                 var actualCompraDetailDTO = Assert.IsType<CompraDetailDTO>(createdResult.Value);
-
                 Assert.Equal(compraForCreateDTO.FechaCompra, actualCompraDetailDTO.fechaCompra);
                 Assert.Equal(compraForCreateDTO.Nombre_cliente, actualCompraDetailDTO.nombre_cliente);
                 Assert.Equal(compraForCreateDTO.Apellidos_cliente, actualCompraDetailDTO.apellido_cliente);
                 Assert.Equal(compraForCreateDTO.Id, actualCompraDetailDTO.id);
                 Assert.Equal(compraForCreateDTO.DireccionEnvio, actualCompraDetailDTO.direccion);
                 Assert.Equal(compraForCreateDTO.Precio, actualCompraDetailDTO.preciototal);
+                Assert.Single(actualCompraDetailDTO.compraItems);
+                var item = actualCompraDetailDTO.compraItems[0];
+                Assert.Equal(3, item.cantidad);
+                Assert.Equal("", item.descripcion);
             }
             else
             {
@@ -114,7 +121,6 @@ namespace AppForSEII2526.UT.ComprarItemController_Test
         [Trait("Database", "WithoutFixture")]
         public async Task CrearCompraExitosa_test()
         {
-            // Usuario completo con todos los campos requeridos y UserName = "Gonzalo"
             var usuario = new ApplicationUser(
                 apellidoCliente: "Ortiz",
                 correoElectronico: "gonzalo@alu.uclm.es",
@@ -122,7 +128,7 @@ namespace AppForSEII2526.UT.ComprarItemController_Test
                 telefono: 684512269,
                 compras: new List<Compra>())
             {
-                UserName = "Gonzalo",
+                UserName = "gonormu",
                 Email = "gonzalo@alu.uclm.es",
                 PhoneNumber = "684512269"
             };
@@ -149,7 +155,7 @@ namespace AppForSEII2526.UT.ComprarItemController_Test
             var controller = new ComprasController(_context, logger);
 
             var compraDTO = new CompraForCreateDTO(
-                4, "Clavos", "acero", 400, "Gonzalo", "Ortiz", "Mi casa",
+                4, "Clavos", "acero", 400, "gonormu", "Gonzalo", "Ortiz", "Mi casa",
                 PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es",
                 new List<CompraItemDTO> {
                     new CompraItemDTO("Clavos", "acero", 400, "Muy afilados", 20, 3)
@@ -167,7 +173,6 @@ namespace AppForSEII2526.UT.ComprarItemController_Test
             Assert.Equal(compraDTO.Apellidos_cliente, actualCompraDetailDTO.apellido_cliente);
             Assert.Equal(compraDTO.DireccionEnvio, actualCompraDetailDTO.direccion);
             Assert.Single(actualCompraDetailDTO.compraItems);
-
             var item = actualCompraDetailDTO.compraItems[0];
             Assert.Equal("Clavos", item.nombre);
             Assert.Equal("acero", item.material);

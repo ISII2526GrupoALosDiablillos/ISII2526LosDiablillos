@@ -47,15 +47,15 @@ namespace AppForSEII2526.API.Controllers
                         oi.cantidad,
                         oi.herramienta.id)).ToList()
                     ))
-                .FirstOrDefaultAsync();  
+                .FirstOrDefaultAsync();
 
             if (compraDetalle == null)
             {
                 _logger.LogError("No se encontraron compras en la base de datos.");
-                return NotFound("Compra no encontrada.");  
+                return NotFound("Compra no encontrada.");
             }
 
-            return Ok(compraDetalle);  
+            return Ok(compraDetalle);
         }
 
         [HttpPost]
@@ -80,9 +80,26 @@ namespace AppForSEII2526.API.Controllers
             if (compraForCreateDTO.FechaCompra >= compraForCreateDTO.FechaRecibo)
                 ModelState.AddModelError("FechaRecibo", "Error. Cómo vas a recibir algo antes de comprarlo?");
 
-            var user = _context.ApplicationUsers.FirstOrDefault(au => au.UserName == compraForCreateDTO.Nombre_cliente);
+            var user = _context.ApplicationUsers.FirstOrDefault(au => au.UserName == compraForCreateDTO.UserName);
             if (user == null)
-                ModelState.AddModelError("NoRegistrado", "Error. Nombre de usuario no registrado.");
+                ModelState.AddModelError("NoUsername", "Error. Nombre de usuario no registrado.");
+
+            var nombre = _context.ApplicationUsers.FirstOrDefault(au => au.nombreCliente == compraForCreateDTO.Nombre_cliente);
+            if (nombre == null)
+                ModelState.AddModelError("NoNombreCliente", "Error. Nombre no registrado.");
+
+            var apellido = _context.ApplicationUsers.FirstOrDefault(au => au.apellidoCliente == compraForCreateDTO.Apellidos_cliente);
+            if (apellido == null)
+                ModelState.AddModelError("NoApellidoCliente", "Error. Apellido no registrado.");
+
+            var ultimaCompra = compraForCreateDTO.CompraItems.FirstOrDefault();
+            if (ultimaCompra != null && ultimaCompra.cantidad == 3 && string.IsNullOrEmpty(ultimaCompra.descripcion))
+                ModelState.AddModelError("MuchasHerramientas", "¡Error! Estas comprando demasiadas herramientas sin descripción.");
+
+            var direccion = _context.ApplicationUsers
+                .FirstOrDefault(au => au.compras.Any(c => c.direccionEnvio == compraForCreateDTO.DireccionEnvio));
+            if (direccion == null)
+                ModelState.AddModelError("NoDirecciónDeEnvio", "Error. Dirección no registrada.");
 
             if (ModelState.ErrorCount > 0)
                 return BadRequest(new ValidationProblemDetails(ModelState));
@@ -124,7 +141,7 @@ namespace AppForSEII2526.API.Controllers
                 var herramienta = herramientas.FirstOrDefault(h => h.id == item.herramientaId);
                 if (herramienta == null)
                 {
-                    ModelState.AddModelError("ComprarItems", $"Error. La herramienta con el nombre {item.herramientaId} no existe");
+                    ModelState.AddModelError("ComprarItems", $"Error. La herramienta con el id {item.herramientaId} no existe");
                 }
                 else
                 {
@@ -159,5 +176,6 @@ namespace AppForSEII2526.API.Controllers
 
             return CreatedAtAction(nameof(CreateCompra), new { Id = comprarDetailDTO.id }, comprarDetailDTO);
         }
+
     }
 }
