@@ -94,14 +94,22 @@ namespace AppForSEII2526.API.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    direccionEnvio = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    fechaAlquiler = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    
+                    
                     fechaFin = table.Column<DateTime>(type: "datetime2", nullable: false),
                     fechaInicio = table.Column<DateTime>(type: "datetime2", nullable: false),
                     periodo = table.Column<int>(type: "int", nullable: false),
                     precioTotal = table.Column<double>(type: "float", nullable: false),
+                    correo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    numeroTelefono = table.Column<int>(type: "int", nullable: false),
                     applicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    metodoPago = table.Column<int>(type: "int", nullable: false)
+                    DireccionEnvio = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FechaAlquiler = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    
+                    
+                    
+                    
+                    MetodoPago = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -207,7 +215,9 @@ namespace AppForSEII2526.API.Migrations
                     direccionEnvio = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     fechaCompra = table.Column<DateTime>(type: "datetime2", nullable: false),
                     preciototal = table.Column<double>(type: "float", nullable: false),
-                    atributosId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    fechaInicio = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    fechaRecibo = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    atributosId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     metodoPago = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -217,7 +227,8 @@ namespace AppForSEII2526.API.Migrations
                         name: "FK_Compras_AspNetUsers_atributosId",
                         column: x => x.atributosId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -231,7 +242,7 @@ namespace AppForSEII2526.API.Migrations
                     fechaOferta = table.Column<DateTime>(type: "datetime2", nullable: false),
                     metodoPago = table.Column<int>(type: "int", nullable: false),
                     dirigidaOferta = table.Column<int>(type: "int", nullable: false),
-                    applicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    applicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -240,7 +251,8 @@ namespace AppForSEII2526.API.Migrations
                         name: "FK_Ofertas_AspNetUsers_applicationUserId",
                         column: x => x.applicationUserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -254,7 +266,7 @@ namespace AppForSEII2526.API.Migrations
                     FechaEntrega = table.Column<DateTime>(type: "datetime2", nullable: false),
                     FechaRecogida = table.Column<DateTime>(type: "datetime2", nullable: false),
                     MetodosPago = table.Column<int>(type: "int", nullable: false),
-                    Telefono = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Telefono = table.Column<int>(type: "int", nullable: false),
                     PrecioTotal = table.Column<double>(type: "float", nullable: false),
                     ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
@@ -297,7 +309,7 @@ namespace AppForSEII2526.API.Migrations
                 name: "AlquilarItems",
                 columns: table => new
                 {
-                    AlquilerId = table.Column<int>(type: "int", nullable: false),
+                    alquilerId = table.Column<int>(type: "int", nullable: false),
                     HerramientaId = table.Column<int>(type: "int", nullable: false),
                     alquilarid = table.Column<int>(type: "int", nullable: false),
                     precio = table.Column<int>(type: "int", nullable: false),
@@ -305,7 +317,7 @@ namespace AppForSEII2526.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AlquilarItems", x => new { x.HerramientaId, x.AlquilerId });
+                    table.PrimaryKey("PK_AlquilarItems", x => new { x.HerramientaId, x.alquilerId });
                     table.ForeignKey(
                         name: "FK_AlquilarItems_Alquileres_alquilarid",
                         column: x => x.alquilarid,

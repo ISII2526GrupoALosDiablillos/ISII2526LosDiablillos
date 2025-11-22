@@ -1,5 +1,7 @@
-﻿using System.Data;
-using System.Drawing.Printing;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace AppForSEII2526.API.Models
 {
@@ -12,48 +14,49 @@ namespace AppForSEII2526.API.Models
     public class Alquilar
     {
         [Key]
-        public int id {  get; set; }        
+        public int id { get; set; }
+
         [DataType(System.ComponentModel.DataAnnotations.DataType.MultilineText)]
         [Display(Name = "Direccion de envio")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Por favor, pon tu direccion de envio")]
-        public string direccionEnvio {  get; set; }
-        public DateTime fechaAlquiler {  get; set; }
-        public DateTime fechaFin {  get; set; }
-        public DateTime fechaInicio {  get; set; }
-        public int periodo {  get; set; }
+        public string direccionEnvio { get; set; }
+
+        public DateTime fechaAlquiler { get; set; }
+        public DateTime fechaFin { get; set; }
+        public DateTime fechaInicio { get; set; }
+        public int periodo { get; set; }
+
         [DataType(System.ComponentModel.DataAnnotations.DataType.Currency)]
-        public double precioTotal {  get; set; }
+        public double precioTotal { get; set; }
+
         public string correo { get; set; }
         public int numeroTelefono { get; set; }
+        public PaymentMethodTypes MetodoPago { get; set; }
+
         public ApplicationUser applicationUser { get; set; }
+        public IList<AlquilarItem> alquilarItems { get; set; }
+
 
         public Alquilar()
         {
-
+            alquilarItems = new List<AlquilarItem>();
         }
-        public Alquilar(string nombreCliente, string apellidoCliente, string direccionEnvio, DateTime fechaAlquiler, PaymentMethodTypes metodoPago, DateTime fechaFin, DateTime fechaInicio, IList<AlquilarItem>alquilarItems, ApplicationUser applicationUser)
+
+        public Alquilar(string nombreCliente, string apellidoCliente, string direccionEnvio, DateTime fechaAlquiler, PaymentMethodTypes metodoPago, DateTime fechaFin, DateTime fechaInicio, IList<AlquilarItem> alquilarItems, ApplicationUser applicationUser)
         {
-            PrecioTotal = alquilarItems.Sum(ri => ri.herramienta.precio * periodo);
-            DireccionEnvio = direccionEnvio;
-            FechaAlquiler = fechaAlquiler;
-            FechaFin = fechaFin;
-            FechaInicio = fechaInicio;
-            ApplicationUser = applicationUser;
-            MetodoPago = metodoPago;
+            this.direccionEnvio = direccionEnvio;
+            this.fechaAlquiler = fechaAlquiler;
+            this.fechaFin = fechaFin;
+            this.fechaInicio = fechaInicio;
+            this.MetodoPago = metodoPago;
+            this.applicationUser = applicationUser;
+            this.alquilarItems = alquilarItems;
 
+            this.periodo = (fechaFin - fechaInicio).Days;
+            this.precioTotal = alquilarItems.Sum(ri => ri.precio * periodo);
         }
-        public int Id { get; set; }
-        public string DireccionEnvio { get; set; }
-        public DateTime FechaAlquiler { get; set; }
-        public DateTime FechaFin { get; set; }
-        public DateTime FechaInicio { get; set; }
-        public int Periodo { get; set; }
-        public double PrecioTotal { get; set; }
-        public ApplicationUser ApplicationUser { get; set; }
 
-
-        public PaymentMethodTypes MetodoPago { get; set; }
-        public IList<AlquilarItem> alquilarItems { get; set; }
+        
         public override bool Equals(object? obj)
         {
             return base.Equals(obj);

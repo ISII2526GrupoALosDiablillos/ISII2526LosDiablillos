@@ -14,7 +14,9 @@ namespace AppForSEII2526.API.Controllers
         {
             _context = context;
             _logger = logger;
+            _logger.LogInformation("Alquiler initialized");
         }
+
 
         [HttpGet]
         [Route("[action]")]
@@ -24,7 +26,7 @@ namespace AppForSEII2526.API.Controllers
         {
             if (_context.Alquileres == null)
             {
-                _logger.LogError("Error: Rentals table does not exist");
+                _logger.LogError("Error: Las tablas de alquilar no existen");
                 return NotFound();
             }
             var alquiler = await _context.Alquileres
@@ -32,13 +34,13 @@ namespace AppForSEII2526.API.Controllers
                     .Include(r => r.alquilarItems)
                         .ThenInclude(ri => ri.herramienta)
                             .ThenInclude(herramienta => herramienta.fabricante)
-                .Select(r => new AlquilarDetailDTO(r.Id, r.FechaAlquiler, r.applicationUser.nombreCliente, r.applicationUser.apellidoCliente, r.DireccionEnvio, (PaymentMethodTypes)r.MetodoPago, r.FechaFin, r.FechaInicio, r.alquilarItems
+                .Select(r => new AlquilarDetailDTO(r.id, r.fechaAlquiler, r.applicationUser.nombreCliente, r.applicationUser.apellidoCliente, r.direccionEnvio, (PaymentMethodTypes)r.MetodoPago, r.fechaFin, r.fechaInicio, r.alquilarItems
                         .Select(ri => new AlquilarItemDTO(ri.herramienta.id, ri.herramienta.fabricante.Id, ri.herramienta.precio, ri.HerramientaId)).ToList<AlquilarItemDTO>()))
                 .FirstOrDefaultAsync();
 
             if (alquiler == null)
             {
-                _logger.LogError($"Error: Rental with id {alquilerId} not found");
+                _logger.LogError($"Error: Alquiler con id {alquilerId} no encontrado");
                 return NotFound();
             }
 
@@ -54,13 +56,13 @@ namespace AppForSEII2526.API.Controllers
         {
             //any validation defined in PurchaseForCreate is checked before running the method so they don't have to be checked again
             if (alquilarForCreateDTO.FechaInicio <= DateTime.Today)
-                ModelState.AddModelError("RentalDateFrom", "Error! Your rental date must start later than today");
+                ModelState.AddModelError("AlquilerDateFrom", "Error! Tu fecha de alquiler debe ser mas tarde que hoy");
 
             if (alquilarForCreateDTO.FechaInicio >= alquilarForCreateDTO.FechaFin)
-                ModelState.AddModelError("RentalDateFrom&RentalDateTo", "Error! Your rental must end later than it starts");
+                ModelState.AddModelError("RentalDateFrom&RentalDateTo", "Error! Tu alquiler debe acabar antes de iniciar");
 
             if (alquilarForCreateDTO.AlquilarItem.Count == 0)
-                ModelState.AddModelError("RentalItems", "Error! You must include at least one movie to be rented");
+                ModelState.AddModelError("RentalItems", "Error! Tu deberias incluir una herramienta para alquilar");
             
             var user = _context.ApplicationUsers.FirstOrDefault(au => au.UserName == alquilarForCreateDTO.NombreCliente);
             if (user == null)
@@ -82,14 +84,14 @@ namespace AppForSEII2526.API.Controllers
                 h.material,
                 h.precio,
                 //we count the number of rentalItems that are within the rental period
-                NumberOfRentedItems = h.alquilarItems.Count(ri => ri.alquilar.FechaInicio <= alquilarForCreateDTO.FechaFin
+                NumberOfRentedItems = h.alquilarItems.Count(ri => ri.alquilar.fechaInicio <= alquilarForCreateDTO.FechaFin
                         && ri.alquilar.fechaFin >= alquilarForCreateDTO.FechaInicio)
             })
                 .ToList();
 
             Alquilar alquilar = new Alquilar(alquilarForCreateDTO.NombreCliente, alquilarForCreateDTO.ApellidoCliente, alquilarForCreateDTO.DireccionEnvio, DateTime.Now, alquilarForCreateDTO.PaymentMethod, alquilarForCreateDTO.FechaFin, alquilarForCreateDTO.FechaInicio, new List<AlquilarItem>(), user);
 
-            alquilar.PrecioTotal = 0;
+            alquilar.precioTotal = 0;
 
             var numeroDiasAlquiler = (alquilarForCreateDTO.FechaFin - alquilarForCreateDTO.FechaInicio).Days;
 
@@ -102,10 +104,10 @@ namespace AppForSEII2526.API.Controllers
                 }
                 else
                 {
-                    //alquilar.alquilarItems.Add(new AlquilarItem(herramienta.id, alquilar, herramienta.precio, ));
+                    alquilar.alquilarItems.Add(new AlquilarItem(alquilar.id, alquilar, herramienta.id,herramienta.precio,10));
                     item.Precio = herramienta.precio;
                 }
-                alquilar.PrecioTotal = alquilar.alquilarItems.Sum(ri => ri.precio * numeroDiasAlquiler);
+                alquilar.precioTotal = alquilar.alquilarItems.Sum(ri => ri.precio * numeroDiasAlquiler);
 
 
             }
@@ -130,7 +132,7 @@ namespace AppForSEII2526.API.Controllers
 
                 }
 
-                var alquilerDetailDTO = new AlquilarDetailDTO(alquilar.Id, alquilar.FechaAlquiler, alquilar.applicationUser.nombreCliente, alquilar.applicationUser.apellidoCliente, alquilar.DireccionEnvio, (PaymentMethodTypes)alquilar.MetodoPago, alquilar.FechaFin, alquilar.FechaInicio, alquilarForCreateDTO.AlquilarItem);
+                var alquilerDetailDTO = new AlquilarDetailDTO(alquilar.id, alquilar.fechaAlquiler, alquilar.applicationUser.nombreCliente, alquilar.applicationUser.apellidoCliente, alquilar.direccionEnvio, (PaymentMethodTypes)alquilar.MetodoPago, alquilar.fechaFin, alquilar.fechaInicio, alquilarForCreateDTO.AlquilarItem);
                 return CreatedAtAction(nameof(GetAlquilar), new { alquilerId = alquilerDetailDTO.Id }, alquilerDetailDTO);
 
             

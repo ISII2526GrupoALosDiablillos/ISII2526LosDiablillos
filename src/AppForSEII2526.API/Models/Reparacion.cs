@@ -18,7 +18,7 @@
         public DateTime FechaRecogida { get; set; }
         [Required(AllowEmptyStrings = false, ErrorMessage = "Porfavor, introduzca el Metodo de Pago que desee.")]
         public MetodosPago MetodosPago { get; set; }
-        public string Telefono { get; set; }
+        public int Telefono { get; set; }
         public double PrecioTotal { get; set; }
 
         public List<ReparacionItem> ReparacionItems { get; set; }
@@ -28,7 +28,7 @@
             ReparacionItems = new List<ReparacionItem>();
         }
 
-        public Reparacion(int id, string nombreCliente, string apellidoCliente, DateTime fechaEntrega, DateTime fechaRecogida, MetodosPago metodosPago, string telefono, double precioTotal)
+        public Reparacion(int id, string nombreCliente, string apellidoCliente, DateTime fechaEntrega, DateTime fechaRecogida, MetodosPago metodosPago, int telefono, double precioTotal)
         {
             Id = id;
             NombreCliente = nombreCliente;

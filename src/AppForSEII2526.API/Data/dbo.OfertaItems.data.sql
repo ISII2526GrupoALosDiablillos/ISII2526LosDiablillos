@@ -1,1 +1,1 @@
-﻿INSERT INTO [dbo].[OfertaItems] ([herramientaId], [ofertaId], [porcentaje], [precioFinal]) VALUES (3, 3, 20, 59)
+﻿INSERT INTO [dbo].[OfertaItems] ([herramientaId], [ofertaId], [porcentaje], [precioFinal]) VALUES (3, 14, 50, 10)

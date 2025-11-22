@@ -10,6 +10,8 @@ public class Compra
 	public DateTime fechaCompra {  get; set; }
 	public double preciototal { get; set; }
 	public IList<CompraItem> compraItem { get; set; }
+	public DateTime fechaInicio { get; set; }
+	public DateTime fechaRecibo { get; set; }
 	public Compra() { }
 	public Compra(String direccionEnvio, DateTime fechaCompra, int id, double preciototal, IList<CompraItem> compraItem, ApplicationUser atributos)
 	{
@@ -17,6 +19,7 @@ public class Compra
 		this.fechaCompra = fechaCompra;
 		this.id = id;
 		this.preciototal = preciototal;
+		this.compraItem = compraItem ?? new List<CompraItem>();
 	}
 	public ApplicationUser atributos {  get; set; }
     public override bool Equals(object? obj)

@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 
 namespace AppForSEII2526.UT.HerramientasController_Test
 {
-    public class GetHerramienta_test : AppForMovies4SqliteUT
+    public class GetHerramientaAlquilar_test : AppForMovies4SqliteUT
     {
-        public GetHerramienta_test()
+        public GetHerramientaAlquilar_test()
         {
 
             var fabricantes = new List<Fabricante>() {
@@ -27,10 +27,7 @@ namespace AppForSEII2526.UT.HerramientasController_Test
             var herramienta = new List<Herramienta>(){
                 new Herramienta(1,5,"aluminio", "Serrucho", 25, 50, null),
                 new Herramienta(2, 10, "madera", "Martillo", 15, 40, null),
-                new Herramienta(3, 15, "acero", "Clavos", 20, 50, null),
-                //this movie has quantityforpurchase=0 and quantityforrenting=0 so it shouldn't be returned when 
-                //quering for movies for being purchased or rented
-                new Herramienta(4, 20, "acero", "Desatornillador", 100, 100, null),
+                new Herramienta(3, 15, "metal", "Clavos", 20, 50, null),
             };
 
 
@@ -48,7 +45,7 @@ namespace AppForSEII2526.UT.HerramientasController_Test
             var herraiemntaDTOs = new List<HerramientaParaAlquilarDTO>() {
                 new HerramientaParaAlquilarDTO(1,"Serrucho", "aluminio", "Aluminios Manolo", 25),
                 new HerramientaParaAlquilarDTO(2,"Martillo","madera", "Maderas Juan",15),
-                new HerramientaParaAlquilarDTO(3, "Clavos", "Metal", "Aceros Manolo", 20),
+                new HerramientaParaAlquilarDTO(3, "Clavos", "metal", "Aceros Manolo", 20),
             };
 
             var herramientaDTOsTC1 = new List<HerramientaParaAlquilarDTO>() { herraiemntaDTOs[1], herraiemntaDTOs[2] }
@@ -67,9 +64,8 @@ namespace AppForSEII2526.UT.HerramientasController_Test
             {             //filters to apply - expected movies
                                           //by default datefrom=today +1, dateto=today+2, thus movieDTOs[0] cannot be returned
                 new object[] { null, null, null, null, herramientaDTOsTC1,  },
-                new object[] { "mechanic", null, null, null, herramientaDTOsTC2, },
-                new object[] { null, "Drama", null, null, herramientaDTOsTC3, },
-                new object[] { null, null, DateTime.Today.AddDays(6), DateTime.Today.AddDays(8), herramientaDTOsTC4, },
+                new object[] { "serrucho", null, null, null, herramientaDTOsTC2, },
+                new object[] { null, "metal", null, null, herramientaDTOsTC3, },
             };
 
             return allTests;
@@ -79,14 +75,14 @@ namespace AppForSEII2526.UT.HerramientasController_Test
         [MemberData(nameof(TestCasesFor_GetHerramientasParaAlquilar_OK))]
         [Trait("Database", "WithoutFixture")]
         [Trait("LevelTesting", "Unit Testing")]
-        public async Task GetHerramientaParaAlquilar_OK_test(string? filterTitle, string? filterGenre,
+        public async Task GetHerramientaParaAlquilar_OK_test(string? filtroTiempoReparacion, string? filtroNombre,
             IList<HerramientaParaAlquilarDTO> expectedHerramientas)
         {
             // Arrange
             var controller = new HerramientaController(_context, null!);
 
             // Act
-            var result = await controller.GetHerramientaParaAlquilarDTO(filterTitle, filterGenre);
+            var result = await controller.GetHerramientaParaAlquilarDTO(filtroTiempoReparacion, filtroNombre);
 
             //Assert
             //we check that the response type is OK 
@@ -117,7 +113,7 @@ namespace AppForSEII2526.UT.HerramientasController_Test
             var problemDetails = Assert.IsType<ValidationProblemDetails>(badRequestResult.Value);
             var problem = problemDetails.Errors.First().Value[0];
 
-            Assert.Equal("fromDate must be earlier than toDate", problem);
+            Assert.Equal("fechaInicio debe ser antes que fechaFin", problem);
         }
 
     }

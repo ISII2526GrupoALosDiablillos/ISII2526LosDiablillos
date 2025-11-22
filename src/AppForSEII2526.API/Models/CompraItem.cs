@@ -10,15 +10,13 @@ public class CompraItem
     public int herramientaId { get; set; }
     public double precio { get; set; }
     public CompraItem() { }
-    public CompraItem(int cantidad, String descripcion, int idCompra, int idHerramienta, double precio, Compra compra, Herramienta herramienta)
+    public CompraItem(int cantidad, String descripcion, int compraId, int herramientaId, double precio)
     {
         this.cantidad = cantidad;
         this.descripcion = descripcion;
         this.compraId = compraId;
         this.herramientaId = herramientaId;
         this.precio = precio;
-        this.compra = compra;
-        this.herramienta = herramienta;
     }
     
     public Compra compra { get; set; }

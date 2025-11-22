@@ -22,7 +22,7 @@
         [Range(1, float.MaxValue, ErrorMessage = "El precio minimo es 1 ")]
         [Display(Name = "Precio por alquilar")]
         public double Precio { get; set; }
- 
+
 
         public override bool Equals(object? obj)
         {
