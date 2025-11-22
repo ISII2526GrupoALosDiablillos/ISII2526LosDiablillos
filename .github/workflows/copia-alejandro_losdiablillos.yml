@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - COPIA-ALEJANDRO
+      #- development
   workflow_dispatch:
 
 env:
@@ -14,13 +15,16 @@ jobs:
   build:
     runs-on: windows-latest
     permissions:
-      contents: read
+      contents: read #This is required for actions/checkout
+
+    env:
+      API: ./src/AppForSEII2526.API/AppForSEII2526.API.csproj
+      UT: ./test/AppForSEII2526.UT/AppForSEII2526.UT.csproj
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Set up .NET
+      - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.x'
@@ -30,7 +34,7 @@ jobs:
           dotnet restore ${{ env.API }}
           dotnet restore ${{ env.UT }}
 
-      - name: Build projects
+      - name: Build with dotnet
         run: |
           dotnet build ${{ env.API }} --configuration Release --no-restore
           dotnet build ${{ env.UT }} --configuration Release --no-restore
@@ -39,33 +43,29 @@ jobs:
         continue-on-error: true
         run: dotnet test ${{ env.UT }} --configuration Release --no-build --logger "trx;LogFileName=TestResults.trx"
 
-      - name: Publish API
-        run: dotnet publish ${{ env.API }} --configuration Release -o "${{ env.DOTNET_ROOT }}/myapp"
+      - name: dotnet publish
+        run: dotnet publish ${{ env.API }} --configuration Release -o "${{env.DOTNET_ROOT}}/myapp"
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: .net-app
-          path: ${{ env.DOTNET_ROOT }}/myapp
+          path: ${{env.DOTNET_ROOT}}/myapp
+
 
   deploy:
     runs-on: windows-latest
     needs: build
     permissions:
-      id-token: write
-      contents: read
-
-    environment:
-      name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+      id-token: write #This is required for requesting the JWT
+      contents: read #This is required for actions/checkout
 
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: .net-app
-          path: .
-
+      
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -80,3 +80,4 @@ jobs:
           app-name: 'losdiablillos'
           slot-name: 'Production'
           package: .
+          
