@@ -1,3 +1,4 @@
+using AppForSEII2526.Web;
 using AppForSEII2526.Web.API;
 using AppForSEII2526.Web.Components;
 using AppForSEII2526.Web.Components.Account;
@@ -45,6 +46,7 @@ builder.Services.AddScoped<AppForSEII2526APIClient>(sp => new AppForSEII2526APIC
 
 //adding an In-memory state container service
 
+builder.Services.AddScoped<OfertaStateContainer>();
 builder.Services.AddScoped<CompraStateContainer>();
 
 
