@@ -1,0 +1,143 @@
+﻿@page "/compra/selectherramientaforcompra"
+
+@using AppForSEII2526.Web.API
+@inject AppForSEII2526APIClient apiclient
+@inject ILogger<SelectHerramientaForComprar> logger
+@inject CompraStateContainer compraStateContainer
+@inject NavigationManager navigation
+
+<h3>SelectHerramientaForComprar</h3>
+
+<div class="container-fluid">
+    <div class="row alert alert-danger" role="alert" hidden="@hideErrors">
+        <p id="ErrorsShow">Errors: @errors</p>
+    </div>
+    <div class="row">
+        <div class="col-8">
+            <div class="row">
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Material</span>
+                        <input type="text" id="inputMaterial" @bind=filtroMaterial class="form-control" placeholder="Material" aria-label="Material" aria-describedby="basic-addon1">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Precio</span>
+                        <input type="number" id="inputPrecio" @bind=filtroPrecio class="form-control" placeholder="Precio" aria-label="Precio" aria-describedby="basic-addon1">
+                    </div>
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-primary" @onclick=@BuscarHerramientas id="BuscarHerramientas">Buscar Herramientas</button>
+                </div>
+            </div>
+            <div class="row">
+                @if (herramientas == null)
+                                {
+                <p>Cargando herramientas....</p>
+                                }
+                                else
+                                {
+                <div class="mh-100 table-responsive">
+                    <table class="table table-condensed table-hover" id="Tabla de Herramientas">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Material</th>
+                                <th>Precio</th>
+                                <th>Fabricante</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var herramienta in herramientas)
+                                                        {
+                            <tr id="HerramientaData_@herramienta.Nombre">
+                                <td>@herramienta.Nombre</td>
+                                <td>@herramienta.Material</td>
+                                <td>@herramienta.Precio</td>
+
+                                <td>
+                                    <button class="btn btn-outline-secondary" id="HerramientaParaComprar_@herramienta.Nombre" @onclick="@(() => AddHerramienta(herramienta))">Añadir</button>
+                                </td>
+                            </tr>
+                                                        }
+                        </tbody>
+                    </table>
+                </div>
+                                }
+            </div>
+        </div>
+        <div class="col-2" hidden="@hideCart">
+            <div class="row">
+                <h3>Mis Compras</h3>
+            </div>
+            @foreach (CompraItemDTO item in compraDTO.CompraItems)
+            {
+                <div class="row">
+                    <button type="button" class="btn btn-light" id="removeHerramienta_@item.Nombre" @onclick="@(() => RemoveCompraItem(item))"> - @item.Nombre - @item.Precio€</button>
+                </div>
+            }
+            <div class="row">
+                <button type="button" class="btn btn-primary" id="purchaseHerramientaButton" @onclick=@ComprarHerramientas>Comprar herramientas</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private bool hideCart { get { return compraDTO.CompraItems.Count == 0; } }
+    private ICollection<HerramientaParaComprarDTO> herramientas;
+    private bool hideErrors { get { return errors.Length == 0; } }
+    private string errors = "";
+    private string filtroMaterial { get; set; }
+    private int? filtroPrecio { get; set; }
+
+    private CompraForCreateDTO compraDTO => compraStateContainer.Compra;
+    private bool hiddenCart = true;
+
+
+    private void AddHerramienta(HerramientaParaComprarDTO herramienta)
+    {
+        compraStateContainer.AddHerramientaToCompra(herramienta);
+    }
+
+    private void RemoveCompraItem(CompraItemDTO item)
+    {
+        compraStateContainer.RemoveCompraItemToCompra(item);
+        if (compraDTO.CompraItems.Count == 0)
+        {
+            hiddenCart = true;
+        }
+    }
+
+
+    public async void BuscarHerramientas()
+    {
+        try
+        {
+            if (filtroPrecio == 0)
+                herramientas = await apiclient.GetHerramientaParaComprarDTOAsync(null, filtroMaterial);
+            else
+                herramientas = await apiclient.GetHerramientaParaComprarDTOAsync(filtroPrecio, filtroMaterial);
+        }
+        catch (ApiException ex)
+        {
+            logger.LogError($"{DateTime.Now} Error: {ex}");
+            errors = "Error while connecting to the system";
+        }
+        StateHasChanged();
+    }
+
+    protected override Task OnInitializedAsync()
+    {
+        BuscarHerramientas();
+        return base.OnInitializedAsync();
+
+    }
+
+    private void ComprarHerramientas()
+    {
+        navigation.NavigateTo("/compra/createcompra");
+    }
+}
