@@ -85,22 +85,11 @@ namespace AppForSEII2526.API.Controllers
         }
 
 
+        
         [HttpGet]
         [Route("[action]")]
         [ProducesResponseType(typeof(IList<HerramientaParaOfertarDTO>), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult> GetHerramientaParaOfertarDTO(int? filtroPrecio, string filtroFabricante)
-        {
-            var herramientas = await _context.Herramientas
-                .Include(c => c.fabricante)
-                .Where(c => (filtroPrecio == 0 || c.precio == filtroPrecio) && (filtroFabricante == null || c.fabricante.Nombre.Contains(filtroFabricante)))
-                .Select(c => new HerramientaParaOfertarDTO(c.id, c.nombre, c.material, c.fabricante.Nombre, c.precio)).ToListAsync();
-            return Ok(herramientas);
-        }
-
-        [HttpGet]
-        [Route("[action]")]
-        [ProducesResponseType(typeof(IList<HerramientaParaOfertarDTO>), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult> GetHerramientasPorFabricantePrecio(string? fabricante, float? precio)
+        public async Task<ActionResult> GetHerramientaParaOfertarDTO(string? fabricante, float? precio)
         {
             var query = _context.Herramientas.Include(h => h.fabricante).AsQueryable();
 
@@ -111,7 +100,6 @@ namespace AppForSEII2526.API.Controllers
 
             if (precio.HasValue)
             {
-                // comparar convirtiendo el precio almacenado (int) a float para evitar problemas de tipos
                 float buscado = precio.Value;
                 query = query.Where(h => (float)h.precio == buscado);
             }
