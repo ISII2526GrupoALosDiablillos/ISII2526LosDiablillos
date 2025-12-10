@@ -2,7 +2,7 @@
 {
     public class HerramientaParaComprarDTO
     {
-        private string fabricante;
+        public string fabricante;
 
         [Key]
         public int id { get; set; }
