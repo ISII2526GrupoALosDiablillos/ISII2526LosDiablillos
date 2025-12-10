@@ -22,14 +22,18 @@ namespace AppForSEII2526.UT.AlquilerController_Test
             };
 
             var herramienta = new List<Herramienta>(){
-                new Herramienta(1,5,"aluminio", "Serrucho", 25, 50, null),
-                new Herramienta(2, 10, "madera", "Martillo", 15, 30, null),
+                new Herramienta(1,5,"aluminio", "Serrucho", 25, 50, fabricante[0]),
+                new Herramienta(2, 10, "madera", "Martillo", 15, 30, fabricante[1]),
             };
 
             ApplicationUser user = new ApplicationUser("Valia Garcia", "ikervalia@alu.uclm.es", "Iker", 675171341 ,null);
 
-            var alquilar = new Alquilar("Iker", "Valia Garcia", "calle x", DateTime.Now, PaymentMethodTypes.PayPal,DateTime.Today.AddDays(1), DateTime.Today.AddDays(5), null, user);
-            alquilar.alquilarItems.Add(new AlquilarItem(alquilar.id, null,1, 25, 30));
+            Alquilar alquilar = new Alquilar("Iker", "Valia Garcia", "calle x", DateTime.Today, PaymentMethodTypes.PayPal, DateTime.Today.AddDays(2), DateTime.Today.AddDays(5), new List<AlquilarItem>(), user)
+            {
+                applicationUser = user,
+                alquilarItems = new List<AlquilarItem>()
+            };
+            alquilar.alquilarItems.Add(new AlquilarItem(50, 25, alquilar, herramienta[0]));
 
             _context.ApplicationUsers.Add(user);
             _context.AddRange(fabricante);
@@ -69,11 +73,11 @@ namespace AppForSEII2526.UT.AlquilerController_Test
             var controller = new AlquilarController(_context, logger);
 
 
-            var expectedAlquiler = new AlquilarDetailDTO(1, DateTime.Now, "iker.valia@alu.uclm.es", "Iker valia",
+            var expectedAlquilar = new AlquilarDetailDTO(3, DateTime.Now, "iker.valia@alu.uclm.es", "Iker valia",
                         "Avda. España s/n, Albacete 02071", PaymentMethodTypes.CreditCard,
                         DateTime.Today.AddDays(2), DateTime.Today.AddDays(5),
                         new List<AlquilarItemDTO>());
-            expectedAlquiler.AlquilarItem.Add(new AlquilarItemDTO(1,25,25,1));
+            expectedAlquilar.AlquilarItem.Add(new AlquilarItemDTO(1,"Martillo","madera",15,30));
 
             // Act 
             var result = await controller.GetAlquilar(1);
@@ -82,9 +86,9 @@ namespace AppForSEII2526.UT.AlquilerController_Test
             //we check that the response type is OK and obtain the rental
             var okResult = Assert.IsType<OkObjectResult>(result);
             var alquilerDTOActual = Assert.IsType<AlquilarDetailDTO>(okResult.Value);
-            var eq = expectedAlquiler.Equals(alquilerDTOActual);
+            var eq = expectedAlquilar.Equals(alquilerDTOActual);
             //we check that the expected and actual are the same
-            Assert.Equal(expectedAlquiler, alquilerDTOActual);
+            Assert.Equal(expectedAlquilar, alquilerDTOActual);
 
         }
     }

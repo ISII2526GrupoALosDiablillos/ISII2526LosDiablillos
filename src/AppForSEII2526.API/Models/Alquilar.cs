@@ -14,7 +14,7 @@ namespace AppForSEII2526.API.Models
     public class Alquilar
     {
         [Key]
-        public int id { get; set; }
+        public int Id { get; set; }
 
         [DataType(System.ComponentModel.DataAnnotations.DataType.MultilineText)]
         [Display(Name = "Direccion de envio")]
@@ -53,7 +53,7 @@ namespace AppForSEII2526.API.Models
             this.alquilarItems = alquilarItems;
 
             this.periodo = (fechaFin - fechaInicio).Days;
-            this.precioTotal = alquilarItems.Sum(ri => ri.precio * periodo);
+            precioTotal = alquilarItems.Sum(ri => ri.precio * periodo);
         }
 
         

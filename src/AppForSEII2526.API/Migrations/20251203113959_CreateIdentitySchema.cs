@@ -92,28 +92,22 @@ namespace AppForSEII2526.API.Migrations
                 name: "Alquileres",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    
-                    
+                    direccionEnvio = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    fechaAlquiler = table.Column<DateTime>(type: "datetime2", nullable: false),
                     fechaFin = table.Column<DateTime>(type: "datetime2", nullable: false),
                     fechaInicio = table.Column<DateTime>(type: "datetime2", nullable: false),
                     periodo = table.Column<int>(type: "int", nullable: false),
                     precioTotal = table.Column<double>(type: "float", nullable: false),
                     correo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     numeroTelefono = table.Column<int>(type: "int", nullable: false),
-                    applicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    DireccionEnvio = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FechaAlquiler = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    
-                    
-                    
-                    
-                    MetodoPago = table.Column<int>(type: "int", nullable: false)
+                    MetodoPago = table.Column<int>(type: "int", nullable: false),
+                    applicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Alquileres", x => x.id);
+                    table.PrimaryKey("PK_Alquileres", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Alquileres_AspNetUsers_applicationUserId",
                         column: x => x.applicationUserId,
@@ -289,7 +283,6 @@ namespace AppForSEII2526.API.Migrations
                     itemsReparacion = table.Column<int>(type: "int", maxLength: 100, nullable: false),
                     material = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     nombre = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    OfertaItems = table.Column<int>(type: "int", nullable: false),
                     precio = table.Column<int>(type: "int", nullable: false),
                     tiempoReparacion = table.Column<int>(type: "int", nullable: false),
                     fabricanteId = table.Column<int>(type: "int", nullable: false)
@@ -309,20 +302,19 @@ namespace AppForSEII2526.API.Migrations
                 name: "AlquilarItems",
                 columns: table => new
                 {
-                    alquilerId = table.Column<int>(type: "int", nullable: false),
+                    AlquilarId = table.Column<int>(type: "int", nullable: false),
                     HerramientaId = table.Column<int>(type: "int", nullable: false),
-                    alquilarid = table.Column<int>(type: "int", nullable: false),
                     precio = table.Column<int>(type: "int", nullable: false),
                     cantidad = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AlquilarItems", x => new { x.HerramientaId, x.alquilerId });
+                    table.PrimaryKey("PK_AlquilarItems", x => new { x.HerramientaId, x.AlquilarId });
                     table.ForeignKey(
-                        name: "FK_AlquilarItems_Alquileres_alquilarid",
-                        column: x => x.alquilarid,
+                        name: "FK_AlquilarItems_Alquileres_AlquilarId",
+                        column: x => x.AlquilarId,
                         principalTable: "Alquileres",
-                        principalColumn: "id",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_AlquilarItems_Herramientas_HerramientaId",
@@ -415,9 +407,9 @@ namespace AppForSEII2526.API.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AlquilarItems_alquilarid",
+                name: "IX_AlquilarItems_AlquilarId",
                 table: "AlquilarItems",
-                column: "alquilarid");
+                column: "AlquilarId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Alquileres_applicationUserId",

@@ -2,14 +2,17 @@
 {
     public class AlquilarItemDTO
     {
-        public AlquilarItemDTO(int alquilarId, int cantidad, double precio, int herramientaId)
+        public AlquilarItemDTO(int herramientaId, string nombreHerramienta, string material, int cantidad, double precio)
         {
-            AlquilarId = alquilarId;
+            HerramientaId = herramientaId;
+            NombreHerramienta = nombreHerramienta;
+            Material = material;
             Cantidad = cantidad;
             Precio = precio;
-            HerramientaId = herramientaId;
         }
         public int AlquilarId { get; set; }
+        public string NombreHerramienta { get; set; }
+        public string Material { get; set; }
         public int Cantidad { get; set; }
         public double Precio { get; set; }
         public int HerramientaId { get; set; }

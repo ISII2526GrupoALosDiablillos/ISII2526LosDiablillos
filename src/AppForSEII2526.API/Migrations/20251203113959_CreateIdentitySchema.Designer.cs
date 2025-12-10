@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppForSEII2526.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251116215712_CreateIdentitySchema")]
+    [Migration("20251203113959_CreateIdentitySchema")]
     partial class CreateIdentitySchema
     {
         /// <inheritdoc />
@@ -27,36 +27,14 @@ namespace AppForSEII2526.API.Migrations
 
             modelBuilder.Entity("AppForSEII2526.API.Models.Alquilar", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
-
-                    b.Property<string>("DireccionEnvio")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("FechaAlquiler")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("FechaFin")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("FechaInicio")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("MetodoPago")
                         .HasColumnType("int");
-
-                    b.Property<int>("Periodo")
-                        .HasColumnType("int");
-
-                    b.Property<double>("PrecioTotal")
-                        .HasColumnType("float");
 
                     b.Property<string>("applicationUserId")
                         .HasColumnType("nvarchar(450)");
@@ -87,7 +65,7 @@ namespace AppForSEII2526.API.Migrations
                     b.Property<double>("precioTotal")
                         .HasColumnType("float");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.HasIndex("applicationUserId");
 
@@ -99,10 +77,7 @@ namespace AppForSEII2526.API.Migrations
                     b.Property<int>("HerramientaId")
                         .HasColumnType("int");
 
-                    b.Property<int>("alquilerId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("alquilarid")
+                    b.Property<int>("AlquilarId")
                         .HasColumnType("int");
 
                     b.Property<int>("cantidad")
@@ -111,9 +86,9 @@ namespace AppForSEII2526.API.Migrations
                     b.Property<int>("precio")
                         .HasColumnType("int");
 
-                    b.HasKey("HerramientaId", "alquilerId");
+                    b.HasKey("HerramientaId", "AlquilarId");
 
-                    b.HasIndex("alquilarid");
+                    b.HasIndex("AlquilarId");
 
                     b.ToTable("AlquilarItems");
                 });
@@ -222,9 +197,6 @@ namespace AppForSEII2526.API.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
-
-                    b.Property<int>("OfertaItems")
-                        .HasColumnType("int");
 
                     b.Property<int>("fabricanteId")
                         .HasColumnType("int");
@@ -589,15 +561,15 @@ namespace AppForSEII2526.API.Migrations
 
             modelBuilder.Entity("AppForSEII2526.API.Models.AlquilarItem", b =>
                 {
-                    b.HasOne("AppForSEII2526.API.Models.Herramienta", "herramienta")
+                    b.HasOne("AppForSEII2526.API.Models.Alquilar", "alquilar")
                         .WithMany("alquilarItems")
-                        .HasForeignKey("HerramientaId")
+                        .HasForeignKey("AlquilarId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AppForSEII2526.API.Models.Alquilar", "alquilar")
+                    b.HasOne("AppForSEII2526.API.Models.Herramienta", "herramienta")
                         .WithMany("alquilarItems")
-                        .HasForeignKey("alquilarid")
+                        .HasForeignKey("HerramientaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
