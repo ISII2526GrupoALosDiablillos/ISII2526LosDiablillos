@@ -1,0 +1,192 @@
+﻿@page "/oferta/createoferta"
+
+@inject NavigationManager navigation
+@using AppForSEII2526.Web.Components.Shared
+@using AppForSEII2526.Web.API
+@inject ILogger<PostOferta> logger
+@inject OfertaStateContainer ofertaState
+@inject AppForSEII2526APIClient apiclient
+
+<h3>Crear Oferta</h3>
+
+<EditForm Model="oferta" OnValidSubmit="OpenDialog">
+    <div class="row">
+        <DataAnnotationsValidator />
+        <ValidationSummary class="row alert alert-danger" />
+    </div>
+    <div class="row alert alert-danger" role="alert" hidden="@hideErrors">
+        <p id="ErrorsShown">Errors: @messageError</p>
+    </div>
+    <div class="row g-3">
+        <div class="col-12">
+            <div class="form-floating">
+                <InputDate @bind-Value="oferta.FechaInicio" class="form-control" id="FechaInicio" />
+                <label for="FechaInicio">Fecha de Inicio</label>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-floating">
+                <InputDate @bind-Value="oferta.FechaFinal" class="form-control" id="FechaFinal" />
+                <label for="FechaFinal">Fecha Final </label>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-floating">
+                <InputSelect class="form-select" @bind-Value="MetodoPagoSeleccionado" id="tiposMetodoPago">
+                    @foreach (var m in Enum.GetValues(typeof(TiposMetodoPago)).Cast<TiposMetodoPago>())
+                    {
+                        <option value="@((int)m)">@m.ToString()</option>
+                    }
+                </InputSelect>
+                <label for="TipoMetodoPago">Método de Pago</label>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-floating">
+                <InputSelect class="form-select" @bind-Value="DirigidaOfertaSeleccionada" id="DirigidaOferta">
+                    @foreach (var d in Enum.GetValues(typeof(TiposDirigidaOferta)).Cast<TiposDirigidaOferta>())
+                    {
+                        <option value="@((int)d)">@d.ToString()</option>
+                    }
+                </InputSelect>
+                <label for="TipoDirigidaOferta">Dirigida a</label>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-floating">
+                <button class="btn btn-primary" type="submit" id="Submit">
+                    Oferta tus herramientas
+                </button>
+            </div>
+        </div>
+    </div>
+    <br />
+    <br />
+    <h4>Resumen de la Oferta</h4>
+    <p><b>Desde:</b> @oferta.FechaInicio.ToString("dd/MM/yyyy") <b>hasta:</b> @oferta.FechaFinal.ToString("dd/MM/yyyy")</p>
+    <p><b>Precio total:</b> @PrecioTotal €</p>
+
+    <button class="btn btn-outline-primary" type="button" @onclick="ModifyOfertaItems" id="ModifyHerramientas">
+        Modificar / Añadir Herramientas
+    </button>
+
+    <div class="mh-100 table-responsive mt-3">
+        <table class="table table-condensed table-hover" id="TableOfOfertaItems">
+            <thead>
+                <tr>
+                    <th>ID Herramienta</th>
+                    <th>Precio Base</th>
+                    <th>Descuento (%)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in oferta.OfertaItems)
+                {
+                    <tr id="HerramientaData_@item.HerramientaId">
+                        <td>@item.HerramientaId</td>
+                        <td>@item.PrecioFinal €</td>
+                        <td>
+                            <InputNumber @bind-Value="item.Porcentaje" class="form-control" id="@($"porcentaje_{item.HerramientaId}")" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</EditForm>
+
+@if (DialogIsOpen)
+{
+    <Dialog Caption="Confirmar Oferta"
+            Message="¿Quieres publicar esta oferta con las herramientas seleccionadas?"
+            OnClose="@OnDialogClose"
+            Type=Dialog.Category.SaveNot>
+    </Dialog>
+}
+
+@code {
+    private string messageError = "";
+    private bool hideErrors { get { return messageError.Length == 0; } }
+    private bool DialogIsOpen;
+
+    // Obtenemos el DTO del estado (que viene relleno de la pantalla anterior)
+    private OfertaForCreateDTO oferta => ofertaState.Oferta;
+
+    private int MetodoPagoSeleccionado { get; set; }
+    private int DirigidaOfertaSeleccionada { get; set; }
+
+    private float PrecioTotal
+    {
+        get
+        {
+            // Calculamos el precio aplicando el porcentaje
+            return (float)oferta.OfertaItems.Sum(ri => ri.PrecioFinal * (100f - ri.Porcentaje) / 100f);
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        // Inicializamos los selects con los valores actuales del DTO
+        MetodoPagoSeleccionado = (int)oferta.MetodoPago;
+        DirigidaOfertaSeleccionada = (int)oferta.DirigidaOferta;
+    }
+
+    private void ModifyOfertaItems()
+    {
+        // Guardamos la selección actual antes de volver atrás
+        oferta.MetodoPago = (TiposMetodoPago)MetodoPagoSeleccionado;
+        oferta.DirigidaOferta = (TiposDirigidaOferta)DirigidaOfertaSeleccionada;
+
+        // Volvemos a la pantalla de selección (ruta corregida según tu otro archivo)
+        navigation.NavigateTo("/oferta/selectherramientaparaoferta");
+    }
+
+    private void OpenDialog()
+    {
+        DialogIsOpen = true;
+    }
+
+    private async Task OnDialogClose(bool isOk)
+    {
+        DialogIsOpen = false;
+        if (isOk)
+        {
+            // Actualizamos el modelo con los valores de los selects antes de enviar
+            oferta.MetodoPago = (TiposMetodoPago)MetodoPagoSeleccionado;
+            oferta.DirigidaOferta = (TiposDirigidaOferta)DirigidaOfertaSeleccionada;
+
+            if (oferta.OfertaItems.Count > 0)
+            {
+                try
+                {
+                    // Llamada a la API
+                    var ofertado = await apiclient.CreateOfertaAsync(oferta);
+
+                    // Limpiamos el estado tras el éxito
+                    ofertaState.OfertaProcessed();
+
+                    // IMPORTANTE: Como 'ofertado' (OfertaDetailDTO) no tiene propiedad .Id,
+                    // redirigimos a la pantalla de selección para iniciar una nueva operación.
+                    navigation.NavigateTo("/oferta/selectherramientaparaoferta");
+                }
+                catch (ApiException<ValidationProblemDetails> apiexceptionvalidation)
+                {
+                    if (apiexceptionvalidation.Result?.Errors != null)
+                    {
+                        messageError = "";
+                        foreach (var errors in apiexceptionvalidation.Result.Errors.Values)
+                            messageError = string.Join("(*) ", messageError, string.Join(" (*) ", errors));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    messageError = "Error inesperado: " + ex.Message;
+                }
+            }
+            else
+            {
+                messageError = "No hay herramientas en la oferta.";
+            }
+        }
+    }
+}
