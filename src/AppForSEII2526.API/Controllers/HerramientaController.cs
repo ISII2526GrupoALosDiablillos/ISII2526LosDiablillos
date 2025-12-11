@@ -65,10 +65,10 @@ namespace AppForSEII2526.API.Controllers
         [HttpGet]
         [Route("[action]")]
         [ProducesResponseType(typeof(IList<HerramientaParaAlquilarDTO>), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult> GetHerramientaParaAlquilarDTO(string filtroMateiral, string filtroNombre)
+        public async Task<ActionResult> GetHerramientaParaAlquilarDTO(string filtroNombre, string filtroMaterial)
         {
             var herramientas = await _context.Herramientas
-                .Where(c => (filtroMateiral == null || c.material.Contains(filtroMateiral)) && (filtroNombre == null || c.nombre.Contains(filtroNombre)))
+                .Where(c => (filtroNombre == null || c.nombre.Contains(filtroNombre)) && (filtroMaterial == null || c.material.Contains(filtroMaterial)))
                 .Select(c => new HerramientaParaAlquilarDTO(c.id, c.nombre, c.material, c.fabricante.Nombre, c.precio)).ToListAsync();
             return Ok(herramientas);
         }
