@@ -85,11 +85,11 @@ namespace AppForSEII2526.API.Controllers
         }
 
 
-        
+
         [HttpGet]
         [Route("[action]")]
         [ProducesResponseType(typeof(IList<HerramientaParaOfertarDTO>), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult> GetHerramientaParaOfertarDTO(string? fabricante, float? precio)
+        public async Task<ActionResult> GetHerramientasPorFabricantePrecio(string? fabricante, float? precio)
         {
             var query = _context.Herramientas.Include(h => h.fabricante).AsQueryable();
 
@@ -105,11 +105,17 @@ namespace AppForSEII2526.API.Controllers
             }
 
             var resultado = await query
-                .Select(h => new HerramientaParaOfertarDTO(h.id, h.nombre, h.material, h.fabricante != null ? h.fabricante.Nombre : string.Empty, (double)h.precio))
+                .Select(h => new HerramientaParaOfertarDTO(
+                    h.id,
+                    h.nombre,
+                    h.material,
+                    h.fabricante != null ? h.fabricante.Nombre : string.Empty,
+                    (double)h.precio))
                 .ToListAsync();
 
             return Ok(resultado);
         }
+
 
     }
 }
