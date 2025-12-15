@@ -101,6 +101,10 @@ namespace AppForSEII2526.API.Controllers
             if (direccion == null)
                 ModelState.AddModelError("NoDirecciónDeEnvio", "Error. Dirección no registrada.");
 
+            var pago = compraForCreateDTO.Pago;
+            if (pago == PaymentMethodTypes.Cash)
+                ModelState.AddModelError("Metalico", "¡Error! No aceptamos compras pagadas en metálico.");
+
             if (ModelState.ErrorCount > 0)
                 return BadRequest(new ValidationProblemDetails(ModelState));
 

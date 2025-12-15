@@ -76,7 +76,7 @@ namespace AppForSEII2526.API.Controllers
         [HttpGet]
         [Route("[action]")]
         [ProducesResponseType(typeof(IList<HerramientaParaComprarDTO>), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult> GetHerramientaParaComprarDTO(int? filtroPrecio, String filtroMaterial)
+        public async Task<ActionResult> GetHerramientaParaComprarDTO(int? filtroPrecio, String? filtroMaterial)
         {
             var herramientas = await _context.Herramientas
                 .Where(c => (filtroPrecio == null || c.precio==filtroPrecio) && (filtroMaterial == null || c.material.Contains(filtroMaterial)))

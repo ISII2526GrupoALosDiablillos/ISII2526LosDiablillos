@@ -30,6 +30,7 @@
                    direccion == dTO.direccion &&
                    preciototal == dTO.preciototal &&
                    fechaCompra == dTO.fechaCompra &&
+                   //Cambiar por SequenceEquals --> AppForMovies --> DTOCreateRental.
                    EqualityComparer<IList<CompraItemDTO>>.Default.Equals(compraItems, dTO.compraItems);
         }
 
