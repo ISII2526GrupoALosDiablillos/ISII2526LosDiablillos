@@ -79,7 +79,7 @@ namespace AppForSEII2526.API.Controllers
         public async Task<ActionResult> GetHerramientaParaComprarDTO(int? filtroPrecio, String? filtroMaterial)
         {
             var herramientas = await _context.Herramientas
-                .Where(c => (filtroPrecio == null || c.precio==filtroPrecio) && (filtroMaterial == null || c.material.Contains(filtroMaterial)))
+                .Where(c => (filtroPrecio == null || c.precio==filtroPrecio) && (filtroMaterial == null || c.material==(filtroMaterial)))
                 .Select(c => new HerramientaParaComprarDTO(c.id, c.nombre, c.material, c.fabricante.Nombre, c.precio)).ToListAsync();
             return Ok(herramientas);
         }

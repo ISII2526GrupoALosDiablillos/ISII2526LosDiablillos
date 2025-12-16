@@ -45,7 +45,8 @@ namespace AppForSEII2526.API.Controllers
                         oi.herramienta.precio,
                         oi.descripcion,
                         oi.cantidad,
-                        oi.herramienta.id)).ToList()
+                        oi.herramienta.id,
+                        oi.compra.id)).ToList()
                     ))
                 .FirstOrDefaultAsync();
 
