@@ -114,12 +114,18 @@
 
     public async void BuscarHerramientas()
     {
-        if (filtroPrecio == 0)
-            filtroPrecio = null;
         try
-        {
+        {            
+            logger.LogWarning("BASE URL = " + apiclient.BaseUrl);
+            logger.LogWarning("FILTROS: precio=" + filtroPrecio + " material=" + filtroMaterial);
+
+            if (filtroPrecio == 0)
+                filtroPrecio = null;
+
+            if (string.IsNullOrEmpty(filtroMaterial))
+                filtroMaterial = null;
+
             herramientas = await apiclient.GetHerramientaParaComprarDTOAsync(filtroPrecio, filtroMaterial);
-            errors = "";
         }
         catch (ApiException ex)
         {
@@ -133,7 +139,6 @@
     {
         BuscarHerramientas();
         return base.OnInitializedAsync();
-
     }
 
     private void ComprarHerramientas()
