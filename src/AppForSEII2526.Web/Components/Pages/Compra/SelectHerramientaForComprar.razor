@@ -32,39 +32,39 @@
                 </div>
             </div>
             <div class="row">
-                @if (herramientas == null)
-                                {
-                <p>Cargando herramientas....</p>
-                                }
-                                else
-                                {
-                <div class="mh-100 table-responsive">
-                    <table class="table table-condensed table-hover" id="Tabla de Herramientas">
-                        <thead>
-                            <tr>
-                                <th>Nombre</th>
-                                <th>Material</th>
-                                <th>Precio</th>
-                                <th>Fabricante</th>
+                @if (herramientas == null) {
+                    <p>Cargando herramientas....</p>
+                }
+                else {
+                    <div class="mh-100 table-responsive">
+                        <table class="table table-condensed table-hover" id="Tabla de Herramientas">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Nombre</th>
+                                    <th>Material</th>
+                                    <th>Precio</th>
+                                    <th>Fabricante</th>
 
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var herramienta in herramientas)
-                                                        {
-                            <tr id="HerramientaData_@herramienta.Nombre">
-                                <td>@herramienta.Nombre</td>
-                                <td>@herramienta.Material</td>
-                                <td>@herramienta.Precio</td>
-
-                                <td>
-                                    <button class="btn btn-outline-secondary" id="HerramientaParaComprar_@herramienta.Nombre" @onclick="@(() => AddHerramienta(herramienta))">Añadir</button>
-                                </td>
-                            </tr>
-                                                        }
-                        </tbody>
-                    </table>
-                </div>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var herramienta in herramientas)
+                                                            {
+                                <tr id="HerramientaData_@herramienta.Nombre">
+                                    <td>@herramienta.Id</td>
+                                    <td>@herramienta.Nombre</td>
+                                    <td>@herramienta.Material</td>
+                                    <td>@herramienta.Precio</td>
+                                    <td>@herramienta.Fabricante</td>
+                                    <td>
+                                        <button class="btn btn-outline-secondary" id="HerramientaParaComprar_@herramienta.Nombre" @onclick="@(() => AddHerramienta(herramienta))">Añadir</button>
+                                    </td>
+                                </tr>
+                                                            }
+                            </tbody>
+                        </table>
+                    </div>
                                 }
             </div>
         </div>
@@ -90,7 +90,7 @@
     private ICollection<HerramientaParaComprarDTO> herramientas;
     private bool hideErrors { get { return errors.Length == 0; } }
     private string errors = "";
-    private string filtroMaterial { get; set; }
+    private string? filtroMaterial { get; set; }
     private int? filtroPrecio { get; set; }
 
     private CompraForCreateDTO compraDTO => compraStateContainer.Compra;
@@ -115,11 +115,17 @@
     public async void BuscarHerramientas()
     {
         try
-        {
+        {            
+            logger.LogWarning("BASE URL = " + apiclient.BaseUrl);
+            logger.LogWarning("FILTROS: precio=" + filtroPrecio + " material=" + filtroMaterial);
+
             if (filtroPrecio == 0)
-                herramientas = await apiclient.GetHerramientaParaComprarDTOAsync(null, filtroMaterial);
-            else
-                herramientas = await apiclient.GetHerramientaParaComprarDTOAsync(filtroPrecio, filtroMaterial);
+                filtroPrecio = null;
+
+            if (string.IsNullOrEmpty(filtroMaterial))
+                filtroMaterial = null;
+
+            herramientas = await apiclient.GetHerramientaParaComprarDTOAsync(filtroPrecio, filtroMaterial);
         }
         catch (ApiException ex)
         {
@@ -133,7 +139,6 @@
     {
         BuscarHerramientas();
         return base.OnInitializedAsync();
-
     }
 
     private void ComprarHerramientas()

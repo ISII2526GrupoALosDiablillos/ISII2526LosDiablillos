@@ -2,7 +2,6 @@
 {
     public class HerramientaParaComprarDTO
     {
-        public string fabricante;
 
         [Key]
         public int id { get; set; }
@@ -14,7 +13,7 @@
         [DataType(System.ComponentModel.DataAnnotations.DataType.Currency)]
         [Range(0.5, float.MaxValue, ErrorMessage = "Precio mínimo es 0.5")]
         public int precio { get; set; }
-
+        public string fabricante;
         public HerramientaParaComprarDTO() { }
 
         public HerramientaParaComprarDTO(int id, string nombre, string material, string fabricante, int precio)

@@ -45,7 +45,8 @@ namespace AppForSEII2526.API.Controllers
                         oi.herramienta.precio,
                         oi.descripcion,
                         oi.cantidad,
-                        oi.herramienta.id)).ToList()
+                        oi.herramienta.id,
+                        oi.compra.id)).ToList()
                     ))
                 .FirstOrDefaultAsync();
 
@@ -100,6 +101,10 @@ namespace AppForSEII2526.API.Controllers
                 .FirstOrDefault(au => au.compras.Any(c => c.direccionEnvio == compraForCreateDTO.DireccionEnvio));
             if (direccion == null)
                 ModelState.AddModelError("NoDirecciónDeEnvio", "Error. Dirección no registrada.");
+
+            var pago = compraForCreateDTO.Pago;
+            if (pago == PaymentMethodTypes.Cash)
+                ModelState.AddModelError("Metalico", "¡Error! No aceptamos compras pagadas en metálico.");
 
             if (ModelState.ErrorCount > 0)
                 return BadRequest(new ValidationProblemDetails(ModelState));

@@ -30,7 +30,7 @@
                    direccion == dTO.direccion &&
                    preciototal == dTO.preciototal &&
                    fechaCompra == dTO.fechaCompra &&
-                   EqualityComparer<IList<CompraItemDTO>>.Default.Equals(compraItems, dTO.compraItems);
+                   compraItems.SequenceEqual(dTO.compraItems);
         }
 
         public override int GetHashCode()
