@@ -63,7 +63,7 @@ namespace AppForSEII2526.UT.ComprarItemController_Test
             var SinDireccion = new CompraForCreateDTO(4, "Clavos", "acero", 20, "gonormu", "Gonzalo", "Ortiz", null, PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
             var SinNombreUsuario = new CompraForCreateDTO(4, "Clavos", "acero", 20, null, "Gonzalo", "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
             var SinNombre = new CompraForCreateDTO(4, "Clavos", "acero", 20, "gonormu", null, "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
-            var MuchasHerramientas = new CompraForCreateDTO(4, "Clavos", "acero", 20, "gonormu", "Gonzalo", "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", new List<CompraItemDTO>() { new CompraItemDTO("Clavos", "acero", 20, "", 3, 3) }, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
+            var MuchasHerramientas = new CompraForCreateDTO(4, "Clavos", "acero", 20, "gonormu", "Gonzalo", "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", new List<CompraItemDTO>() { new CompraItemDTO("Clavos", "acero", 20, "", 3, 3, 4) }, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
             var Metalico = new CompraForCreateDTO(4, "Clavos", "acero", 20, "gonormu", "Gonzalo", "Ortiz", "Mi Casa", PaymentMethodTypes.Cash, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
 
             return new List<object[]>
@@ -96,7 +96,6 @@ namespace AppForSEII2526.UT.ComprarItemController_Test
             {
                 var createdResult = Assert.IsType<CreatedAtActionResult>(result);
                 var actualCompraDetailDTO = Assert.IsType<CompraDetailDTO>(createdResult.Value);
-                //Meter todo en un solo assert.
                 Assert.Equal(compraForCreateDTO.FechaCompra, actualCompraDetailDTO.fechaCompra);
                 Assert.Equal(compraForCreateDTO.Nombre_cliente, actualCompraDetailDTO.nombre_cliente);
                 Assert.Equal(compraForCreateDTO.Apellidos_cliente, actualCompraDetailDTO.apellido_cliente);
