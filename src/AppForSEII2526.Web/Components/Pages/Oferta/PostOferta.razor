@@ -133,7 +133,6 @@
     {
         get
         {
-            // OJO: aquí asumimos que item.PrecioFinal es el precio base (como lo estás mostrando en tabla)
             return (float)oferta.OfertaItems.Sum(ri => ri.PrecioFinal * (100f - (float)ri.Porcentaje) / 100f);
         }
     }
@@ -151,16 +150,46 @@
         navigation.NavigateTo("/oferta/selectherramientaparaoferta");
     }
 
+    
     private void OpenDialog()
     {
         messageError = "";
 
+        
         if (oferta.OfertaItems.Count == 0)
         {
             messageError = "No hay herramientas en la oferta.";
             return;
         }
 
+        
+        if (oferta.OfertaItems.Any(i => i.Porcentaje < 0 || i.Porcentaje > 100))
+        {
+            messageError = "El porcentaje debe estar entre 0 y 100";
+            return;
+        }
+
+        
+
+        if (oferta.FechaInicio <= DateTime.Today)
+        {
+            messageError = "Error! La fecha de inicio de tu oferta debe ser posterior a hoy";
+            return;
+        }
+
+        if (oferta.FechaInicio >= oferta.FechaFinal)
+        {
+            messageError = "Error! Tu oferta debe terminar después de que empiece";
+            return;
+        }
+
+        if ((oferta.FechaFinal - oferta.FechaInicio).TotalDays < 7)
+        {
+            messageError = "¡Error!, la oferta debe durar al menos una semana";
+            return;
+        }
+
+        
         DialogIsOpen = true;
     }
 
@@ -171,7 +200,6 @@
 
         try
         {
-            // Mantener enums en el state
             oferta.MetodoPago = (TiposMetodoPago)MetodoPagoSeleccionado;
             oferta.DirigidaOferta = (TiposDirigidaOferta)DirigidaOfertaSeleccionada;
 
@@ -181,11 +209,6 @@
                 return;
             }
 
-            // IMPORTANTE: en tu DTO el Porcentaje tiene [Range(0.01, 99.99)]
-            foreach (var item in oferta.OfertaItems)
-                if (item.Porcentaje <= 0) item.Porcentaje = 0.01;
-
-            // Creamos un DTO a enviar SIN “machacar” el state (evita doble descuento si reintentas)
             var dto = new OfertaForCreateDTO
             {
                 FechaInicio = oferta.FechaInicio,
@@ -197,47 +220,45 @@
                 {
                     HerramientaId = i.HerramientaId,
                     Porcentaje = i.Porcentaje,
-                    // aquí calculamos el precio final aplicando descuento a tu “precio base”
                     PrecioFinal = Math.Round(i.PrecioFinal * (1.0 - (i.Porcentaje / 100.0)), 2)
                 }).ToList()
             };
 
-            // POST manual para poder leer la cabecera Location
             var url = BuildCreateOfertaUrl();
             var resp = await Http.PostAsJsonAsync(url, dto);
 
             if (resp.IsSuccessStatusCode)
             {
-                // Location debería ser algo como: /api/OfertaItem/Oferta-Detalle/123
                 var location = resp.Headers.Location?.ToString();
-
                 if (!string.IsNullOrWhiteSpace(location) && TryExtractIdFromLocation(location, out var id))
                 {
                     ofertaState.OfertaProcessed();
                     navigation.NavigateTo($"/oferta/detalleoferta?ofertaId={id}");
                     return;
                 }
-
-                // Si por lo que sea no viene Location, al menos vas al detalle “manual”
                 ofertaState.OfertaProcessed();
                 navigation.NavigateTo("/oferta/detalleoferta");
                 return;
             }
 
-            // 400 -> intentamos leer ValidationProblemDetails
             if (resp.StatusCode == HttpStatusCode.BadRequest)
             {
                 var vpd = await resp.Content.ReadFromJsonAsync<AppForSEII2526.Web.API.ValidationProblemDetails>();
-                if (vpd?.Errors?.Values != null)
+                if (vpd?.Errors != null)
                 {
                     messageError = "";
-                    foreach (var errs in vpd.Errors.Values)
-                        messageError = string.Join("(*) ", messageError, string.Join(" (*) ", errs));
+                    foreach (var errorKey in vpd.Errors.Keys)
+                    {
+                        foreach (var errMsg in vpd.Errors[errorKey])
+                        {
+                            if (messageError.Length > 0) messageError += " | ";
+                            messageError += errMsg;
+                        }
+                    }
                     return;
                 }
             }
 
-            // Otros errores
             messageError = $"Error ({(int)resp.StatusCode}): {await resp.Content.ReadAsStringAsync()}";
         }
         catch (Exception ex)
@@ -248,39 +269,24 @@
 
     private string BuildCreateOfertaUrl()
     {
-        // Endpoint real según tu controller:
-        // [Route("api/[controller]")] => api/OfertaItem
-        // [Route("[action]")] => CreateOferta
         var baseUrl = (apiclient.BaseUrl ?? "").TrimEnd('/');
-
-        if (string.IsNullOrWhiteSpace(baseUrl))
-            return "api/OfertaItem/CreateOferta";
-
-        if (baseUrl.EndsWith("/api", StringComparison.OrdinalIgnoreCase))
-            return $"{baseUrl}/OfertaItem/CreateOferta";
-
+        if (string.IsNullOrWhiteSpace(baseUrl)) return "api/OfertaItem/CreateOferta";
+        if (baseUrl.EndsWith("/api", StringComparison.OrdinalIgnoreCase)) return $"{baseUrl}/OfertaItem/CreateOferta";
         return $"{baseUrl}/api/OfertaItem/CreateOferta";
     }
 
     private static bool TryExtractIdFromLocation(string location, out int id)
     {
         id = 0;
-
         try
         {
-            // Location puede ser absoluta o relativa
             Uri uri;
-            if (Uri.TryCreate(location, UriKind.Absolute, out var abs))
-                uri = abs;
-            else
-                uri = new Uri("http://dummy" + (location.StartsWith("/") ? location : "/" + location));
+            if (Uri.TryCreate(location, UriKind.Absolute, out var abs)) uri = abs;
+            else uri = new Uri("http://dummy" + (location.StartsWith("/") ? location : "/" + location));
 
             var last = uri.Segments.LastOrDefault()?.Trim('/');
             return int.TryParse(last, out id);
         }
-        catch
-        {
-            return false;
-        }
+        catch { return false; }
     }
 }

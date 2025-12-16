@@ -125,6 +125,9 @@ namespace AppForSEII2526.API.Controllers
                     continue;
                 }
 
+                if (itemDto.Porcentaje == 0)
+                    ModelState.AddModelError("Porcentaje", "Error: El porcentaje es un campo obligatorio");
+
                 if (itemDto.Porcentaje < 0 || itemDto.Porcentaje > 100)
                 {
                     ModelState.AddModelError("Porcentaje", "Error! El porcentaje debe estar entre 0 y 100");

@@ -1,158 +1,153 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
-using System.Linq;
+using System.Collections.Generic;
+using System.Threading;
 using Xunit.Abstractions;
 
 namespace AppForSEII2526.UIT.CU_OfertaHerramientas
 {
     public class PostOferta_PO : PageObject
     {
-        By fechaInicioBy = By.Id("FechaInicio");
-        By fechaFinalBy = By.Id("FechaFinal");
-        By submitBy = By.Id("Submit");
-        By modifyBy = By.Id("ModifyHerramientas");
-        By errorsShownBy = By.Id("ErrorsShown");
-        By validationSummaryBy = By.CssSelector(".validation-summary-errors, .validation-summary-valid");
+        By buttonSubmit = By.Id("Submit");
+        By button_DialogOK = By.Id("Button_DialogOK");
+        By modifyHerramientasButton = By.Id("ModifyHerramientas");
+        By tableOfOfertaItems = By.Id("TableOfOfertaItems");
+        By errorsLabel = By.Id("ErrorsShown");
+
+        By fechaInicioInput = By.Id("FechaInicio");
+        By fechaFinalInput = By.Id("FechaFinal");
+        By selectMetodoPago = By.Id("tiposMetodoPago");
+        By selectDirigidaOferta = By.Id("DirigidaOferta");
 
         public PostOferta_PO(IWebDriver driver, ITestOutputHelper output) : base(driver, output)
         {
         }
 
-        public void WaitForPage()
+        public void guardarOfertaDialog()
         {
-            WaitForBeingVisible(fechaInicioBy);
-            WaitForBeingVisible(fechaFinalBy);
-            WaitForBeingVisible(submitBy);
+            WaitForBeingClickable(button_DialogOK);
+            _driver.FindElement(button_DialogOK).Click();
         }
 
-        public bool IsOnCreateOferta()
+        public void modificarHerramientas()
         {
-            return _driver.FindElements(fechaInicioBy).Count > 0 && _driver.FindElements(fechaFinalBy).Count > 0;
+            WaitForBeingClickable(modifyHerramientasButton);
+            _driver.FindElement(modifyHerramientasButton).Click();
         }
 
-        public void SetFechaInicio(DateTime date)
+        private void VaciarFecha(IWebElement inputFecha)
         {
-            var input = _driver.FindElement(fechaInicioBy);
-            input.Clear();
-            input.SendKeys(date.ToString("yyyy-MM-dd"));
+            inputFecha.Click();
+
+            inputFecha.SendKeys(Keys.ArrowLeft);
+            inputFecha.SendKeys(Keys.ArrowLeft);
+            inputFecha.SendKeys(Keys.ArrowLeft);
+
+            inputFecha.SendKeys(Keys.Delete);
+
+            inputFecha.SendKeys(Keys.ArrowRight);
+            inputFecha.SendKeys(Keys.Delete);
+
+            inputFecha.SendKeys(Keys.ArrowRight);
+            inputFecha.SendKeys(Keys.Delete);
+
+            inputFecha.SendKeys(Keys.Tab);
         }
 
-        public void SetFechaFinal(DateTime date)
+        public void addAtributosOferta(string herramientaId, string fechaInicio, string fechaFinal, string metodoPago, string dirigidaA, string porcentaje)
         {
-            var input = _driver.FindElement(fechaFinalBy);
-            input.Clear();
-            input.SendKeys(date.ToString("yyyy-MM-dd"));
-        }
+            WaitForBeingVisible(fechaInicioInput);
+            var fInicio = _driver.FindElement(fechaInicioInput);
 
-        public void ClearFechaInicio()
-        {
-            _driver.FindElement(fechaInicioBy).Clear();
-        }
-
-        public void ClearFechaFinal()
-        {
-            _driver.FindElement(fechaFinalBy).Clear();
-        }
-
-        public void SetPorcentaje(string herramientaId, string value)
-        {
-            var by = By.Id($"porcentaje_{herramientaId}");
-            WaitForBeingVisible(by);
-            var input = _driver.FindElement(by);
-            input.Clear();
-            input.SendKeys(value ?? "");
-        }
-
-        public void ClickSubmit()
-        {
-            WaitForBeingClickable(submitBy);
-            _driver.FindElement(submitBy).Click();
-        }
-
-        public void ClickModifyHerramientas()
-        {
-            WaitForBeingClickable(modifyBy);
-            _driver.FindElement(modifyBy).Click();
-        }
-
-        public bool IsDialogOpen()
-        {
-            return _driver.FindElements(By.XPath("//*[contains(normalize-space(.), 'Confirmar Oferta')]")).Count > 0
-                || _driver.FindElements(By.CssSelector(".modal, .dialog, [role='dialog']")).Count > 0
-                || FindDialogSaveButton() != null;
-        }
-
-        public void ClickDialogSave()
-        {
-            var btn = FindDialogSaveButton();
-            if (btn == null) throw new NoSuchElementException("No se encontró el botón de guardar del diálogo.");
-            btn.Click();
-        }
-
-        public string GetErrorText()
-        {
-            var e = _driver.FindElements(errorsShownBy);
-            if (e.Count > 0 && e[0].Displayed)
+            if (fechaInicio == "")
             {
-                var t = (e[0].Text ?? "").Trim();
-                if (!string.IsNullOrWhiteSpace(t)) return t;
+                VaciarFecha(fInicio);
+            }
+            else if (fechaInicio != null)
+            {
+                fInicio.SendKeys(fechaInicio);
+                fInicio.SendKeys(Keys.Tab);
             }
 
-            var vs = _driver.FindElements(validationSummaryBy);
-            if (vs.Count > 0 && vs[0].Displayed)
+            var fFinal = _driver.FindElement(fechaFinalInput);
+            if (fechaFinal == "")
             {
-                var t = (vs[0].Text ?? "").Trim();
-                if (!string.IsNullOrWhiteSpace(t)) return t;
+                VaciarFecha(fFinal);
+            }
+            else if (fechaFinal != null)
+            {
+                fFinal.SendKeys(fechaFinal);
+                fFinal.SendKeys(Keys.Tab);
             }
 
-            var alerts = _driver.FindElements(By.CssSelector(".alert.alert-danger, .alert.alert-warning"));
-            foreach (var a in alerts)
+            Thread.Sleep(500);
+
+            if (string.IsNullOrEmpty(metodoPago)) metodoPago = "Tarjeta de Crédito";
+            WaitForBeingClickable(selectMetodoPago);
+            var elementPago = _driver.FindElement(selectMetodoPago);
+            var selectPago = new SelectElement(elementPago);
+            try { selectPago.SelectByText(metodoPago); } catch { selectPago.SelectByIndex(0); }
+
+            if (string.IsNullOrEmpty(dirigidaA)) dirigidaA = "Clientes";
+            WaitForBeingClickable(selectDirigidaOferta);
+            var elementDirigida = _driver.FindElement(selectDirigidaOferta);
+            var selectDirigida = new SelectElement(elementDirigida);
+            try { selectDirigida.SelectByText(dirigidaA); } catch { selectDirigida.SelectByIndex(0); }
+
+            By porcentajeLocator = By.Id($"porcentaje_{herramientaId}");
+            if (porcentaje != null)
             {
-                if (a.Displayed)
+                try
                 {
-                    var t = (a.Text ?? "").Trim();
-                    if (!string.IsNullOrWhiteSpace(t)) return t;
+                    var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(5));
+                    wait.Until(d => d.FindElement(porcentajeLocator).Displayed);
+                }
+                catch (WebDriverTimeoutException)
+                {
+                    _output.WriteLine($"ERROR: No se encontró el campo 'porcentaje_{herramientaId}'.");
+                    throw;
+                }
+
+                var inputPorcentaje = _driver.FindElement(porcentajeLocator);
+                ((IJavaScriptExecutor)_driver).ExecuteScript("arguments[0].scrollIntoView(true);", inputPorcentaje);
+                Thread.Sleep(200);
+
+                inputPorcentaje.Clear();
+
+                if (porcentaje == "")
+                {
+                    inputPorcentaje.SendKeys(Keys.Delete);
+                    inputPorcentaje.SendKeys(Keys.Tab);
+                }
+                else
+                {
+                    inputPorcentaje.SendKeys(porcentaje);
+                    inputPorcentaje.SendKeys(Keys.Tab);
                 }
             }
 
-            return "";
+            Thread.Sleep(1000);
+
+            
+            var btn = _driver.FindElement(buttonSubmit);
+            ((IJavaScriptExecutor)_driver).ExecuteScript("arguments[0].click();", btn);
         }
 
-        public bool WaitForError(int seconds)
+        public bool CheckListOfOfertaItems(List<string[]> expectedOfertaItems)
         {
-            var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(seconds));
-            wait.PollingInterval = TimeSpan.FromMilliseconds(200);
-            return wait.Until(_ => !string.IsNullOrWhiteSpace(GetErrorText()));
+            return CheckBodyTable(expectedOfertaItems, tableOfOfertaItems);
         }
 
-        private IWebElement FindDialogSaveButton()
+        public bool CheckValidationError(string expectedError)
         {
-            var byId = _driver.FindElements(By.Id("Save"));
-            if (byId.Count > 0) return byId[0];
-
-            var buttons = _driver.FindElements(By.CssSelector("button")).ToList();
-
-            foreach (var b in buttons)
+            try
             {
-                var t = Normalize(b.Text);
-                if (t == "save" || t == "guardar" || t == "ok" || t == "aceptar" || t == "si" || t == "sí")
-                    return b;
+                Thread.Sleep(1000);
+                string pageSource = _driver.PageSource;
+                return pageSource.Contains(expectedError);
             }
-
-            foreach (var b in buttons)
-            {
-                var t = Normalize(b.Text);
-                if (t.Contains("save") || t.Contains("guardar") || t.Contains("aceptar") || t.Contains("publicar"))
-                    return b;
-            }
-
-            return null;
-        }
-
-        private static string Normalize(string s)
-        {
-            return (s ?? "").Trim().ToLowerInvariant();
+            catch { return false; }
         }
     }
 }

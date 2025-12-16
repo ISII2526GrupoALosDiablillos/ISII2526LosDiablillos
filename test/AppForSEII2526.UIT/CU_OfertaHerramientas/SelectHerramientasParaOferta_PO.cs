@@ -2,7 +2,7 @@
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading;
 using Xunit.Abstractions;
 
 namespace AppForSEII2526.UIT.CU_OfertaHerramientas
@@ -14,7 +14,7 @@ namespace AppForSEII2526.UIT.CU_OfertaHerramientas
         By buttonSearchHerramientas = By.Id("searchHerramientas");
         By tableOfHerramientasBy = By.Id("TableOfHerramientas");
         By errorShownBy = By.Id("ErrorsShown");
-        By buttonContinuarBy = By.Id("ofertarHerramientaButton");
+        By buttonCrearOfertaCarrito = By.Id("crearOfertaButton");
 
         public SelectHerramientasParaOferta_PO(IWebDriver driver, ITestOutputHelper output) : base(driver, output)
         {
@@ -22,49 +22,46 @@ namespace AppForSEII2526.UIT.CU_OfertaHerramientas
 
         public void SearchHerramientas(string fabricante, string precio)
         {
-            WaitForBeingClickable(inputPrecio);
+            Thread.Sleep(1500);
 
-            var precioInput = _driver.FindElement(inputPrecio);
-            precioInput.Clear();
-            precioInput.SendKeys(precio ?? "");
+            try
+            {
+                WaitForBeingClickable(inputPrecio);
+                _driver.FindElement(inputPrecio).Clear();
+                _driver.FindElement(inputPrecio).SendKeys(precio);
+            }
+            catch (StaleElementReferenceException)
+            {
+                Thread.Sleep(1000);
+                WaitForBeingClickable(inputPrecio);
+                _driver.FindElement(inputPrecio).Clear();
+                _driver.FindElement(inputPrecio).SendKeys(precio);
+            }
 
-            WaitForBeingVisible(inputFabricante);
-            WaitUntilSelectHasOptions(inputFabricante, 10);
+            if (string.IsNullOrEmpty(fabricante)) fabricante = "All";
 
-            SelectFabricanteSafe(fabricante);
+            SelectElement selectElement = new SelectElement(_driver.FindElement(inputFabricante));
+            try { selectElement.SelectByText(fabricante); }
+            catch { selectElement.SelectByValue(fabricante); }
 
             _driver.FindElement(buttonSearchHerramientas).Click();
-            WaitUntilTableReady(10);
+        }
+
+        public void crearOfertaCarrito()
+        {
+            Thread.Sleep(500);
+            WaitForBeingClickable(buttonCrearOfertaCarrito);
+            _driver.FindElement(buttonCrearOfertaCarrito).Click();
         }
 
         public bool CheckListOfHerramientas(List<string[]> expectedHerramientas)
         {
-            var actual = GetHerramientasFromTable();
-
-            if (actual.Count != expectedHerramientas.Count)
-            {
-                _output.WriteLine($"expected rows: {expectedHerramientas.Count} actual rows: {actual.Count}");
-                return false;
-            }
-
-            for (int i = 0; i < expectedHerramientas.Count; i++)
-            {
-                var exp = expectedHerramientas[i].Select(x => (x ?? "").Trim()).ToArray();
-                var act = actual[i].Select(x => (x ?? "").Trim()).ToArray();
-
-                if (!exp.SequenceEqual(act))
-                {
-                    _output.WriteLine($"expected row:{string.Join(" ", exp)}");
-                    _output.WriteLine($"actual row:{string.Join(" ", act)}");
-                    return false;
-                }
-            }
-
-            return true;
+            return CheckBodyTable(expectedHerramientas, tableOfHerramientasBy);
         }
 
         public bool CheckMessageError(string errorMessage)
         {
+            WaitForBeingVisible(errorShownBy);
             IWebElement actualErrorShown = _driver.FindElement(errorShownBy);
             _output.WriteLine($"actual Message shown:{actualErrorShown.Text}");
             return actualErrorShown.Text.Contains(errorMessage);
@@ -72,163 +69,45 @@ namespace AppForSEII2526.UIT.CU_OfertaHerramientas
 
         public void AddHerramientaToOfertaCart(string herramientaNombre)
         {
-            WaitUntilTableReady(10);
-
-            var row = FindRowByNombre(herramientaNombre);
-            if (row == null) throw new NoSuchElementException($"No se encontró la herramienta '{herramientaNombre}' en la tabla.");
-
-            var addBtn = row.FindElements(By.CssSelector("button, a"))
-                            .FirstOrDefault(b => Normalize(b.Text) == "añadir" || Normalize(b.Text) == "anadir");
-
-            if (addBtn == null) throw new NoSuchElementException($"No se encontró botón 'Añadir' para '{herramientaNombre}'.");
-
-            addBtn.Click();
-            WaitUntil(() => IsContinuarEnabled(), 10);
-        }
-
-        public void RemoveHerramientaFromOfertaCart(string herramientaNombre)
-        {
-            var byId = By.Id("removeHerramienta_" + herramientaNombre);
-            var elems = _driver.FindElements(byId);
-
-            if (elems.Count > 0)
-            {
-                elems[0].Click();
-                WaitUntil(() => !IsContinuarEnabled(), 10);
-                return;
-            }
-
-            var removeButtons = _driver.FindElements(By.CssSelector("button, a"))
-                                       .Where(b =>
-                                       {
-                                           var t = Normalize(b.Text);
-                                           return t.Contains("eliminar") || t.Contains("borrar") || t.Contains("quitar") || t.Contains("remove");
-                                       })
-                                       .ToList();
-
-            if (removeButtons.Count == 0)
-                throw new NoSuchElementException($"No se encontró botón para eliminar '{herramientaNombre}' del carrito.");
-
-            removeButtons[0].Click();
-            WaitUntil(() => !IsContinuarEnabled(), 10);
-        }
-
-        public bool IsContinuarEnabled()
-        {
-            var elems = _driver.FindElements(buttonContinuarBy);
-            if (elems.Count == 0) return false;
-            return elems[0].Enabled;
-        }
-
-        public void ClickContinuar()
-        {
-            WaitForBeingClickable(buttonContinuarBy);
-            _driver.FindElement(buttonContinuarBy).Click();
-        }
-
-        public List<string[]> GetHerramientasFromTable()
-        {
             WaitForBeingVisible(tableOfHerramientasBy);
+            By btnAddLocator = By.XPath($"//tr[td[text()='{herramientaNombre}']]//button[contains(@id, 'herramientaParaOferta_')]");
 
-            var table = _driver.FindElement(tableOfHerramientasBy);
-            var rows = table.FindElements(By.CssSelector("tbody tr"));
+            WaitForBeingClickable(btnAddLocator);
+            _driver.FindElement(btnAddLocator).Click();
 
-            var result = new List<string[]>();
-
-            foreach (var row in rows)
+            var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(3));
+            try
             {
-                var cells = row.FindElements(By.CssSelector("td"))
-                               .Select(td => (td.Text ?? "").Trim())
-                               .ToList();
-
-                if (cells.Count >= 6)
-                    cells = cells.Take(5).ToList();
-
-                if (cells.Count >= 5)
-                    result.Add(cells.Take(5).ToArray());
+                wait.Until(d => d.FindElements(By.XPath("//button[contains(@id, 'removeHerramienta_')]")).Count > 0);
             }
-
-            return result;
+            catch { }
         }
 
-        private IWebElement FindRowByNombre(string herramientaNombre)
+        public void RemoveHerramientaFromOfertaCart(string herramientaId)
         {
-            var table = _driver.FindElement(tableOfHerramientasBy);
-            var rows = table.FindElements(By.CssSelector("tbody tr"));
-
-            foreach (var r in rows)
-            {
-                var tds = r.FindElements(By.CssSelector("td"));
-                if (tds.Count < 2) continue;
-
-                var nombre = (tds[1].Text ?? "").Trim();
-                if (string.Equals(nombre, (herramientaNombre ?? "").Trim(), StringComparison.OrdinalIgnoreCase))
-                    return r;
-            }
-
-            return null;
+            By btnRemoveLocator = By.Id("removeHerramienta_" + herramientaId);
+            WaitForBeingClickable(btnRemoveLocator);
+            _driver.FindElement(btnRemoveLocator).Click();
+            Thread.Sleep(500);
         }
 
-        private void WaitUntilTableReady(int seconds)
+        public bool OfertaNotAvailable()
         {
-            WaitForBeingVisible(tableOfHerramientasBy);
-            WaitUntil(() =>
+            try
             {
-                var table = _driver.FindElement(tableOfHerramientasBy);
-                var rows = table.FindElements(By.CssSelector("tbody tr"));
-                return rows != null && rows.Count > 0;
-            }, seconds);
-        }
-
-        private void SelectFabricanteSafe(string fabricante)
-        {
-            var selectElem = _driver.FindElement(inputFabricante);
-            var sel = new SelectElement(selectElem);
-
-            string fab = fabricante ?? "";
-            if (string.IsNullOrWhiteSpace(fab) || Normalize(fab) == "all")
-            {
-                TrySelectByNormalizedText(sel, "All");
-                return;
+                var element = _driver.FindElement(buttonCrearOfertaCarrito);
+                return !element.Displayed;
             }
-
-            WaitUntil(() => sel.Options.Any(o => Normalize(o.Text) == Normalize(fab)), 10);
-
-            if (!TrySelectByNormalizedText(sel, fab))
+            catch (NoSuchElementException)
             {
-                var opciones = string.Join(" | ", sel.Options.Select(o => (o.Text ?? "").Trim()));
-                throw new NoSuchElementException($"Cannot locate element with text: {fab}. Opciones disponibles: {opciones}");
+                return true;
             }
         }
 
-        private bool TrySelectByNormalizedText(SelectElement sel, string text)
+        public void WaitForBeingVisible(By element)
         {
-            var target = Normalize(text);
-            var option = sel.Options.FirstOrDefault(o => Normalize(o.Text) == target);
-            if (option == null) return false;
-            sel.SelectByText(option.Text);
-            return true;
-        }
-
-        private void WaitUntilSelectHasOptions(By selectBy, int seconds)
-        {
-            WaitUntil(() =>
-            {
-                var sel = new SelectElement(_driver.FindElement(selectBy));
-                return sel.Options != null && sel.Options.Count > 0;
-            }, seconds);
-        }
-
-        private void WaitUntil(Func<bool> condition, int seconds)
-        {
-            var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(seconds));
-            wait.PollingInterval = TimeSpan.FromMilliseconds(200);
-            wait.Until(_ => condition());
-        }
-
-        private static string Normalize(string s)
-        {
-            return (s ?? "").Trim().ToLowerInvariant();
+            var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(5));
+            wait.Until(d => d.FindElement(element).Displayed);
         }
     }
 }
