@@ -65,10 +65,10 @@ namespace AppForSEII2526.API.Controllers
         [HttpGet]
         [Route("[action]")]
         [ProducesResponseType(typeof(IList<HerramientaParaAlquilarDTO>), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult> GetHerramientaParaAlquilarDTO(string filtroMateiral, string filtroNombre)
+        public async Task<ActionResult> GetHerramientaParaAlquilarDTO(string filtroNombre, string filtroMaterial)
         {
             var herramientas = await _context.Herramientas
-                .Where(c => (filtroMateiral == null || c.material.Contains(filtroMateiral)) && (filtroNombre == null || c.nombre.Contains(filtroNombre)))
+                .Where(c => (filtroNombre == null || c.nombre.Contains(filtroNombre)) && (filtroMaterial == null || c.material.Contains(filtroMaterial)))
                 .Select(c => new HerramientaParaAlquilarDTO(c.id, c.nombre, c.material, c.fabricante.Nombre, c.precio)).ToListAsync();
             return Ok(herramientas);
         }
@@ -76,7 +76,7 @@ namespace AppForSEII2526.API.Controllers
         [HttpGet]
         [Route("[action]")]
         [ProducesResponseType(typeof(IList<HerramientaParaComprarDTO>), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult> GetHerramientaParaComprarDTO(int? filtroPrecio, string? filtroMaterial)
+        public async Task<ActionResult> GetHerramientaParaComprarDTO(int? filtroPrecio, String? filtroMaterial)
         {
             var herramientas = await _context.Herramientas
                 .Where(c => (filtroPrecio == null || c.precio==filtroPrecio) && (filtroMaterial == null || c.material==(filtroMaterial)))
@@ -85,17 +85,6 @@ namespace AppForSEII2526.API.Controllers
         }
 
 
-        [HttpGet]
-        [Route("[action]")]
-        [ProducesResponseType(typeof(IList<HerramientaParaOfertarDTO>), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult> GetHerramientaParaOfertarDTO(int? filtroPrecio, string filtroFabricante)
-        {
-            var herramientas = await _context.Herramientas
-                .Include(c => c.fabricante)
-                .Where(c => (filtroPrecio == 0 || c.precio == filtroPrecio) && (filtroFabricante == null || c.fabricante.Nombre.Contains(filtroFabricante)))
-                .Select(c => new HerramientaParaOfertarDTO(c.id, c.nombre, c.material, c.fabricante.Nombre, c.precio)).ToListAsync();
-            return Ok(herramientas);
-        }
 
         [HttpGet]
         [Route("[action]")]
@@ -111,17 +100,22 @@ namespace AppForSEII2526.API.Controllers
 
             if (precio.HasValue)
             {
-                // comparar convirtiendo el precio almacenado (int) a float para evitar problemas de tipos
                 float buscado = precio.Value;
                 query = query.Where(h => (float)h.precio == buscado);
             }
 
             var resultado = await query
-                .Select(h => new HerramientaParaOfertarDTO(h.id, h.nombre, h.material, h.fabricante != null ? h.fabricante.Nombre : string.Empty, (double)h.precio))
+                .Select(h => new HerramientaParaOfertarDTO(
+                    h.id,
+                    h.nombre,
+                    h.material,
+                    h.fabricante != null ? h.fabricante.Nombre : string.Empty,
+                    (double)h.precio))
                 .ToListAsync();
 
             return Ok(resultado);
         }
+
 
     }
 }

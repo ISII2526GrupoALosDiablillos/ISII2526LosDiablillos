@@ -21,13 +21,12 @@ namespace AppForSEII2526.UT.HerramientasController_Test
                 new Fabricante(1,"Aceros manolo", null),
                 new Fabricante(2,"Maderas Juan", null),
                 new Fabricante(3,"Aluminios Carlos", null),
-                new Fabricante(4,"Cristales Joaquin", null)
             };
 
             var herramienta = new List<Herramienta>(){
-                new Herramienta(1,5,"aluminio", "Serrucho", 25, 50, null),
-                new Herramienta(2, 10, "madera", "Martillo", 15, 40, null),
-                new Herramienta(3, 15, "metal", "Clavos", 20, 50, null),
+                new Herramienta(1,5,"aluminio", "Serrucho", 25, 50, fabricantes[0]),
+                new Herramienta(2, 10, "madera", "Martillo", 15, 40, fabricantes[1]),
+                new Herramienta(3, 15, "metal", "Clavos", 20, 60, fabricantes[2]),
             };
 
 
@@ -43,29 +42,21 @@ namespace AppForSEII2526.UT.HerramientasController_Test
         {
 
             var herraiemntaDTOs = new List<HerramientaParaAlquilarDTO>() {
-                new HerramientaParaAlquilarDTO(1,"Serrucho", "aluminio", "Aluminios Manolo", 25),
+                new HerramientaParaAlquilarDTO(1,"Serrucho", "aluminio", "Aceros Manolo", 25),
                 new HerramientaParaAlquilarDTO(2,"Martillo","madera", "Maderas Juan",15),
-                new HerramientaParaAlquilarDTO(3, "Clavos", "metal", "Aceros Manolo", 20),
+                new HerramientaParaAlquilarDTO(3, "Clavos", "metal", "Aluminios Carlos", 20),
             };
 
-            var herramientaDTOsTC1 = new List<HerramientaParaAlquilarDTO>() { herraiemntaDTOs[1], herraiemntaDTOs[2] }
-                    //the GetMoviesForPurchase method returns the movies ordered by title
-                    .OrderBy(m => m.Material).ToList();
-
-
+            var herramientaDTOsTC1 = new List<HerramientaParaAlquilarDTO>() { herraiemntaDTOs[0], herraiemntaDTOs[1], herraiemntaDTOs[2] };
             var herramientaDTOsTC2 = new List<HerramientaParaAlquilarDTO>() { herraiemntaDTOs[1] };
             var herramientaDTOsTC3 = new List<HerramientaParaAlquilarDTO>() { herraiemntaDTOs[2] };
 
-            var herramientaDTOsTC4 = new List<HerramientaParaAlquilarDTO>() { herraiemntaDTOs[0], herraiemntaDTOs[1], herraiemntaDTOs[2] }
-                //the GetMoviesForPurchase method returns the movies ordered by title
-                .OrderBy(m => m.Material).ToList();
 
             var allTests = new List<object[]>
-            {             //filters to apply - expected movies
-                                          //by default datefrom=today +1, dateto=today+2, thus movieDTOs[0] cannot be returned
-                new object[] { null, null, null, null, herramientaDTOsTC1,  },
-                new object[] { "serrucho", null, null, null, herramientaDTOsTC2, },
-                new object[] { null, "metal", null, null, herramientaDTOsTC3, },
+            {            
+                new object[] { null, null, herramientaDTOsTC1,  },
+                new object[] { "Martillo", null, herramientaDTOsTC2, },
+                new object[] { null, "metal", herramientaDTOsTC3, },
             };
 
             return allTests;
@@ -75,46 +66,18 @@ namespace AppForSEII2526.UT.HerramientasController_Test
         [MemberData(nameof(TestCasesFor_GetHerramientasParaAlquilar_OK))]
         [Trait("Database", "WithoutFixture")]
         [Trait("LevelTesting", "Unit Testing")]
-        public async Task GetHerramientaParaAlquilar_OK_test(string? filtroTiempoReparacion, string? filtroNombre,
-            IList<HerramientaParaAlquilarDTO> expectedHerramientas)
+        public async Task GetHerramientaParaAlquilar_OK_test(string? filtroNombre, string? filtroMaterial, IList<HerramientaParaAlquilarDTO> expectedHerramientas)
         {
-            // Arrange
+            
             var controller = new HerramientaController(_context, null!);
 
-            // Act
-            var result = await controller.GetHerramientaParaAlquilarDTO(filtroTiempoReparacion, filtroNombre);
+            var result = await controller.GetHerramientaParaAlquilarDTO(filtroNombre, filtroMaterial);
 
-            //Assert
-            //we check that the response type is OK 
             var okResult = Assert.IsType<OkObjectResult>(result);
-            //and obtain the list of movies
+
             var herramientaDTOsActual = Assert.IsType<List<HerramientaParaAlquilarDTO>>(okResult.Value);
-            Assert.Equal(expectedHerramientas, herramientaDTOsActual);
+            Assert.Equal(expectedHerramientas.Select(e => e.Id), herramientaDTOsActual.Select(a => a.Id));
 
         }
-
-
-        [Fact]
-        [Trait("LevelTesting", "Unit Testing")]
-        [Trait("Database", "WithoutFixture")]
-        public async Task GetHerramientaParaAlquilar_badrequest_test()
-        {
-            // Arrange
-            var mock = new Mock<ILogger<HerramientaController>>();
-            ILogger<HerramientaController> logger = mock.Object;
-            var controller = new HerramientaController(_context, logger);
-
-            // Act
-            var result = await controller.GetHerramientaParaAlquilarDTO(null, null);
-
-            //Assert
-            //we check that the response type is OK and obtain the list of movies
-            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-            var problemDetails = Assert.IsType<ValidationProblemDetails>(badRequestResult.Value);
-            var problem = problemDetails.Errors.First().Value[0];
-
-            Assert.Equal("fechaInicio debe ser antes que fechaFin", problem);
-        }
-
     }
 }

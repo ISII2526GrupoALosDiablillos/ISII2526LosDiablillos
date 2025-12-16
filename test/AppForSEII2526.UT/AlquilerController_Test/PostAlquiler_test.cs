@@ -31,14 +31,14 @@ namespace AppForSEII2526.UT.AlquilerController_Test
             };
 
             var herramienta = new List<Herramienta>(){
-                new Herramienta(1,5,_herramienta1Fabricante, _herramienta1Nombre, 25, 50, null),
-                new Herramienta(2,10,_herramienta2Fabricante, _herramienta2Nombre, 20, 50, null),
+                new Herramienta(1,5,_herramienta1Fabricante, _herramienta1Nombre, 25, 50, fabricante[0]),
+                new Herramienta(2,10,_herramienta2Fabricante, _herramienta2Nombre, 20, 50, fabricante[1]),
             };
 
             ApplicationUser user = new ApplicationUser(_customerNameSurname, _userName, "", 675171341, null);
 
             var alquilar = new Alquilar(_customerNameSurname, "Garcia", _deliveryAddress, DateTime.Now, PaymentMethodTypes.PayPal, DateTime.Today.AddDays(2), DateTime.Today.AddDays(7), null, user);
-            alquilar.alquilarItems.Add(new AlquilarItem(alquilar.id, alquilar, 1, 25, 30));
+            alquilar.alquilarItems.Add(new AlquilarItem(1, 25, alquilar, herramienta[0]));
 
             _context.ApplicationUsers.Add(user);
             _context.AddRange(fabricante);
@@ -53,7 +53,7 @@ namespace AppForSEII2526.UT.AlquilerController_Test
                 _deliveryAddress, PaymentMethodTypes.CreditCard,
                 DateTime.Today.AddDays(2), DateTime.Today.AddDays(5), new List<AlquilarItemDTO>());
 
-            var alquilarItem = new List<AlquilarItemDTO>() { new AlquilarItemDTO(1,20,59,1) };
+            var alquilarItem = new List<AlquilarItemDTO>() { new AlquilarItemDTO(1,"Martillo", "Acero",4,120) };
 
             var alquilerDesdeAyer= new AlquilarForCreateDTO(_userName, _customerNameSurname,
                 _deliveryAddress, PaymentMethodTypes.CreditCard,
@@ -63,14 +63,14 @@ namespace AppForSEII2526.UT.AlquilerController_Test
                 _deliveryAddress, PaymentMethodTypes.CreditCard,
                 DateTime.Today.AddDays(5), DateTime.Today.AddDays(2), alquilarItem);
 
-            var AlquilerApplicationUser = new AlquilarForCreateDTO("victor.lopez@uclm.es", _customerNameSurname,
+            var AlquilerApplicationUser = new AlquilarForCreateDTO("iker.valia@alu.uclm.es", _customerNameSurname,
                 _deliveryAddress, PaymentMethodTypes.CreditCard,
                 DateTime.Today.AddDays(2), DateTime.Today.AddDays(4), alquilarItem);
 
             var AlquilerHerramientaNoDisponible = new AlquilarForCreateDTO(_userName, _customerNameSurname,
                 _deliveryAddress, PaymentMethodTypes.CreditCard,
                 DateTime.Today.AddDays(2), DateTime.Today.AddDays(5),
-                new List<AlquilarItemDTO>() { new AlquilarItemDTO(2, 22, 59, 2) });
+                new List<AlquilarItemDTO>() { new AlquilarItemDTO(2, "Martillo", "Acero", 4, 120) });
 
 
             var allTests = new List<object[]>
@@ -129,13 +129,13 @@ namespace AppForSEII2526.UT.AlquilerController_Test
             var alquilerDTO = new AlquilarForCreateDTO(_userName, _customerNameSurname,
                 _deliveryAddress, PaymentMethodTypes.CreditCard,
                 to, from, new List<AlquilarItemDTO>()
-                { new AlquilarItemDTO(3, 50, 20, 3) });
+                { new AlquilarItemDTO(1,"Martillo", "Acero",4,120) });
 
             var expectedalquilerDetailDTO = new AlquilarDetailDTO(2, DateTime.Now,
                 _customerNameSurname,"",
                 _deliveryAddress, PaymentMethodTypes.CreditCard,
                 to, from, new List<AlquilarItemDTO>()
-                { new AlquilarItemDTO(4,20,20,4) });
+                { new AlquilarItemDTO(1,"Martillo", "Acero",4,120) });
 
             // Act
             var result = await controller.CreateAlquiler(alquilerDTO);
