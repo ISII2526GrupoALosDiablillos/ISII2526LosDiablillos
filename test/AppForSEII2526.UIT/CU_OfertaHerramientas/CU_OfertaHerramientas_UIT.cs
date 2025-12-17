@@ -176,5 +176,52 @@ namespace AppForSEII2526.UIT.CU_OfertaHerramientas_UIT
 
             Assert.True(PostOferta_PO.CheckValidationError(expectedError), $"Expected error: {expectedError}");
         }
+
+        [Theory]
+        [InlineData(herramientaIdBosch, herramientaNombreMakita, herramientaMaterialMakita, herramientaPrecioBosch, herramientaFabricanteMakita, "Makita", "15", "", "All")]
+        [Trait("LevelTesting", "Funcional Testing")]
+        public void UC3_Examen(string herramientaId, string herramientaNombre, string herramientaMaterial, string herramientaPrecio, string herramientaFabricante,
+            string filtroFabricante, string filtroPrecio, string filtro2, string filtro3)
+        {
+            InitialStepsForOfertaHerramientas();
+            Thread.Sleep(100);
+
+            var expectedHerramientas = new List<string[]> { new string[] { herramientaId, herramientaNombre, herramientaMaterial, herramientaPrecio, herramientaFabricante }, };
+
+            SelectHerramientasParaOferta_PO.SearchHerramientas(filtroFabricante, filtro2);
+            Thread.Sleep(500);
+
+            SelectHerramientasParaOferta_PO.AddHerramientaToOfertaCart(herramientaNombre);
+            Thread.Sleep(500);
+
+            SelectHerramientasParaOferta_PO.SearchHerramientas(filtroFabricante, filtro2);
+            Thread.Sleep(500);
+            SelectHerramientasParaOferta_PO.SearchHerramientas(filtro3, filtro2);
+            Thread.Sleep(500);
+
+            SelectHerramientasParaOferta_PO.SearchHerramientas(filtro3, filtroPrecio);
+            Thread.Sleep(500);
+            SelectHerramientasParaOferta_PO.AddHerramientaToOfertaCart(herramientaPrecio);
+            Thread.Sleep(500);
+
+            SelectHerramientasParaOferta_PO.crearOfertaCarrito();
+            Thread.Sleep(500);
+
+            PostOferta_PO.modificarHerramientas();
+            Thread.Sleep(500);
+
+            SelectHerramientasParaOferta_PO.RemoveHerramientaFromOfertaCart(herramientaIdMakita);
+
+            SelectHerramientasParaOferta_PO.crearOfertaCarrito();
+            Thread.Sleep(1000);
+
+            PostOferta_PO.addAtributosOferta(herramientaId, DateTime.Today.AddDays(3).ToString("dd/MM/yyyy"), DateTime.Today.AddDays(11).ToString("dd/MM/yyyy"), "PayPal", "Socios", "10");
+            Thread.Sleep(1000);
+
+            PostOferta_PO.guardarOfertaDialog();
+            Thread.Sleep(1000);
+
+            Assert.True(detailOferta_PO.CheckOfertaDetail(DateTime.Today.AddDays(3), DateTime.Today.AddDays(11), DateTime.Today, "PayPal", "Socios", 1));
+        }
     }
 }
