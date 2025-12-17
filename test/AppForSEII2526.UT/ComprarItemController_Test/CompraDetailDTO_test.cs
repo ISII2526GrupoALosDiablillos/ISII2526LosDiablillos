@@ -89,12 +89,12 @@ namespace AppForSEII2526.UT.HerramientasController_Test
             Assert.Single(compraDTOActual.compraItems);
             var compraItem = compraDTOActual.compraItems[0];
 
-            Assert.Equal(2, compraItem.herramientaId);
-            Assert.Equal("Martillo", compraItem.nombre);
-            Assert.Equal("madera", compraItem.material);
-            Assert.Equal("Anticuado", compraItem.descripcion);
-            Assert.Equal(15, compraItem.precio);
-            Assert.Equal(1, compraItem.cantidad);
+            Assert.Equal(2, compraItem.HerramientaId);
+            Assert.Equal("Martillo", compraItem.Nombre);
+            Assert.Equal("madera", compraItem.Material);
+            Assert.Equal("Anticuado", compraItem.Descripcion);
+            Assert.Equal(15, compraItem.Precio);
+            Assert.Equal(1, compraItem.Cantidad);
         }
     }
 }
