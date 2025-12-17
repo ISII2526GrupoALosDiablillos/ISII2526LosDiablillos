@@ -6,11 +6,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-AppForSEII2526.Web-660902f3-55b0-42b4-a4c6-7893d47fb56a</UserSecretsId>
   </PropertyGroup>
-	
+
   <ItemGroup>
-	<OpenApiReference Include="OpenAPIs\swagger.json" Namespace="AppForSEII2526.Web.API" ClassName="AppForSEII2526APIClient">
-		<SourceUri>https://localhost:7067/swagger/v1/swagger.json</SourceUri>
-	</OpenApiReference>
+    <OpenApiReference Include="OpenAPIs\swagger.json" Namespace="AppForSEII2526.Web.API" ClassName="AppForSEII2526APIClient">
+      <SourceUri>https://localhost:7067/swagger/v1/swagger.json</SourceUri>
+    </OpenApiReference>
   </ItemGroup>
 
   <!-- <ItemGroup>
@@ -18,7 +18,7 @@
       <SourceUri>https://localhost:44339/swagger/v1/swagger.json</SourceUri>
     </OpenApiReference>
   </ItemGroup> -->
-	
+
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.17" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.17" />
@@ -40,9 +40,13 @@
   </ItemGroup>
 
   <ItemGroup>
-	<ProjectReference Include="..\AppForSEII2526.API\AppForSEII2526.API.csproj" />
+    <ProjectReference Include="..\AppForSEII2526.API\AppForSEII2526.API.csproj" />
   </ItemGroup>
 
-  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties appsettings_1json__JsonSchema="" />
+    </VisualStudio>
+  </ProjectExtensions>
 
 </Project>
