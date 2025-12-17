@@ -18,6 +18,7 @@
             this.precio = precio;
             this.descripcion = descripcion;
             this.cantidad = cantidad;
+            this.fabricante = fabricante;
             this.herramientaId = herramientaId;
             this.compraId = compraId;
         }
