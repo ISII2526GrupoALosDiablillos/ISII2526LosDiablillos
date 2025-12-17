@@ -6,11 +6,12 @@
         public String material { get; set; }
         public double precio { get; set; }
         public String descripcion { get; set; }
+        public String fabricante { get; set; }
         public int cantidad { get; set; }
         public int herramientaId { get; set; }
         public int compraId { get; set; }
 
-        public CompraItemDTO(String nombre, String material, double precio, String descripcion, int cantidad, int herramientaId, int compraId)
+        public CompraItemDTO(String nombre, String material, double precio, String descripcion, int cantidad, String fabricante, int herramientaId, int compraId)
         {
             this.nombre = nombre;
             this.material = material;
@@ -27,13 +28,14 @@
                    nombre == dTO.nombre &&
                    material == dTO.material &&
                    precio == dTO.precio &&
+                   fabricante ==dTO.fabricante &&
                    descripcion == dTO.descripcion &&
                    cantidad == dTO.cantidad;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(nombre, material, precio, descripcion, cantidad);
+            return HashCode.Combine(nombre, material, precio, fabricante, descripcion, cantidad);
         }
     }
 }

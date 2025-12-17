@@ -54,7 +54,7 @@ namespace AppForSEII2526.UT.ComprarItemController_Test
         public static IEnumerable<object[]> TestCasesFor_CompraMétodoPost_OK()
         {
             var micompra = new CompraForCreateDTO(4, "Clavos", "acero", 20, "gonormu", "Gonzalo", "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", new List<CompraItemDTO>(), DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
-            micompra.CompraItems.Add(new CompraItemDTO("Clavos", "acero", 20, "Muy afilados", 20, 3, 3));
+            micompra.CompraItems.Add(new CompraItemDTO("Clavos", "acero", 20, "Muy afilados", 20, "Makita", 3, 3));
             var CompraItems = micompra.CompraItems;
             var SinNombreHerr = new CompraForCreateDTO(4, null, "acero", 20, "gonormu", "Gonzalo", "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
             var SinMaterial = new CompraForCreateDTO(4, "Clavos", null, 20, "gonormu", "Gonzalo", "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
@@ -63,7 +63,7 @@ namespace AppForSEII2526.UT.ComprarItemController_Test
             var SinDireccion = new CompraForCreateDTO(4, "Clavos", "acero", 20, "gonormu", "Gonzalo", "Ortiz", null, PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
             var SinNombreUsuario = new CompraForCreateDTO(4, "Clavos", "acero", 20, null, "Gonzalo", "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
             var SinNombre = new CompraForCreateDTO(4, "Clavos", "acero", 20, "gonormu", null, "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
-            var MuchasHerramientas = new CompraForCreateDTO(4, "Clavos", "acero", 20, "gonormu", "Gonzalo", "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", new List<CompraItemDTO>() { new CompraItemDTO("Clavos", "acero", 20, "", 3, 3, 4) }, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
+            var MuchasHerramientas = new CompraForCreateDTO(4, "Clavos", "acero", 20, "gonormu", "Gonzalo", "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", new List<CompraItemDTO>() { new CompraItemDTO("Clavos", "acero", 20, "", 3, "Makita",3, 4) }, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
             var Metalico = new CompraForCreateDTO(4, "Clavos", "acero", 20, "gonormu", "Gonzalo", "Ortiz", "Mi Casa", PaymentMethodTypes.Cash, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
 
             return new List<object[]>
@@ -159,7 +159,7 @@ namespace AppForSEII2526.UT.ComprarItemController_Test
                 4, "Clavos", "acero", 400, "gonormu", "Gonzalo", "Ortiz", "Mi casa",
                 PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es",
                 new List<CompraItemDTO> {
-                    new CompraItemDTO("Clavos", "acero", 400, "Muy afilados", 20, 3, 3)
+                    new CompraItemDTO("Clavos", "acero", 400, "Muy afilados", 20, "Makita",3, 3)
                 },
                 DateTime.Today.AddDays(1), DateTime.Today.AddDays(2)
             );
