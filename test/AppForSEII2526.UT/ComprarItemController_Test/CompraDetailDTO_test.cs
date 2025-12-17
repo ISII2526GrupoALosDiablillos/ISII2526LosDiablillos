@@ -72,7 +72,7 @@ namespace AppForSEII2526.UT.HerramientasController_Test
             var controller = new ComprasController(_context, logger);
 
             var expectedCompra = new CompraDetailDTO(5, "Gonzalo", "Ortiz", "Mi casa", 33.70, DateTime.Today, new List<CompraItemDTO>());
-            expectedCompra.compraItems.Add(new CompraItemDTO("Martillo", "madera", 15, "Anticuado", 1, "Makita", 2, 3));
+            expectedCompra.compraItems.Add(new CompraItemDTO("Martillo", "madera", 15, "Anticuado", 1, 2, 3));
 
             var result = await controller.GetCompraDetails(5);
 
