@@ -460,14 +460,14 @@
         "operationId": "GetHerramientaParaAlquilarDTO",
         "parameters": [
           {
-            "name": "filtroMateiral",
+            "name": "filtroNombre",
             "in": "query",
             "schema": {
               "type": "string"
             }
           },
           {
-            "name": "filtroNombre",
+            "name": "filtroMaterial",
             "in": "query",
             "schema": {
               "type": "string"
@@ -555,62 +555,6 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/HerramientaParaComprarDTO"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/Herramienta/GetHerramientaParaOfertarDTO": {
-      "get": {
-        "tags": [
-          "Herramienta"
-        ],
-        "operationId": "GetHerramientaParaOfertarDTO",
-        "parameters": [
-          {
-            "name": "filtroPrecio",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "filtroFabricante",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/HerramientaParaOfertarDTO"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/HerramientaParaOfertarDTO"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/HerramientaParaOfertarDTO"
                   }
                 }
               }
@@ -1094,6 +1038,14 @@
             "type": "integer",
             "format": "int32"
           },
+          "nombreHerramienta": {
+            "type": "string",
+            "nullable": true
+          },
+          "material": {
+            "type": "string",
+            "nullable": true
+          },
           "cantidad": {
             "type": "integer",
             "format": "int32"
@@ -1237,6 +1189,10 @@
           "herramientaId": {
             "type": "integer",
             "format": "int32"
+          },
+          "compraId": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false
@@ -1296,6 +1252,10 @@
             "minimum": 0.5,
             "type": "integer",
             "format": "currency"
+          },
+          "fabricante": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false

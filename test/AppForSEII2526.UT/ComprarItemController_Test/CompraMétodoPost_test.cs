@@ -104,8 +104,8 @@ namespace AppForSEII2526.UT.ComprarItemController_Test
                 Assert.Equal(compraForCreateDTO.Precio, actualCompraDetailDTO.preciototal);
                 Assert.Single(actualCompraDetailDTO.compraItems);
                 var item = actualCompraDetailDTO.compraItems[0];
-                Assert.Equal(3, item.cantidad);
-                Assert.Equal("", item.descripcion);
+                Assert.Equal(3, item.Cantidad);
+                Assert.Equal("", item.Descripcion);
             }
             else
             {
@@ -175,12 +175,12 @@ namespace AppForSEII2526.UT.ComprarItemController_Test
             Assert.Equal(compraDTO.DireccionEnvio, actualCompraDetailDTO.direccion);
             Assert.Single(actualCompraDetailDTO.compraItems);
             var item = actualCompraDetailDTO.compraItems[0];
-            Assert.Equal("Clavos", item.nombre);
-            Assert.Equal("acero", item.material);
-            Assert.Equal("Muy afilados", item.descripcion);
-            Assert.Equal(3, item.herramientaId);
-            Assert.Equal(20, item.cantidad);
-            Assert.Equal(20, item.precio);
+            Assert.Equal("Clavos", item.Nombre);
+            Assert.Equal("acero", item.Material);
+            Assert.Equal("Muy afilados", item.Descripcion);
+            Assert.Equal(3, item.HerramientaId);
+            Assert.Equal(20, item.Cantidad);
+            Assert.Equal(20, item.Precio);
         }
     }
 }

@@ -94,7 +94,7 @@ namespace AppForSEII2526.API.Controllers
                 ModelState.AddModelError("NoApellidoCliente", "Error. Apellido no registrado.");
 
             var ultimaCompra = compraForCreateDTO.CompraItems.FirstOrDefault();
-            if (ultimaCompra != null && ultimaCompra.cantidad == 3 && string.IsNullOrEmpty(ultimaCompra.descripcion))
+            if (ultimaCompra != null && ultimaCompra.Cantidad == 3 && string.IsNullOrEmpty(ultimaCompra.Descripcion))
                 ModelState.AddModelError("MuchasHerramientas", "¡Error! Estas comprando demasiadas herramientas sin descripción.");
 
             var direccion = _context.ApplicationUsers
@@ -109,7 +109,7 @@ namespace AppForSEII2526.API.Controllers
             if (ModelState.ErrorCount > 0)
                 return BadRequest(new ValidationProblemDetails(ModelState));
 
-            var herramientasIds = compraForCreateDTO.CompraItems.Select(ri => ri.herramientaId).ToList();
+            var herramientasIds = compraForCreateDTO.CompraItems.Select(ri => ri.HerramientaId).ToList();
 
             var herramientas = _context.Herramientas
                 .Include(h => h.compraItems)
@@ -143,14 +143,14 @@ namespace AppForSEII2526.API.Controllers
 
             foreach (var item in compraForCreateDTO.CompraItems)
             {
-                var herramienta = herramientas.FirstOrDefault(h => h.id == item.herramientaId);
+                var herramienta = herramientas.FirstOrDefault(h => h.id == item.HerramientaId);
                 if (herramienta == null)
                 {
-                    ModelState.AddModelError("ComprarItems", $"Error. La herramienta con el id {item.herramientaId} no existe");
+                    ModelState.AddModelError("ComprarItems", $"Error. La herramienta con el id {item.HerramientaId} no existe");
                 }
                 else
                 {
-                    item.precio = herramienta.precio;
+                    item.Precio = herramienta.precio;
                 }
             }
 
