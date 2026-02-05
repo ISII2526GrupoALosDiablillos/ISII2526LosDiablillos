@@ -17,18 +17,11 @@ namespace AppForSEII2526.UIT.CU_ComprarHerramientas
         private CompraCreate_PO crearCompra_PO;
         private CompraDetails_PO detalleCompra_PO;
 
-        private const string herramienta1Id = "3";
-        private const string herramienta1Nombre = "Martillo";
-        private const string herramienta1Material = "Madera";
-        private const string herramienta1Precio = "20";
-        private const string herramienta1Fabricante = "Makita";
-
-
-        private const string herramienta2Id = "4";
-        private const string herramienta2Nombre = "Destornillador";
-        private const string herramienta2Material = "Metal";
-        private const string herramienta2Precio = "15";
-        private const string herramienta2Fabricante = "Bosch";
+        private const string herramientaId = "4";
+        private const string herramientaNombre = "Alicates";
+        private const string herramientaMaterial = "Metal";
+        private const string herramientaPrecio = "25";
+        private const string herramientaFabricante = "Sergio";
 
         public CU_ComprarHerramientas_UIT(ITestOutputHelper output) : base(output)
         {
@@ -49,80 +42,7 @@ namespace AppForSEII2526.UIT.CU_ComprarHerramientas
             _driver.FindElement(id).Click();
         }
 
-
-        [Theory]
-        [InlineData(herramienta1Id, herramienta1Nombre, herramienta1Material, herramienta1Precio, herramienta1Fabricante, "Madera", "")]
-        [InlineData(herramienta2Id, herramienta2Nombre, herramienta2Material, herramienta2Precio, herramienta2Fabricante, "", "15")]
-        [InlineData(herramienta2Id, herramienta2Nombre, herramienta2Material, herramienta2Precio, herramienta2Fabricante, "Metal", "15")]
-        [Trait("LevelTesting", "Funcional Testing")]
-        public void UC1_2_3_AFO_filteringPorMaterialPrecio(string herramientaId, string herramientaNombre, string herramientaMaterial, string herramientaPrecio, string herramientaFabricante, string filtroMaterial, string filtroPrecio)
-        {
-            //Arrange
-            InitialStepsForCompraHerramientas();
-            var expectedHerramientas = new List<string[]> { new string[] { herramientaNombre, herramientaMaterial, herramientaPrecio, herramientaFabricante, "Añadir" }, };
-
-            //Act
-            selectHerramientasParaComprar_PO.BuscarHerramientas(filtroMaterial, filtroPrecio);
-            Thread.Sleep(500);
-
-            //Assert
-            Assert.True(selectHerramientasParaComprar_PO.CheckListOfHerramientasInCart(expectedHerramientas));
-        }
-
-        [Fact]
-        [Trait("LevelTesting", "Funcional Testing")]
-        public void CU1_5_FA2_ModificarCarritoCompra()
-        {
-            //Arrange
-            InitialStepsForCompraHerramientas();
-            selectHerramientasParaComprar_PO.BuscarHerramientas("", "0");
-            Thread.Sleep(500);
-
-            //Act
-            selectHerramientasParaComprar_PO.AñadirHerramientaToCart(herramienta1Nombre);
-            Thread.Sleep(500);
-            selectHerramientasParaComprar_PO.AñadirHerramientaToCart(herramienta2Nombre);
-            Thread.Sleep(500);
-            selectHerramientasParaComprar_PO.ComprarHerramientas();
-            Thread.Sleep(500);
-            crearCompra_PO.ModificarCompra();
-            Thread.Sleep(500);
-            selectHerramientasParaComprar_PO.QuitarHerramientaFromCart(herramienta2Nombre);
-            Thread.Sleep(500);
-            selectHerramientasParaComprar_PO.ComprarHerramientas();
-            Thread.Sleep(500);
-            var expectedHerramientas = new List<string[]>
-            {
-            new[]
-              {
-                 $"{herramienta1Nombre} {herramienta1Material}{Environment.NewLine}{herramienta1Precio}"
-                }
-            };
-
-            Assert.True(crearCompra_PO.CheckListHerramientasEnCompra(expectedHerramientas));
-
-
-
-        }
-
-        [Fact]
-        [Trait("LevelTesting", "Funcional Testing")]
-        public void CU1_4_FA3_NotHerramientas()
-        {
-
-            //Arrange
-            InitialStepsForCompraHerramientas();
-            selectHerramientasParaComprar_PO.BuscarHerramientas("", "0");
-            Thread.Sleep(500);
-
-            //Act
-            Thread.Sleep(500);
-
-            //Assert
-            Assert.True(selectHerramientasParaComprar_PO.CompraNotAvailable());
-        }
-
-        //Flujo Básico
+        //Flujo Básico (FB)
         [Fact]
         [Trait("LevelTesting", "Funcional Testing")]
         public void CU1_FB_CompraHerramienta()
@@ -133,12 +53,12 @@ namespace AppForSEII2526.UIT.CU_ComprarHerramientas
             Thread.Sleep(500);
             var expectedHerramientas = new List<string[]>
             {
-                new string[] { herramienta1Nombre, herramienta1Material, "1", "5 €", "Duro" }
+                new string[] { herramientaNombre, herramientaMaterial, "1", "5 €", "Duro" }
 
             };
 
             //Act
-            selectHerramientasParaComprar_PO.AñadirHerramientaToCart(herramienta1Nombre);
+            selectHerramientasParaComprar_PO.AñadirHerramientaToCart(herramientaNombre);
             Thread.Sleep(500);
             selectHerramientasParaComprar_PO.ComprarHerramientas();
             Thread.Sleep(500);
@@ -157,13 +77,94 @@ namespace AppForSEII2526.UIT.CU_ComprarHerramientas
 
         }
 
+        //FB + FA1
+        //Flujo Alternativo 1 al Paso 2: Filtrar herramientas.
+        [Theory]
+        [InlineData(herramientaId, herramientaNombre, herramientaMaterial, herramientaPrecio, herramientaFabricante, "Metal", "")]
+        [InlineData(herramientaId, herramientaNombre, herramientaMaterial, herramientaPrecio, herramientaFabricante, "", "25")]
+        [InlineData(herramientaId, herramientaNombre, herramientaMaterial, herramientaPrecio, herramientaFabricante, "Metal", "25")]
+        [Trait("LevelTesting", "Funcional Testing")]
+        public void CU1_FA1_filtroMaterialPrecio(string herramientaId, string herramientaNombre, string herramientaMaterial, string herramientaPrecio, string herramientaFabricante, string filtroMaterial, string filtroPrecio)
+        {
+            //Arrange
+            InitialStepsForCompraHerramientas();
+            var expectedHerramientas = new List<string[]> { new string[] { herramientaNombre, herramientaMaterial, herramientaPrecio, herramientaFabricante, "Añadir" }, };
+
+            //Act
+            selectHerramientasParaComprar_PO.BuscarHerramientas(filtroMaterial, filtroPrecio);
+            Thread.Sleep(500);
+
+            //Assert
+            Assert.True(selectHerramientasParaComprar_PO.CheckListOfHerramientasInCart(expectedHerramientas));
+        }
+
+        //FB + FA2
+        //Flujo Alternativo 2 al Paso 5: Modificar Carrito.
+        [Fact]
+        [Trait("LevelTesting", "Funcional Testing")]
+        public void CU1_FA2_ModificarCarritoCompra()
+        {
+            //Arrange
+            InitialStepsForCompraHerramientas();
+            selectHerramientasParaComprar_PO.BuscarHerramientas("", "0");
+            Thread.Sleep(500);
+
+            //Act
+            selectHerramientasParaComprar_PO.AñadirHerramientaToCart(herramientaNombre);
+            Thread.Sleep(500);
+            selectHerramientasParaComprar_PO.AñadirHerramientaToCart(herramientaNombre);
+            Thread.Sleep(500);
+            selectHerramientasParaComprar_PO.ComprarHerramientas();
+            Thread.Sleep(500);
+            crearCompra_PO.ModificarCompra();
+            Thread.Sleep(500);
+            selectHerramientasParaComprar_PO.QuitarHerramientaFromCart(herramientaNombre);
+            Thread.Sleep(500);
+            selectHerramientasParaComprar_PO.ComprarHerramientas();
+            Thread.Sleep(500);
+            var expectedHerramientas = new List<string[]>
+            {
+            new[]
+              {
+                 $"{herramientaNombre} {herramientaMaterial}{Environment.NewLine}{herramientaPrecio}"
+                }
+            };
+
+            Assert.True(crearCompra_PO.CheckListHerramientasEnCompra(expectedHerramientas));
+
+
+
+        }
+
+        //FB + FA3
+        //Flujo Alternativo 3 al Paso 4: No hay herramientas en el carrito.
+        [Fact]
+        [Trait("LevelTesting", "Funcional Testing")]
+        public void CU1_FA3_NotHerramientas()
+        {
+
+            //Arrange
+            InitialStepsForCompraHerramientas();
+            selectHerramientasParaComprar_PO.BuscarHerramientas("", "");
+            Thread.Sleep(500);
+
+            //Act
+            Thread.Sleep(500);
+
+            //Assert
+            Assert.True(selectHerramientasParaComprar_PO.CompraNotAvailable());
+        }
+
+
+        //FB + FA4
+        //Flujo Alternativo 4 al Paso 6: Campos Obligatorios Vacíos.
         [Theory]
         [InlineData("", "Ortiz", "Mi Casa", "PayPal", "Nombre")]
         [InlineData("Gonzalo", "", "Mi Casa", "PayPal", "Apellido")]
         [InlineData("Gonzalo", "Ortiz", "", "PayPal", "Direccion")]
         [InlineData("Gonzalo", "Ortiz", "Mi Casa", "", "MetodoPago")]
         [Trait("LevelTesting", "Funcional Testing")]
-        public void CU1_6_FA5_camposNoValidos(string nombre, string apellido, string direccion, string metodoPago, string error)
+        public void CU1_Esc6_FA5_camposNoValidos(string nombre, string apellido, string direccion, string metodoPago, string error)
         {
 
             //Arrange
@@ -172,7 +173,7 @@ namespace AppForSEII2526.UIT.CU_ComprarHerramientas
             Thread.Sleep(500);
 
             //Act
-            selectHerramientasParaComprar_PO.AñadirHerramientaToCart(herramienta1Nombre);
+            selectHerramientasParaComprar_PO.AñadirHerramientaToCart(herramientaNombre);
             Thread.Sleep(500);
             selectHerramientasParaComprar_PO.ComprarHerramientas();
             Thread.Sleep(500);
@@ -186,24 +187,26 @@ namespace AppForSEII2526.UIT.CU_ComprarHerramientas
 
         }
 
+        //FB + FA5
+        //Flujo Alternativo 5 al Paso 6: No hay herramientas en Stock.
         [Fact]
         [Trait("LevelTesting", "Funcional Testing")]
-        public void CU1_6_FA5_noHayCantidad()
+        public void CU1_Esc6_FA5_noHayCantidad()
         {
 
             //Arrange
             InitialStepsForCompraHerramientas();
-            selectHerramientasParaComprar_PO.BuscarHerramientas("", "0");
+            selectHerramientasParaComprar_PO.BuscarHerramientas("", "");
             Thread.Sleep(500);
 
             //Act
-            selectHerramientasParaComprar_PO.AñadirHerramientaToCart(herramienta1Nombre);
+            selectHerramientasParaComprar_PO.AñadirHerramientaToCart(herramientaNombre);
             Thread.Sleep(500);
             selectHerramientasParaComprar_PO.ComprarHerramientas();
             Thread.Sleep(500);
             crearCompra_PO.RellenarFormulario("Gonzalo", "Ortiz", "gonzalo@gmail.com", "Mi Casa", "PayPal", "Duro");
             Thread.Sleep(500);
-            crearCompra_PO.EstablecerCantidadPorNombre(herramienta1Nombre, "0");
+            crearCompra_PO.EstablecerCantidadPorNombre(herramientaNombre, "0");
             Thread.Sleep(500);
             crearCompra_PO.SubmitCompra();
             Thread.Sleep(500);

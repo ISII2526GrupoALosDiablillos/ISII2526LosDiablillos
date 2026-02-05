@@ -45,22 +45,22 @@ namespace AppForSEII2526.UIT.CU_ComprarHerramientas
             WaitForBeingVisible(form);
         }
 
-        public void RellenarFormulario(string nombre, string apellido, string correo, string direccion, string metodoPagoId, string descripcion)
+        public void RellenarFormulario(string nombreCliente, string apellidoCliente, string correo, string direccionEnvio, string metodoPagoId, string descripcion)
         {
             EsperarPaginaCrearCompra();
             WaitForBeingVisible(_nombreCliente);
 
             _driver.FindElement(_nombreCliente).Clear();
-            _driver.FindElement(_nombreCliente).SendKeys(nombre);
+            _driver.FindElement(_nombreCliente).SendKeys(nombreCliente);
 
             _driver.FindElement(_apellidoCliente).Clear();
-            _driver.FindElement(_apellidoCliente).SendKeys(apellido);
+            _driver.FindElement(_apellidoCliente).SendKeys(apellidoCliente);
 
             _driver.FindElement(_correoElectronico).Clear();
             _driver.FindElement(_correoElectronico).SendKeys(correo);
 
             _driver.FindElement(_direccionEnvio).Clear();
-            _driver.FindElement(_direccionEnvio).SendKeys(direccion);
+            _driver.FindElement(_direccionEnvio).SendKeys(direccionEnvio);
 
 
             WaitForBeingVisible(_tableOfItems);

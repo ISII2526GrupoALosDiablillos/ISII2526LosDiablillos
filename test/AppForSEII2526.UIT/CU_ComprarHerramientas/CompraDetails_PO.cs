@@ -16,14 +16,14 @@ namespace AppForSEII2526.UIT.CU_ComprarHerramientas
         {
         }
         private By _tableOfItems = By.Id("ComprasHerramientas");
-        public bool CheckDetalleCompra(string nombre, string apellido, string direccion, DateTime fecha, int precioTotal)
+        public bool CheckDetalleCompra(string nombreCliente, string apellidoCliente, string direccionEnvio, DateTime fechaCompra, int precioTotal)
         {
             WaitForBeingVisible(_tableOfItems);
             bool resultado = true;
-            var nombreYApellido = nombre + " " + apellido;
-            resultado = resultado && _driver.FindElement(By.Id("NombreApellido")).Text.Contains(nombreYApellido);
-            resultado = resultado && _driver.FindElement(By.Id("DireccionCompra")).Text.Contains(direccion);
-            resultado = resultado && _driver.FindElement(By.Id("FechaCompra")).Text.Contains(fecha.ToString("dd/MM/yyyy"));
+            var nombreCompleto = nombreCliente + " " + apellidoCliente;
+            resultado = resultado && _driver.FindElement(By.Id("NombreCompleto")).Text.Contains(nombreCompleto);
+            resultado = resultado && _driver.FindElement(By.Id("DireccionCompra")).Text.Contains(direccionEnvio);
+            resultado = resultado && _driver.FindElement(By.Id("FechaCompra")).Text.Contains(fechaCompra.ToString("dd/MM/yyyy"));
             resultado = resultado && _driver.FindElement(By.Id("PrecioTotal")).Text.Contains(precioTotal.ToString());
             return resultado;
         }

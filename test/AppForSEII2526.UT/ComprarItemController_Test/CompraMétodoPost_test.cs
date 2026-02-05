@@ -53,24 +53,24 @@ namespace AppForSEII2526.UT.ComprarItemController_Test
         }
         public static IEnumerable<object[]> TestCasesFor_CompraMétodoPost_OK()
         {
-            var micompra = new CompraForCreateDTO(4, "Clavos", "acero", 20, "gonormu", "Gonzalo", "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", new List<CompraItemDTO>(), DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
+            var micompra = new CompraForCreateDTO(4, /*"Clavos", "acero", 20,*/ "gonormu", "Gonzalo", "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", new List<CompraItemDTO>(), DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
             micompra.CompraItems.Add(new CompraItemDTO("Clavos", "acero", 20, "Muy afilados", 20, "Makita", 3, 3));
             var CompraItems = micompra.CompraItems;
-            var SinNombreHerr = new CompraForCreateDTO(4, null, "acero", 20, "gonormu", "Gonzalo", "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
+            /*var SinNombreHerr = new CompraForCreateDTO(4, null, "acero", 20, "gonormu", "Gonzalo", "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
             var SinMaterial = new CompraForCreateDTO(4, "Clavos", null, 20, "gonormu", "Gonzalo", "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
-            var SinPrecio = new CompraForCreateDTO(4, "Clavos", "acero", 0, "gonormu","Gonzalo", "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
-            var SinApellido = new CompraForCreateDTO(4, "Clavos", "acero", 20, "gonormu", "Gonzalo", null, "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
-            var SinDireccion = new CompraForCreateDTO(4, "Clavos", "acero", 20, "gonormu", "Gonzalo", "Ortiz", null, PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
-            var SinNombreUsuario = new CompraForCreateDTO(4, "Clavos", "acero", 20, null, "Gonzalo", "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
-            var SinNombre = new CompraForCreateDTO(4, "Clavos", "acero", 20, "gonormu", null, "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
-            var MuchasHerramientas = new CompraForCreateDTO(4, "Clavos", "acero", 20, "gonormu", "Gonzalo", "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", new List<CompraItemDTO>() { new CompraItemDTO("Clavos", "acero", 20, "", 3, "Makita",3, 4) }, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
-            var Metalico = new CompraForCreateDTO(4, "Clavos", "acero", 20, "gonormu", "Gonzalo", "Ortiz", "Mi Casa", PaymentMethodTypes.Cash, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
+            var SinPrecio = new CompraForCreateDTO(4, "Clavos", "acero", 0, "gonormu","Gonzalo", "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));*/
+            var SinApellido = new CompraForCreateDTO(4, /*"Clavos", "acero", 20,*/ "gonormu", "Gonzalo", null, "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
+            var SinDireccion = new CompraForCreateDTO(4, /*"Clavos", "acero", 20,*/ "gonormu", "Gonzalo", "Ortiz", null, PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
+            var SinNombreUsuario = new CompraForCreateDTO(4, /*"Clavos", "acero", 20,*/ null, "Gonzalo", "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
+            var SinNombre = new CompraForCreateDTO(4, /*"Clavos", "acero", 20,*/ "gonormu", null, "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
+            var MuchasHerramientas = new CompraForCreateDTO(4, /*"Clavos", "acero", 20,*/ "gonormu", "Gonzalo", "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", new List<CompraItemDTO>() { new CompraItemDTO("Clavos", "acero", 20, "", 3, "Makita",3, 4) }, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
+            var Metalico = new CompraForCreateDTO(4, /*"Clavos", "acero", 20,*/ "gonormu", "Gonzalo", "Ortiz", "Mi Casa", PaymentMethodTypes.Cash, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
 
             return new List<object[]>
             {
-                new object[] { SinNombreHerr, "Error. Introduzca el nombre de la herramienta que desea." },
+                /*new object[] { SinNombreHerr, "Error. Introduzca el nombre de la herramienta que desea." },
                 new object[] { SinMaterial, "Error. Introduzca el material de la herramienta que desea." },
-                new object[] { SinPrecio, "Error. La compra no puede costar 0 euros sin códigos de descuento ni cheques de regalo." },
+                new object[] { SinPrecio, "Error. La compra no puede costar 0 euros sin códigos de descuento ni cheques de regalo." },*/
                 new object[] { SinApellido, "Error. Apellido no registrado." },
                 new object[] { SinDireccion, "Error. Dirección no registrada." },
                 new object[] { SinNombreUsuario, "Error. Nombre de usuario no registrado." },
@@ -101,7 +101,7 @@ namespace AppForSEII2526.UT.ComprarItemController_Test
                 Assert.Equal(compraForCreateDTO.Apellidos_cliente, actualCompraDetailDTO.apellido_cliente);
                 Assert.Equal(compraForCreateDTO.Id, actualCompraDetailDTO.id);
                 Assert.Equal(compraForCreateDTO.DireccionEnvio, actualCompraDetailDTO.direccion);
-                Assert.Equal(compraForCreateDTO.Precio, actualCompraDetailDTO.preciototal);
+                /*Assert.Equal(compraForCreateDTO.Precio, actualCompraDetailDTO.preciototal);*/
                 Assert.Single(actualCompraDetailDTO.compraItems);
                 var item = actualCompraDetailDTO.compraItems[0];
                 Assert.Equal(3, item.cantidad);
@@ -156,7 +156,7 @@ namespace AppForSEII2526.UT.ComprarItemController_Test
             var controller = new ComprasController(_context, logger);
 
             var compraDTO = new CompraForCreateDTO(
-                4, "Clavos", "acero", 400, "gonormu", "Gonzalo", "Ortiz", "Mi casa",
+                4, /*"Clavos", "acero", 400,*/ "gonormu", "Gonzalo", "Ortiz", "Mi casa",
                 PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es",
                 new List<CompraItemDTO> {
                     new CompraItemDTO("Clavos", "acero", 400, "Muy afilados", 20, "Makita",3, 3)

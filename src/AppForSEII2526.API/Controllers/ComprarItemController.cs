@@ -67,14 +67,14 @@ namespace AppForSEII2526.API.Controllers
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.Conflict)]
         public async Task<ActionResult> CreateCompra(CompraForCreateDTO compraForCreateDTO)
         {
-            if (string.IsNullOrEmpty(compraForCreateDTO.Nombre))
+            /*if (string.IsNullOrEmpty(compraForCreateDTO.Nombre))
                 ModelState.AddModelError("Nombre", "Error. Introduzca el nombre de la herramienta que desea.");
 
             if (string.IsNullOrEmpty(compraForCreateDTO.Material))
                 ModelState.AddModelError("Material", "Error. Introduzca el material de la herramienta que desea.");
 
             if (compraForCreateDTO.Precio <= 0)
-                ModelState.AddModelError("Precio", "Error. La compra no puede costar 0 euros sin códigos de descuento ni cheques de regalo.");
+                ModelState.AddModelError("Precio", "Error. La compra no puede costar 0 euros sin códigos de descuento ni cheques de regalo.");*/
 
             if (compraForCreateDTO.FechaCompra <= DateTime.Now)
                 ModelState.AddModelError("FechaCompra", "Error. Tu fecha de compra debe ser después del momento actual.");
