@@ -1,0 +1,178 @@
+﻿@page "/compra/createcompra"
+
+@inject NavigationManager navigation
+@using AppForSEII2526.Web.Components.Shared
+@using AppForSEII2526.Web.API
+@inject AppForSEII2526APIClient apiclient
+@inject ILogger<CompraCreate> logger
+@inject CompraStateContainer compraStateContainer
+
+<h3>CompraCreate</h3>
+
+<div class="row alert alert-danger" role="alert" hidden="@hideErrors">
+    <p>@messageError</p>
+</div>
+
+<EditForm Model="compra" OnValidSubmit="OpenDialog">
+    <div class="row">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+    </div>
+
+    <div class="row g-3">
+        <div class="col-md">
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="compra.Nombre_cliente" class="form-control" id="Nombre" />
+                <label for="Nombre">Nombre </label>
+            </div>
+        </div>
+        <div class="col-md">
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="compra.Apellidos_cliente" class="form-control" id="Apellido" />
+                <label for="Apellido">Apellido </label>
+            </div>
+        </div>
+        <div class="col-md">
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="compra.DireccionEnvio" class="form-control" id="DireccionEnvio" />
+                <label for="DireccionEnvio">Direccion Envio</label>
+            </div>
+        </div>
+        <div class="col-md">
+            <div class="form-floating mb-3">
+                <InputNumber @bind-Value="compra.Telefono" class="form-control" id="Telefono" />
+                <label for="Telefono">Número de Teléfono</label>
+            </div>
+        </div>
+        <div class="col-md">
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="compra.CorreoElectronico" class="form-control" id="CorreoElectrónico" />
+                <label for="CorreoElectrónico">Correo Electrónico</label>
+            </div>
+        </div>
+
+        <div class="col-md">
+            <div class="form-floating">
+                <InputSelect class="form-select" @bind-Value="@compra.Pago" id="TiposMetodoPago">
+                    <option value="@(PaymentMethodTypes.CreditCard)">Tarjeta de Crédito</option>
+                    <option value="@(PaymentMethodTypes.PayPal)">PayPal</option>
+                    <option value="@(PaymentMethodTypes.Cash)">Efectivo</option>
+                </InputSelect>
+                <label for="TiposMetodoPago">Método de Pago</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md">
+        <div class="form-floating">
+            <button class="btn btn-primary" type="submit" id="Submit">
+                Compra tus herramientas
+            </button>
+        </div>
+    </div>
+
+    <h4>Detalle de la Compra</h4>
+    <p>
+        <b>Precio Total:</b> @PrecioTotal €
+        <button class="btn btn-outline-primary" type="button" @onclick="ModifyCompraItems" id="ModifyCompraItems">
+            Modificar Compra
+        </button>
+    </p>
+
+    <div class="mh-100 table-responsive">
+        <table class="table table-condensed table-hover" id="TableOfRentalItems">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Material</th>
+                    <th>Cantidad</th>
+                    <th>Precio</th>
+                    <th>Descripcion</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in compra.CompraItems)
+                {
+                    <tr id="HerramientaData_@item.Nombre">
+                        <td>@item.Nombre</td>
+                        <td>@item.Material</td>
+                        <td><InputNumber @bind-Value="item.Cantidad" class="form-control" id="@($"cantidad_{item.HerramientaId}")" /></td>
+                        <td>@item.Precio</td>
+                        <td><InputText @bind-Value="item.Descripcion" class="form-control" id="@($"description_{item.HerramientaId}")" /></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</EditForm>
+
+@if (DialogIsOpen)
+{
+    <Dialog Caption="Compra herramientas"
+            Message="¿Estás seguro de que quieres realizar una compra de las herramientas seleccionadas?"
+            OnClose="@OnDialogClose"
+            Type=Dialog.Category.SaveNot>
+    </Dialog>
+}
+
+@code {
+    private string messageError = "";
+    private bool hideErrors { get { return messageError.Length == 0; } }
+    private bool DialogIsOpen;
+    private object? errors;
+    private CompraForCreateDTO compra => compraStateContainer.Compra;
+
+    private decimal PrecioTotal
+    {
+        get
+        {
+            return compra.CompraItems.Sum(item =>
+                (decimal)item.Precio * item.Cantidad
+            );
+        }
+    }
+
+    private void ModifyCompraItems()
+    {
+        navigation.NavigateTo("/compra/selectherramientaforcompra");
+    }
+
+    private void OpenDialog()
+    {
+        DialogIsOpen = true;
+    }
+
+    private async Task OnDialogClose(bool isOk)
+    {
+        DialogIsOpen = false;
+        if (isOk)
+        {
+            if (compra.CompraItems.Count > 0)
+            {
+                try
+                {
+                    compra.UserName = compra.CorreoElectronico;
+
+                    var comprado = await apiclient.CreateCompraAsync(compra);
+                    compraStateContainer.CompraProcessed();
+
+                    navigation.NavigateTo($"/compra/compradetails/?CompraId={comprado.Id}");
+                }
+                catch (ApiException<ValidationProblemDetails> apiexceptionvalidation)
+                {
+                    if (apiexceptionvalidation.Result.Errors.Values != null)
+                    {
+                        messageError = "";
+                        foreach (var errors in apiexceptionvalidation.Result.Errors.Values)
+                            messageError = string.Join("(*) ", messageError, string.Join(" (*) ", errors));
+                    }
+                }
+                catch (ApiException ex)
+                {
+                    messageError = "Error al procesar la compra: " + ex.Message;
+                }
+            }
+        }
+    }
+}
