@@ -72,19 +72,14 @@ namespace AppForSEII2526.UT.HerramientasController_Test
             var controller = new ComprasController(_context, logger);
 
             var expectedCompra = new CompraDetailDTO(5, "Gonzalo", "Ortiz", "Mi casa", 33.70, DateTime.Today, new List<CompraItemDTO>());
-            expectedCompra.compraItems.Add(new CompraItemDTO("Martillo", "madera", 15, "Anticuado", 1, "Makita", 2, 3));
+            expectedCompra.compraItems.Add(new CompraItemDTO("Martillo", "madera", 15, "Anticuado", 1, 2, 3));
 
             var result = await controller.GetCompraDetails(5);
 
             var okResult = Assert.IsType<OkObjectResult>(result);
             var compraDTOActual = Assert.IsType<CompraDetailDTO>(okResult.Value);
 
-            Assert.Equal(expectedCompra.id, compraDTOActual.id);
-            Assert.Equal(expectedCompra.direccion, compraDTOActual.direccion);
-            Assert.Equal(expectedCompra.apellido_cliente, compraDTOActual.apellido_cliente);
-            Assert.Equal(expectedCompra.nombre_cliente, compraDTOActual.nombre_cliente);
-            Assert.Equal(expectedCompra.preciototal, compraDTOActual.preciototal);
-            Assert.Equal(expectedCompra.fechaCompra, compraDTOActual.fechaCompra);
+            Assert.Equal(expectedCompra, compraDTOActual);
 
             Assert.Single(compraDTOActual.compraItems);
             var compraItem = compraDTOActual.compraItems[0];

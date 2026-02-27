@@ -1,5 +1,10 @@
 ﻿using AppForSEII2526.API.DTO.ComprarDTOs;
 using AppForSEII2526.API.DTOs;
+using AppForSEII2526.API.Models;
+using Humanizer;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace AppForSEII2526.API.Controllers
 {
@@ -28,10 +33,10 @@ namespace AppForSEII2526.API.Controllers
             }
 
             var compraDetalle = await _context.Compras
+                .Where(o => o.id == id)
                 .Include(o => o.compraItem)
                 .ThenInclude(oi => oi.herramienta)
                 .ThenInclude(h => h.fabricante)
-                .Where(o => o.id == id)
                 .Select(o => new CompraDetailDTO(
                     o.id,
                     o.atributos.nombreCliente,
@@ -45,7 +50,6 @@ namespace AppForSEII2526.API.Controllers
                         oi.herramienta.precio,
                         oi.descripcion,
                         oi.cantidad,
-                        oi.herramienta.fabricante.Nombre,
                         oi.herramienta.id,
                         oi.compra.id)).ToList()
                     ))
@@ -67,6 +71,12 @@ namespace AppForSEII2526.API.Controllers
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.Conflict)]
         public async Task<ActionResult> CreateCompra(CompraForCreateDTO compraForCreateDTO)
         {
+            if (compraForCreateDTO == null)
+                ModelState.AddModelError("CrearCompraDTO", "Pasa un objeto como parámetro.");
+
+            if (compraForCreateDTO.CompraItems.Count == 0)
+                ModelState.AddModelError("CompraItems", "Error: No se puede comprar cero herramientas...");
+
             /*if (string.IsNullOrEmpty(compraForCreateDTO.Nombre))
                 ModelState.AddModelError("Nombre", "Error. Introduzca el nombre de la herramienta que desea.");
 
@@ -76,15 +86,12 @@ namespace AppForSEII2526.API.Controllers
             if (compraForCreateDTO.Precio <= 0)
                 ModelState.AddModelError("Precio", "Error. La compra no puede costar 0 euros sin códigos de descuento ni cheques de regalo.");*/
 
-            if (compraForCreateDTO.FechaCompra <= DateTime.Now)
+            if (compraForCreateDTO.FechaCompra < DateTime.Now)
                 ModelState.AddModelError("FechaCompra", "Error. Tu fecha de compra debe ser después del momento actual.");
 
-            if (compraForCreateDTO.FechaCompra >= compraForCreateDTO.FechaRecibo)
-                ModelState.AddModelError("FechaRecibo", "Error. Cómo vas a recibir algo antes de comprarlo?");
-
             var user = _context.ApplicationUsers.FirstOrDefault(au => au.UserName == compraForCreateDTO.UserName);
-            if (user == null)
-                ModelState.AddModelError("NoUsername", "Error. Nombre de usuario no registrado.");
+            //if (user == null)
+            //    ModelState.AddModelError("NoUsername", "Error. Nombre de usuario no registrado.");
 
             var nombre = _context.ApplicationUsers.FirstOrDefault(au => au.nombreCliente == compraForCreateDTO.Nombre_cliente);
             if (nombre == null)
@@ -131,7 +138,6 @@ namespace AppForSEII2526.API.Controllers
             var comprar = new Compra(
                 compraForCreateDTO.DireccionEnvio,
                 compraForCreateDTO.FechaCompra,
-                compraForCreateDTO.Id,
                 0,
                 new List<CompraItem>(),
                 user)
@@ -152,6 +158,7 @@ namespace AppForSEII2526.API.Controllers
                 else
                 {
                     item.precio = herramienta.precio;
+                    //Hacer add a la lista - Ejemplo AppForMovies
                 }
             }
 
@@ -172,15 +179,15 @@ namespace AppForSEII2526.API.Controllers
 
             var comprarDetailDTO = new CompraDetailDTO(
                 comprar.id,
-                user.nombreCliente,
-                user.apellidoCliente,
+                comprar.atributos.nombreCliente,
+                comprar.atributos.apellidoCliente,
                 comprar.direccionEnvio,
                 comprar.preciototal,
                 comprar.fechaCompra,
                 compraForCreateDTO.CompraItems
             );
 
-            return CreatedAtAction(nameof(CreateCompra), new { Id = comprarDetailDTO.id }, comprarDetailDTO);
+            return CreatedAtAction(nameof(CreateCompra), new { Id = comprar.id }, comprarDetailDTO);
         }
 
     }
