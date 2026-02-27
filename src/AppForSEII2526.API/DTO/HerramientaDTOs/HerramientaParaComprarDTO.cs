@@ -24,5 +24,20 @@
             this.fabricante = fabricante;
             this.precio = precio;
         }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is HerramientaParaComprarDTO h &&
+                id == h.id &&
+                nombre == h.nombre &&
+                material == h.material &&
+                fabricante == h.fabricante &&
+                precio == h.precio;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(nombre, material, precio, fabricante);
+        }
     }
 }

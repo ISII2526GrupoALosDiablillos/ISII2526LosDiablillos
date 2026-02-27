@@ -35,7 +35,7 @@
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(id, nombre_cliente, apellido_cliente, direccion, preciototal, fechaCompra, compraItems);
+            return HashCode.Combine(nombre_cliente, apellido_cliente, direccion, preciototal, fechaCompra, compraItems);
         }
     }
 }

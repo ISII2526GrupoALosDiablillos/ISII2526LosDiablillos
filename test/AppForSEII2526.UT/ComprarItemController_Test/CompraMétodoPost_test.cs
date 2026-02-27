@@ -45,6 +45,20 @@ namespace AppForSEII2526.UT.ComprarItemController_Test
 
             compra.compraItem.Add(new CompraItem(20, "Muy afilados", 5, 3, 400));
 
+            var usuario = new ApplicationUser(
+                apellidoCliente: "Ortiz",
+                correoElectronico: "gonzalo@alu.uclm.es",
+                nombreCliente: "Gonzalo",
+                telefono: 684512269,
+                compras: new List<Compra>())
+            {
+                UserName = "gonormu",
+                Email = "gonzalo@alu.uclm.es",
+                PhoneNumber = "684512269"
+            };
+
+            _context.ApplicationUsers.Add(usuario);
+
             _context.AddRange(fabricantes);
             _context.AddRange(herramienta);
             _context.Add(username);
@@ -54,7 +68,7 @@ namespace AppForSEII2526.UT.ComprarItemController_Test
         public static IEnumerable<object[]> TestCasesFor_CompraMétodoPost_OK()
         {
             var micompra = new CompraForCreateDTO(4, /*"Clavos", "acero", 20,*/ "gonormu", "Gonzalo", "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", new List<CompraItemDTO>(), DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
-            micompra.CompraItems.Add(new CompraItemDTO("Clavos", "acero", 20, "Muy afilados", 20, "Makita", 3, 3));
+            micompra.CompraItems.Add(new CompraItemDTO("Clavos", "acero", 20, "Muy afilados", 20, 3, 3));
             var CompraItems = micompra.CompraItems;
             /*var SinNombreHerr = new CompraForCreateDTO(4, null, "acero", 20, "gonormu", "Gonzalo", "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
             var SinMaterial = new CompraForCreateDTO(4, "Clavos", null, 20, "gonormu", "Gonzalo", "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
@@ -63,7 +77,7 @@ namespace AppForSEII2526.UT.ComprarItemController_Test
             var SinDireccion = new CompraForCreateDTO(4, /*"Clavos", "acero", 20,*/ "gonormu", "Gonzalo", "Ortiz", null, PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
             var SinNombreUsuario = new CompraForCreateDTO(4, /*"Clavos", "acero", 20,*/ null, "Gonzalo", "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
             var SinNombre = new CompraForCreateDTO(4, /*"Clavos", "acero", 20,*/ "gonormu", null, "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
-            var MuchasHerramientas = new CompraForCreateDTO(4, /*"Clavos", "acero", 20,*/ "gonormu", "Gonzalo", "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", new List<CompraItemDTO>() { new CompraItemDTO("Clavos", "acero", 20, "", 3, "Makita",3, 4) }, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
+            var MuchasHerramientas = new CompraForCreateDTO(4, /*"Clavos", "acero", 20,*/ "gonormu", "Gonzalo", "Ortiz", "Mi Casa", PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es", new List<CompraItemDTO>() { new CompraItemDTO("Clavos","acero",20,"",3,3,4) }, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
             var Metalico = new CompraForCreateDTO(4, /*"Clavos", "acero", 20,*/ "gonormu", "Gonzalo", "Ortiz", "Mi Casa", PaymentMethodTypes.Cash, 684512269, "gonzalo@alu.uclm.es", CompraItems, DateTime.Today.AddDays(1), DateTime.Today.AddDays(2));
 
             return new List<object[]>
@@ -92,29 +106,11 @@ namespace AppForSEII2526.UT.ComprarItemController_Test
 
             var result = await controller.CreateCompra(compraForCreateDTO);
 
-            if (expectedMessage.StartsWith("Su compra se ha realizado correctamente"))
-            {
-                var createdResult = Assert.IsType<CreatedAtActionResult>(result);
-                var actualCompraDetailDTO = Assert.IsType<CompraDetailDTO>(createdResult.Value);
-                Assert.Equal(compraForCreateDTO.FechaCompra, actualCompraDetailDTO.fechaCompra);
-                Assert.Equal(compraForCreateDTO.Nombre_cliente, actualCompraDetailDTO.nombre_cliente);
-                Assert.Equal(compraForCreateDTO.Apellidos_cliente, actualCompraDetailDTO.apellido_cliente);
-                Assert.Equal(compraForCreateDTO.Id, actualCompraDetailDTO.id);
-                Assert.Equal(compraForCreateDTO.DireccionEnvio, actualCompraDetailDTO.direccion);
-                /*Assert.Equal(compraForCreateDTO.Precio, actualCompraDetailDTO.preciototal);*/
-                Assert.Single(actualCompraDetailDTO.compraItems);
-                var item = actualCompraDetailDTO.compraItems[0];
-                Assert.Equal(3, item.cantidad);
-                Assert.Equal("", item.descripcion);
-            }
-            else
-            {
-                var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-                var problemDetails = Assert.IsType<ValidationProblemDetails>(badRequestResult.Value);
-                var errorActual = problemDetails.Errors.First().Value[0];
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
+            var problemDetails = Assert.IsType<ValidationProblemDetails>(badRequestResult.Value);
+            var errorActual = problemDetails.Errors.First().Value[0];
 
-                Assert.StartsWith(expectedMessage, errorActual);
-            }
+            Assert.StartsWith(expectedMessage, errorActual);
         }
 
         [Fact]
@@ -122,65 +118,27 @@ namespace AppForSEII2526.UT.ComprarItemController_Test
         [Trait("Database", "WithoutFixture")]
         public async Task CrearCompraExitosa_test()
         {
-            var usuario = new ApplicationUser(
-                apellidoCliente: "Ortiz",
-                correoElectronico: "gonzalo@alu.uclm.es",
-                nombreCliente: "Gonzalo",
-                telefono: 684512269,
-                compras: new List<Compra>())
-            {
-                UserName = "gonormu",
-                Email = "gonzalo@alu.uclm.es",
-                PhoneNumber = "684512269"
-            };
-
-            _context.ApplicationUsers.Add(usuario);
-
-            var herramientaExistente = _context.Herramientas.Local.FirstOrDefault(h => h.id == 3);
-            if (herramientaExistente == null)
-            {
-                var herramienta = new Herramienta
-                {
-                    id = 3,
-                    nombre = "Clavos",
-                    material = "acero",
-                    precio = 20
-                };
-                _context.Herramientas.Add(herramienta);
-            }
-
-            await _context.SaveChangesAsync();
-
             var morck = new Mock<ILogger<ComprasController>>();
             ILogger<ComprasController> logger = morck.Object;
             var controller = new ComprasController(_context, logger);
 
             var compraDTO = new CompraForCreateDTO(
-                4, /*"Clavos", "acero", 400,*/ "gonormu", "Gonzalo", "Ortiz", "Mi casa",
+                4, "gonormu", "Gonzalo", "Ortiz", "Mi casa",
                 PaymentMethodTypes.CreditCard, 684512269, "gonzalo@alu.uclm.es",
                 new List<CompraItemDTO> {
-                    new CompraItemDTO("Clavos", "acero", 400, "Muy afilados", 20, "Makita",3, 3)
+                    new CompraItemDTO("Clavos", "acero", 400, "Muy afilados", 20,3, 3)
                 },
                 DateTime.Today.AddDays(1), DateTime.Today.AddDays(2)
             );
+
+            var expectedDTODetailcompra = new CompraDetailDTO(4, "Gonzalo", "Ortiz", "Mi casa", 400, DateTime.Today.AddDays(1), new List<CompraItemDTO> { new CompraItemDTO("Clavos", "acero", 400, "Muy afilados", 20, 3, 3) } );
 
             var result = await controller.CreateCompra(compraDTO);
 
             var createdResult = Assert.IsType<CreatedAtActionResult>(result);
             var actualCompraDetailDTO = Assert.IsType<CompraDetailDTO>(createdResult.Value);
 
-            Assert.Equal(compraDTO.FechaCompra, actualCompraDetailDTO.fechaCompra);
-            Assert.Equal(compraDTO.Nombre_cliente, actualCompraDetailDTO.nombre_cliente);
-            Assert.Equal(compraDTO.Apellidos_cliente, actualCompraDetailDTO.apellido_cliente);
-            Assert.Equal(compraDTO.DireccionEnvio, actualCompraDetailDTO.direccion);
-            Assert.Single(actualCompraDetailDTO.compraItems);
-            var item = actualCompraDetailDTO.compraItems[0];
-            Assert.Equal("Clavos", item.nombre);
-            Assert.Equal("acero", item.material);
-            Assert.Equal("Muy afilados", item.descripcion);
-            Assert.Equal(3, item.herramientaId);
-            Assert.Equal(20, item.cantidad);
-            Assert.Equal(20, item.precio);
+            Assert.Equal(expectedDTODetailcompra, actualCompraDetailDTO);
         }
     }
 }
