@@ -1,5 +1,7 @@
 ﻿using System;
 
+namespace AppForSEII2526.API.Models;
+
 [PrimaryKey(nameof(compraId), nameof(herramientaId))]
 public class CompraItem
 {
@@ -18,7 +20,7 @@ public class CompraItem
         this.herramientaId = herramientaId;
         this.precio = precio;
     }
-    
+
     public Compra compra { get; set; }
     public Herramienta herramienta { get; set; }
     public override bool Equals(object? obj)

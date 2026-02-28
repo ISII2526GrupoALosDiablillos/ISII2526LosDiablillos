@@ -31,7 +31,7 @@ namespace AppForSEII2526.UIT.CU_ComprarHerramientas
 
         private By _dialogModal = By.Id("DialogOKSaveDelete");
 
-        public void ConfirmCompra()
+        public void ConfirmarCompra()
         {
             WaitForBeingVisible(_dialogModal);
             WaitForBeingClickable(_dialogOk);
@@ -94,7 +94,7 @@ namespace AppForSEII2526.UIT.CU_ComprarHerramientas
                 }
             }
         }
-        public void SubmitCompra()
+        public void PresentarCompra()
         {
             WaitForBeingClickable(_comprarHerramientas);
             _driver.FindElement(_comprarHerramientas).Click();
@@ -105,46 +105,47 @@ namespace AppForSEII2526.UIT.CU_ComprarHerramientas
             _driver.FindElement(_modificarCompra).Click();
         }
 
-        public bool CheckError(string expected)
+        public bool ComprobarError(string expected)
         {
-            var texts = new List<string>();
+            var textos = new List<string>();
 
-            texts.AddRange(_driver.FindElements(By.CssSelector(".validation-message"))
+            textos.AddRange(_driver.FindElements(By.CssSelector(".validation-message"))
                 .Select(e => e.Text));
 
-            texts.AddRange(_driver.FindElements(By.CssSelector("form ul li"))
+            textos.AddRange(_driver.FindElements(By.CssSelector("form ul li"))
                 .Select(e => e.Text));
 
-            texts.AddRange(_driver.FindElements(By.CssSelector(".alert.alert-danger"))
+            textos.AddRange(_driver.FindElements(By.CssSelector(".alert.alert-danger"))
                 .Select(e => e.Text));
 
-            var allText = string.Join(" | ", texts.Where(t => !string.IsNullOrWhiteSpace(t)));
-            _output.WriteLine($"Errores encontrados: {allText}");
+            var todosLosErrores = string.Join(" | ", textos.Where(t => !string.IsNullOrWhiteSpace(t)));
+            _output.WriteLine($"Errores encontrados: {todosLosErrores}");
 
-            return allText.Contains(expected, StringComparison.OrdinalIgnoreCase);
+            return todosLosErrores.Contains(expected, StringComparison.OrdinalIgnoreCase);
         }
 
-        public bool CheckListHerramientasEnCompra(List<string[]> expectedCompraItems)
+        public bool ComprobarListaHerramientasEnCompra(List<string[]> expectedCompraItems)
         {
             return CheckBodyTable(expectedCompraItems, _tableOfItems);
         }
 
 
-        public void EstablecerCantidadPorNombre(string nombreHerramienta, string cantidad)
+        public void EstablecerCantidadPorNombre(string nombre, string cantidad)
         {
             WaitForBeingVisible(_tableOfItems);
 
-            var fila = _driver.FindElement(By.CssSelector($"tr#HerramientaData_{nombreHerramienta}"));
-            var input = fila.FindElement(By.CssSelector("td:nth-child(3) input"));
+            var fila = _driver.FindElement(By.CssSelector($"tr#HerramientaData_{nombre}"));
+            var entrada = fila.FindElement(By.CssSelector("td:nth-child(3) input"));
 
-            input.Click();
-            input.SendKeys(Keys.Control + "a");
-            input.SendKeys(Keys.Delete);
+            entrada.Click();
+            entrada.SendKeys(Keys.Control + "a");
+            entrada.SendKeys(Keys.Delete);
 
-            input.SendKeys(cantidad);
-            input.SendKeys(Keys.Tab);
+            entrada.SendKeys(cantidad);
+            entrada.SendKeys(Keys.Tab);
 
-            var actual = input.GetAttribute("value");
+            //Confirmar lo que queda en la entrada (input).
+            var actual = entrada.GetAttribute("value");
             _output.WriteLine($"Cantidad escrita='{cantidad}', value en input='{actual}'");
         }
     }

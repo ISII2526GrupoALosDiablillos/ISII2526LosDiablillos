@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xunit.Sdk;
 
 namespace AppForSEII2526.UIT.CU_ComprarHerramientas
 {
@@ -14,60 +15,60 @@ namespace AppForSEII2526.UIT.CU_ComprarHerramientas
 
         By inputMaterial = By.Id("materialInput");
         By inputPrecio = By.Id("precioInput");
-        By buttonSearchHerramientas = By.Id("searchHerramientasButton");
+        By botonBuscarHerramientas = By.Id("searchHerramientasButton");
         By tablaDeHerramientas = By.Id("herramientasTable");
-        By errorShownBy = By.Id("errorMessage");
+        By errorMostrado = By.Id("errorMessage");
         By botonComprarHerramienta = By.Id("comprarHerramientasButton");
 
         public void BuscarHerramientas(string material, string precio)
         {
             WaitForBeingVisible(inputMaterial);
-            var mat = _driver.FindElement(inputMaterial);
-            mat.Clear();
-            mat.SendKeys(material);
+            var materialObtenido = _driver.FindElement(inputMaterial);
+            materialObtenido.Clear();
+            materialObtenido.SendKeys(material);
 
             WaitForBeingVisible(inputPrecio);
-            var pre = _driver.FindElement(inputPrecio);
-            pre.Clear();
-            pre.SendKeys(precio);
+            var precioObtenido = _driver.FindElement(inputPrecio);
+            precioObtenido.Clear();
+            precioObtenido.SendKeys(precio);
 
-            _driver.FindElement(buttonSearchHerramientas).Click();
+            _driver.FindElement(botonBuscarHerramientas).Click();
 
             WaitForBeingVisible(tablaDeHerramientas);
         }
 
-        public bool CheckMessageError(string mensajeEsperado)
+        public bool ComprobarMensajeDeError(string mensajeEsperado)
         {
             try
             {
-                WaitForBeingVisible(errorShownBy);
-                string textoActual = _driver.FindElement(errorShownBy).Text;
+                WaitForBeingVisible(errorMostrado);
+                string textoActual = _driver.FindElement(errorMostrado).Text;
                 return textoActual.Contains(mensajeEsperado);
             }
             catch (WebDriverTimeoutException)
             {
-                return false;
+                return false;   //El mensaje de error no ha aparecido.
             }
         }
-        public void AñadirHerramientaToCart(string herramientaNombre)
+        public void AñadirHerramientaACarrito(string herramientaNombre)
         {
-            By addButton = By.Id("herramientaToCompra_" + herramientaNombre);
-            WaitForBeingClickable(addButton);
-            _driver.FindElement(addButton).Click();
+            By añadirBoton = By.Id("herramientaToCompra_" + herramientaNombre);
+            WaitForBeingClickable(añadirBoton);
+            _driver.FindElement(añadirBoton).Click();
         }
 
-        public void QuitarHerramientaFromCart(string herramientaNombre)
+        public void QuitarHerramientaDeCarrito(string herramientaNombre)
         {
-            By removeButton = By.Id("herramientaToRemove_" + herramientaNombre);
-            WaitForBeingClickable(removeButton);
-            _driver.FindElement(removeButton).Click();
+            By botonBorrar = By.Id("herramientaToRemove_" + herramientaNombre);
+            WaitForBeingClickable(botonBorrar);
+            _driver.FindElement(botonBorrar).Click();
         }
         public void ComprarHerramientas()
         {
             WaitForBeingClickable(botonComprarHerramienta);
             _driver.FindElement(botonComprarHerramienta).Click();
         }
-        public bool CompraNotAvailable()
+        public bool CompraNoDisponible()
         {
             try
             {
@@ -78,10 +79,22 @@ namespace AppForSEII2526.UIT.CU_ComprarHerramientas
                 return true;
             }
         }
-        public bool CheckListOfHerramientasInCart(List<string[]> expectedHerramientas)
+        public bool ListaDeHerramientasDelCarrito(List<string[]> expectedHerramientas)
         {
-
             return CheckBodyTable(expectedHerramientas, tablaDeHerramientas);
+        }
+
+        public bool CarritoEstáVacio()
+        {
+            var continuar = _driver.FindElements(By.Id("comprarHerramientasBoton"));
+
+            if(continuar.Count > 0 && continuar[0].Displayed)
+            {
+                return false;
+                throw new Exception("Error: La cesta de la compra está  vacía.");
+            }
+
+            return true;
         }
     }
 }

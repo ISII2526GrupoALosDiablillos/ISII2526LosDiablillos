@@ -155,7 +155,6 @@
             {
                 try
                 {
-                    compra.FechaCompra = DateTime.Now.AddDays(2);
 
                     var comprado = await apiclient.CreateCompraAsync(compra);
                     compraStateContainer.CompraProcessed();

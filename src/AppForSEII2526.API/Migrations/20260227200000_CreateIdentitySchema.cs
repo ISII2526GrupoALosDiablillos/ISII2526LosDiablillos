@@ -209,10 +209,8 @@ namespace AppForSEII2526.API.Migrations
                     direccionEnvio = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     fechaCompra = table.Column<DateTime>(type: "datetime2", nullable: false),
                     preciototal = table.Column<double>(type: "float", nullable: false),
-                    fechaInicio = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    fechaRecibo = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    atributosId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    metodoPago = table.Column<int>(type: "int", nullable: false)
+                    metodoPago = table.Column<int>(type: "int", nullable: false),
+                    atributosId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {

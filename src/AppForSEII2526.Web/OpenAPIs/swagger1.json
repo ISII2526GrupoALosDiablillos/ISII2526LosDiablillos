@@ -1133,14 +1133,6 @@
             "type": "number",
             "format": "double"
           },
-          "fechaCompra": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "fechaRecibo": {
-            "type": "string",
-            "format": "date-time"
-          },
           "compraItems": {
             "type": "array",
             "items": {

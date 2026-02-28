@@ -26,7 +26,7 @@ namespace AppForSEII2526.UT.AlquilerController_Test
                 new Herramienta(2, 10, "madera", "Martillo", 15, 30, null),
             };
 
-            ApplicationUser user = new ApplicationUser("Endrino González", "miguel.endrino@alu.uclm.es", "Miguel", 123456789, null);
+            ApplicationUser user = new ApplicationUser("Endrino González", "miguel.endrino@alu.uclm.es", "Miguel", 123456789);
 
             var reparar = new Reparacion(1, "Miguel", "Endrino Gonzalez", DateTime.Today, DateTime.Today.AddDays(5), MetodosPago.TarjetaCredito, 123456789, 25);
             reparar.ReparacionItems.Add(new ReparacionItem(1, reparar.Id, herramienta[0].id, 5, 50, 10, "Herramienta Arreglada"));
