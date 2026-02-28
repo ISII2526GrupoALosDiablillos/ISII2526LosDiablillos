@@ -26,7 +26,7 @@ namespace AppForSEII2526.UT.AlquilerController_Test
                 new Herramienta(2, 10, "madera", "Martillo", 15, 30, fabricante[1]),
             };
 
-            ApplicationUser user = new ApplicationUser("Valia Garcia", "ikervalia@alu.uclm.es", "Iker", 675171341 ,null);
+            ApplicationUser user = new ApplicationUser("Valia Garcia", "ikervalia@alu.uclm.es", "Iker", 675171341);
 
             Alquilar alquilar = new Alquilar("Iker", "Valia Garcia", "calle x", DateTime.Today, PaymentMethodTypes.PayPal, DateTime.Today.AddDays(2), DateTime.Today.AddDays(5), new List<AlquilarItem>(), user)
             {

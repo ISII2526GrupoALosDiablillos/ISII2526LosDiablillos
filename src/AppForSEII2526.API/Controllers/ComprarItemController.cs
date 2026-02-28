@@ -77,93 +77,94 @@ namespace AppForSEII2526.API.Controllers
             if (compraForCreateDTO.CompraItems.Count == 0)
                 ModelState.AddModelError("CompraItems", "Error: No se puede comprar cero herramientas...");
 
-            /*if (string.IsNullOrEmpty(compraForCreateDTO.Nombre))
-                ModelState.AddModelError("Nombre", "Error. Introduzca el nombre de la herramienta que desea.");
+            if (compraForCreateDTO.Nombre_cliente == null)
+                ModelState.AddModelError("NoNombreCliente", "Error. Introduzca su nombre.");
 
-            if (string.IsNullOrEmpty(compraForCreateDTO.Material))
-                ModelState.AddModelError("Material", "Error. Introduzca el material de la herramienta que desea.");
+            if (compraForCreateDTO.Apellidos_cliente == null)
+                ModelState.AddModelError("NoApellidosCliente", "Error. Introduzca su apellido.");
 
-            if (compraForCreateDTO.Precio <= 0)
-                ModelState.AddModelError("Precio", "Error. La compra no puede costar 0 euros sin códigos de descuento ni cheques de regalo.");*/
-
-            if (compraForCreateDTO.FechaCompra < DateTime.Now)
-                ModelState.AddModelError("FechaCompra", "Error. Tu fecha de compra debe ser después del momento actual.");
-
-            var user = _context.ApplicationUsers.FirstOrDefault(au => au.UserName == compraForCreateDTO.UserName);
-            //if (user == null)
-            //    ModelState.AddModelError("NoUsername", "Error. Nombre de usuario no registrado.");
-
-            var nombre = _context.ApplicationUsers.FirstOrDefault(au => au.nombreCliente == compraForCreateDTO.Nombre_cliente);
-            if (nombre == null)
-                ModelState.AddModelError("NoNombreCliente", "Error. Nombre no registrado.");
-
-            var apellido = _context.ApplicationUsers.FirstOrDefault(au => au.apellidoCliente == compraForCreateDTO.Apellidos_cliente);
-            if (apellido == null)
-                ModelState.AddModelError("NoApellidoCliente", "Error. Apellido no registrado.");
+            if (compraForCreateDTO.DireccionEnvio == null)
+                ModelState.AddModelError("NoDirecciónEnvío", "Error. Introduzca su dirección.");
 
             var ultimaCompra = compraForCreateDTO.CompraItems.FirstOrDefault();
             if (ultimaCompra != null && ultimaCompra.cantidad == 3 && string.IsNullOrEmpty(ultimaCompra.descripcion))
                 ModelState.AddModelError("MuchasHerramientas", "¡Error! Estas comprando demasiadas herramientas sin descripción.");
 
-            var direccion = _context.ApplicationUsers
-                .FirstOrDefault(au => au.compras.Any(c => c.direccionEnvio == compraForCreateDTO.DireccionEnvio));
-            if (direccion == null)
-                ModelState.AddModelError("NoDirecciónDeEnvio", "Error. Dirección no registrada.");
-
             var pago = compraForCreateDTO.Pago;
             if (pago == PaymentMethodTypes.Cash)
                 ModelState.AddModelError("Metalico", "¡Error! No aceptamos compras pagadas en metálico.");
 
+            var user = _context.ApplicationUsers.FirstOrDefault(au => au.nombreCliente == compraForCreateDTO.Nombre_cliente && au.apellidoCliente == compraForCreateDTO.Apellidos_cliente);
+            if (user == null)
+                return BadRequest(new ValidationProblemDetails(ModelState));
+
             if (ModelState.ErrorCount > 0)
                 return BadRequest(new ValidationProblemDetails(ModelState));
 
-            var herramientasIds = compraForCreateDTO.CompraItems.Select(ri => ri.herramientaId).ToList();
+            var nombreHerramienta = compraForCreateDTO.CompraItems.Select(h => h.nombre).Distinct().ToList();
 
-            var herramientas = _context.Herramientas
-                .Include(h => h.compraItems)
-                    .ThenInclude(ri => ri.compra)
-                .Where(h => herramientasIds.Contains(h.id))
-                .Select(h => new
-                {
-                    h.id,
-                    h.nombre,
-                    h.material,
-                    h.precio,
-                    NumberOfRentedItems = h.compraItems.Count(ri =>
-                        ri.compra.fechaInicio <= compraForCreateDTO.FechaRecibo &&
-                        ri.compra.fechaRecibo >= compraForCreateDTO.FechaCompra)
-                })
-                .ToList();
+            var herramientas = await _context.Herramientas
+                .Include(f => f.fabricante)
+                .Where(h => nombreHerramienta.Contains(h.nombre))
+                .ToListAsync();
 
-            var comprar = new Compra(
-                compraForCreateDTO.DireccionEnvio,
-                compraForCreateDTO.FechaCompra,
-                0,
-                new List<CompraItem>(),
-                user)
+            var comprar = new Compra
             {
-                atributos = user,
-                compraItem = new List<CompraItem>()
+                direccionEnvio = compraForCreateDTO.DireccionEnvio,
+                fechaCompra = DateTime.Today,
+                preciototal = 0.0,
+                metodoPago = pago,
+                compraItem = new List<CompraItem>(),
+                atributos = user
             };
 
-            var numeroDiasAlquiler = (compraForCreateDTO.FechaRecibo - compraForCreateDTO.FechaCompra).Days;
-
-            foreach (var item in compraForCreateDTO.CompraItems)
+            foreach(var compraDTO in compraForCreateDTO.CompraItems)
             {
-                var herramienta = herramientas.FirstOrDefault(h => h.id == item.herramientaId);
+                if(compraDTO == null)
+                {
+                    ModelState.AddModelError("NoItems", "Error: Usted no puede comprar un objeto nulo, tiene que comprar una herramienta.");
+                    continue;
+                }
+
+                if (compraDTO.cantidad == null)
+                    ModelState.AddModelError("CompraNoVálida", "Error: Introduzca cuántas unidades quiere comprar.");
+                
+                if (compraDTO.cantidad <= 0)
+                    ModelState.AddModelError("CompraNoVálida", "Error: La cantidad debe ser superior a cero.");
+
+                if (compraDTO.descripcion == null)
+                    ModelState.AddModelError("CompraNoVálida", "Error: Introduzca la descripción de la herramienta que quiere comprar.");
+
+                var herramienta = herramientas.FirstOrDefault(h => h.nombre == compraDTO.nombre);
+
                 if (herramienta == null)
                 {
-                    ModelState.AddModelError("ComprarItems", $"Error. La herramienta con el id {item.herramientaId} no existe");
+                    ModelState.AddModelError("NoHerramientas", "Error: La herramienta no está disponible.");
+                    continue;
                 }
                 else
                 {
-                    item.precio = herramienta.precio;
-                    //Hacer add a la lista - Ejemplo AppForMovies
+                    double precioHerramienta = herramienta.precio;
+                    int cantidadHerramienta = compraDTO.cantidad;
+
+                    var herramientaParaComprar = new CompraItem
+                    {
+                        cantidad = cantidadHerramienta,
+                        descripcion = compraDTO.descripcion,
+                        compra = comprar,
+                        herramienta = herramienta,
+                        precio = precioHerramienta * cantidadHerramienta
+                    };
+
+                    comprar.compraItem.Add(herramientaParaComprar);
                 }
+
             }
 
             if (ModelState.ErrorCount > 0)
                 return BadRequest(new ValidationProblemDetails(ModelState));
+
+            comprar.preciototal = comprar.compraItem.Sum(oi => oi.precio);
 
             _context.Add(comprar);
 

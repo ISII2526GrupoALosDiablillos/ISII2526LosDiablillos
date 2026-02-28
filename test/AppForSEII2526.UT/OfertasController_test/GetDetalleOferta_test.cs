@@ -20,8 +20,7 @@ namespace AppForSEII2526.UT.OfertaController_test
                 apellidoCliente: "Ortega",
                 correoElectronico: "alejandro.ortega@tests.com",
                 nombreCliente: "Alejandro",
-                telefono: 123456789,
-                compras: new List<Compra>()
+                telefono: 123456789
             )
             {
                 Id = "alexmendoza",

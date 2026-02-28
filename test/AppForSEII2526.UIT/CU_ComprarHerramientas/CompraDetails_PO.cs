@@ -16,7 +16,7 @@ namespace AppForSEII2526.UIT.CU_ComprarHerramientas
         {
         }
         private By _tableOfItems = By.Id("ComprasHerramientas");
-        public bool CheckDetalleCompra(string nombreCliente, string apellidoCliente, string direccionEnvio, DateTime fechaCompra, int precioTotal)
+        public bool ComprobarDetallesDeCompra(string nombreCliente, string apellidoCliente, string direccionEnvio, DateTime fechaCompra, int precioTotal)
         {
             WaitForBeingVisible(_tableOfItems);
             bool resultado = true;
@@ -27,7 +27,7 @@ namespace AppForSEII2526.UIT.CU_ComprarHerramientas
             resultado = resultado && _driver.FindElement(By.Id("PrecioTotal")).Text.Contains(precioTotal.ToString());
             return resultado;
         }
-        public bool CheckListHerramienta(List<string[]> expectedHerramientas)
+        public bool ComprobarListaDeHerramienta(List<string[]> expectedHerramientas)
         {
             return CheckBodyTable(expectedHerramientas, _tableOfItems);
         }

@@ -17,27 +17,27 @@ namespace AppForSEII2526.UT.HerramientasController_Test
         public CompraDetailDTO_test()
         {
             var fabricantes = new List<Fabricante>() {
-                new Fabricante(1,"Aceros Manolo", null),
-                new Fabricante(2,"Maderas Juan", null),
-                new Fabricante(3,"Aluminios Carlos", null),
-                new Fabricante(4,"Cristales Paqui", null)
+                new Fabricante(1,"Makita", null),
+                new Fabricante(2,"Bosch", null),
+                new Fabricante(3,"Milwaukee", null),
+                new Fabricante(4,"Stanley", null)
             };
 
             var herramienta = new List<Herramienta>(){
-                new Herramienta(1,5,"aluminio", "Serrucho", 25, 50, fabricantes[0]),
-                new Herramienta(2,10,"madera",   "Martillo", 15, 40, fabricantes[1]),
-                new Herramienta(3,15,"acero",    "Clavos",   20, 50, fabricantes[2]),
-                new Herramienta(4,20,"acero",    "Desatornillador", 100, 100, fabricantes[3]),
+                new Herramienta(1,5,"Madera", "Martillo", 20, 50, fabricantes[0]),
+                new Herramienta(3,10,"Metal", "Destornillador", 15, 40, fabricantes[1]),
+                new Herramienta(4,15,"Madera", "Astillas", 5, 50, fabricantes[2]),
+                new Herramienta(6,20,"Acero", "Sierra", 20, 100, fabricantes[3]),
             };
 
-            ApplicationUser username = new ApplicationUser("Ortiz", "gonzalo@alu.uclm.es", "Gonzalo", 684512269, new List<Compra>());
-            Compra compra = new Compra("Mi casa", DateTime.Today, 5, 33.70, new List<CompraItem>(), username)
+            ApplicationUser username = new ApplicationUser("Ortiz", "gonzalo@alu.uclm.es", "Gonza", 684512269);
+            Compra compra = new Compra("Mi casa", DateTime.Today, 20, 0, new List<CompraItem>(), username)
             {
                 atributos = username,
                 compraItem = new List<CompraItem>()
             };
 
-            compra.compraItem.Add(new CompraItem(1, "Anticuado", 5, 2, 15));
+            compra.compraItem.Add(new CompraItem(1, "Afilada", 1, 6, 20));
 
             _context.AddRange(fabricantes);
             _context.AddRange(herramienta);
@@ -71,10 +71,10 @@ namespace AppForSEII2526.UT.HerramientasController_Test
             ILogger<ComprasController> logger = mock.Object;
             var controller = new ComprasController(_context, logger);
 
-            var expectedCompra = new CompraDetailDTO(5, "Gonzalo", "Ortiz", "Mi casa", 33.70, DateTime.Today, new List<CompraItemDTO>());
-            expectedCompra.compraItems.Add(new CompraItemDTO("Martillo", "madera", 15, "Anticuado", 1, 2, 3));
+            var expectedCompra = new CompraDetailDTO(1, "Gonza", "Ortiz", "Mi casa", 20, DateTime.Today, new List<CompraItemDTO>());
+            expectedCompra.compraItems.Add(new CompraItemDTO("Sierra", "Acero", 20, "Afilada", 1, 6, 1));
 
-            var result = await controller.GetCompraDetails(5);
+            var result = await controller.GetCompraDetails(1);
 
             var okResult = Assert.IsType<OkObjectResult>(result);
             var compraDTOActual = Assert.IsType<CompraDetailDTO>(okResult.Value);
@@ -84,11 +84,11 @@ namespace AppForSEII2526.UT.HerramientasController_Test
             Assert.Single(compraDTOActual.compraItems);
             var compraItem = compraDTOActual.compraItems[0];
 
-            Assert.Equal(2, compraItem.herramientaId);
-            Assert.Equal("Martillo", compraItem.nombre);
-            Assert.Equal("madera", compraItem.material);
-            Assert.Equal("Anticuado", compraItem.descripcion);
-            Assert.Equal(15, compraItem.precio);
+            Assert.Equal(6, compraItem.herramientaId);
+            Assert.Equal("Sierra", compraItem.nombre);
+            Assert.Equal("Acero", compraItem.material);
+            Assert.Equal("Afilada", compraItem.descripcion);
+            Assert.Equal(20, compraItem.precio);
             Assert.Equal(1, compraItem.cantidad);
         }
     }

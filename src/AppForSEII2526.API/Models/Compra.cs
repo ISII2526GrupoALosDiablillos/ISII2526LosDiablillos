@@ -1,27 +1,29 @@
 ﻿using System;
 using System.Security.Cryptography.X509Certificates;
 
+namespace AppForSEII2526.API.Models;
+
 public class Compra
 {
-	[Key]
-    public int id {  get; set; }
+    [Key]
+    public int id { get; set; }
     [Required(AllowEmptyStrings = false, ErrorMessage = "Por favor, introduzca su dirección")]
     public String direccionEnvio { get; set; }
-	public DateTime fechaCompra {  get; set; }
-	public double preciototal { get; set; }
-	public IList<CompraItem> compraItem { get; set; }
-	public DateTime fechaInicio { get; set; }
-	public DateTime fechaRecibo { get; set; }
-	public Compra() { }
-	public Compra(String direccionEnvio, DateTime fechaCompra, double preciototal, IList<CompraItem> compraItem, ApplicationUser atributos)
-	{
-		this.direccionEnvio = direccionEnvio;
-		this.fechaCompra = fechaCompra;
-		this.preciototal = preciototal;
-		this.compraItem = compraItem ?? new List<CompraItem>();
-		this.atributos = atributos;
-	}
-	public ApplicationUser atributos {  get; set; }
+    public DateTime fechaCompra { get; set; }
+    public double preciototal { get; set; }
+    public IList<CompraItem> compraItem { get; set; }
+    public PaymentMethodTypes metodoPago { get; set; }
+    public Compra() { }
+    public Compra(String direccionEnvio, DateTime fechaCompra, double preciototal, PaymentMethodTypes metodoPago, IList<CompraItem> compraItem, ApplicationUser atributos)
+    {
+        this.direccionEnvio = direccionEnvio;
+        this.fechaCompra = fechaCompra;
+        this.preciototal = preciototal;
+        this.metodoPago = metodoPago;
+        this.compraItem = compraItem ?? new List<CompraItem>();
+        this.atributos = atributos;
+    }
+    public ApplicationUser atributos { get; set; }
     public override bool Equals(object? obj)
     {
         return base.Equals(obj);
@@ -32,5 +34,4 @@ public class Compra
         return base.GetHashCode();
     }
 
-	public PaymentMethodTypes metodoPago { get; set; }
 }

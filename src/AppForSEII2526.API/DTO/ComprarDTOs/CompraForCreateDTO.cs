@@ -13,14 +13,12 @@ namespace AppForSEII2526.API.DTO.ComprarDTOs
         public int? Telefono { get; set; }
         public String? CorreoElectronico { get; set; }
         public double PrecioTotal { get; set; }
-        public DateTime FechaCompra { get; set; }
-        public DateTime FechaRecibo { get; set; }
         public IList<CompraItemDTO> CompraItems { get; set; }
         public CompraForCreateDTO()
         {
             CompraItems = new List<CompraItemDTO>();
         }
-        public CompraForCreateDTO(string username, string nombre_cliente, string apellidos_cliente, string direccionEnvio, PaymentMethodTypes pago, int? telefono, string? correoElectronico, double precioTotal, IList<CompraItemDTO> compraItems, DateTime fechaCompra, DateTime fechaRecibo)
+        public CompraForCreateDTO(string username, string nombre_cliente, string apellidos_cliente, string direccionEnvio, PaymentMethodTypes pago, int? telefono, string? correoElectronico, double precioTotal, IList<CompraItemDTO> compraItems)
         {
             UserName = username;
             Nombre_cliente = nombre_cliente;
@@ -31,8 +29,6 @@ namespace AppForSEII2526.API.DTO.ComprarDTOs
             CorreoElectronico = correoElectronico;
             PrecioTotal = precioTotal;
             CompraItems = compraItems ?? new List<CompraItemDTO>();
-            FechaCompra = fechaCompra;
-            FechaRecibo = fechaRecibo;
         }
         public override int GetHashCode()
         {

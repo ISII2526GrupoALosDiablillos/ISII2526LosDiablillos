@@ -35,7 +35,7 @@ namespace AppForSEII2526.UT.RepararController_Test
                 new Herramienta(2,10,_herramienta2Fabricante, _herramienta2Nombre, 20, 50, null),
             };
 
-            ApplicationUser user = new ApplicationUser(_customerNameSurname, "Miguel", _userName, 123456789, null);
+            ApplicationUser user = new ApplicationUser(_customerNameSurname, "Miguel", _userName, 123456789);
 
             var reparar = new Reparacion(1, _customerNameSurname, "Endrino", DateTime.Now, DateTime.Today.AddDays(7), 
                 MetodosPago.PayPal, 123456789, 50);
