@@ -5,10 +5,14 @@ namespace AppForSEII2526.API.DTO.ComprarDTOs
 {
     public class CompraForCreateDTO
     {
+        [Required(ErrorMessage = "El Nombre del cliente es obligatorio.")]
         public String Nombre_cliente { get; set; }
+        [Required(ErrorMessage = "El Apellido del cliente es obligatorio.")]
         public String Apellidos_cliente { get; set; }
         public String? UserName { get; set; }
+        [Required(ErrorMessage = "La dirección de envío es obligatoria.")]
         public String DireccionEnvio { get; set; }
+        [Required(ErrorMessage = "El Método de Pago es obligatorio.")]
         public PaymentMethodTypes Pago { get; set; }
         public int? Telefono { get; set; }
         public String? CorreoElectronico { get; set; }
