@@ -13,12 +13,12 @@ namespace AppForSEII2526.UIT.CU_ComprarHerramientas
         {
         }
 
-        By inputMaterial = By.Id("materialInput");
-        By inputPrecio = By.Id("precioInput");
+        By inputMaterial = By.Id("inputMaterial");
+        By inputPrecio = By.Id("inputPrecio");
         By botonBuscarHerramientas = By.Id("searchHerramientasButton");
         By tablaDeHerramientas = By.Id("herramientasTable");
-        By errorMostrado = By.Id("errorMessage");
-        By botonComprarHerramienta = By.Id("comprarHerramientasButton");
+        By errorMostrado = By.Id("errorsShow");
+        By botonComprarHerramienta = By.Id("comprarHerramientaButton");
 
         public void BuscarHerramientas(string material, string precio)
         {
@@ -52,14 +52,14 @@ namespace AppForSEII2526.UIT.CU_ComprarHerramientas
         }
         public void AñadirHerramientaACarrito(string herramientaNombre)
         {
-            By añadirBoton = By.Id("herramientaToCompra_" + herramientaNombre);
+            By añadirBoton = By.Id("HerramientaParaComprar_" + herramientaNombre);
             WaitForBeingClickable(añadirBoton);
             _driver.FindElement(añadirBoton).Click();
         }
 
         public void QuitarHerramientaDeCarrito(string herramientaNombre)
         {
-            By botonBorrar = By.Id("herramientaToRemove_" + herramientaNombre);
+            By botonBorrar = By.Id("removeHerramienta_" + herramientaNombre);
             WaitForBeingClickable(botonBorrar);
             _driver.FindElement(botonBorrar).Click();
         }
@@ -86,12 +86,12 @@ namespace AppForSEII2526.UIT.CU_ComprarHerramientas
 
         public bool CarritoEstáVacio()
         {
-            var continuar = _driver.FindElements(By.Id("comprarHerramientasBoton"));
+            var continuar = _driver.FindElements(By.Id("comprarHerramientaBoton"));
 
             if(continuar.Count > 0 && continuar[0].Displayed)
             {
                 return false;
-                throw new Exception("Error: La cesta de la compra está  vacía.");
+                throw new Exception("Error: La cesta de la compra está vacía, pero se puede continuar...");
             }
 
             return true;

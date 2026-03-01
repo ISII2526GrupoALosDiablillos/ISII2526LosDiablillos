@@ -1,4 +1,4 @@
-﻿using AppForMovies.UIT.Shared;
+﻿using AppForSEII2526.UIT.Shared;
 using AppForSEII2526.UIT.CU_OfertaHerramientas;
 using OpenQA.Selenium;
 using System;
@@ -6,24 +6,25 @@ using System.Collections.Generic;
 using System.Threading;
 using Xunit;
 using Xunit.Abstractions;
+using AppForMovies.UIT.Shared;
 
 namespace AppForSEII2526.UIT.CU_OfertaHerramientas_UIT
 {
     public class CU_OfertaHerramientas_UIT : UC_UIT
     {
-        private const string URI = "https://localhost:7081/";
+        private const string URI = "https://localhost:44335/";
 
         private SelectHerramientasParaOferta_PO SelectHerramientasParaOferta_PO;
         private DetailOferta_PO detailOferta_PO;
         private PostOferta_PO PostOferta_PO;
 
-        private const string herramientaIdMakita = "3";
+        private const string herramientaIdMakita = "1";
         private const string herramientaNombreMakita = "Martillo";
         private const string herramientaMaterialMakita = "Madera";
         private const string herramientaPrecioMakita = "20";
         private const string herramientaFabricanteMakita = "Makita";
 
-        private const string herramientaIdBosch = "4";
+        private const string herramientaIdBosch = "3";
         private const string herramientaNombreBosch = "Destornillador";
         private const string herramientaMaterialBosch = "Metal";
         private const string herramientaPrecioBosch = "15";
@@ -85,9 +86,9 @@ namespace AppForSEII2526.UIT.CU_OfertaHerramientas_UIT
         }
 
         [Theory]
-        [InlineData(herramientaIdMakita, herramientaNombreMakita, "26/12/2025", "14/12/2025", "Error! Tu oferta debe terminar después de que empiece")]
+        [InlineData(herramientaIdMakita, herramientaNombreMakita, "26/12/2026", "14/12/2026", "Error! Tu oferta debe terminar después de que empiece")]
         [InlineData(herramientaIdMakita, herramientaNombreMakita, "09/12/2025", "14/12/2025", "Error! La fecha de inicio de tu oferta debe ser posterior a hoy")]
-        [InlineData(herramientaIdMakita, herramientaNombreMakita, "20/12/2025", "22/12/2025", "¡Error!, la oferta debe durar al menos una semana")]
+        [InlineData(herramientaIdMakita, herramientaNombreMakita, "20/12/2026", "22/12/2026", "¡Error!, la oferta debe durar al menos una semana")]
         [Trait("LevelTesting", "Funcional Testing")]
         public void UC3_5_6_7_AF1_FechasErroneas(string herramientaId, string herramientaNombre, string fechaInicio, string fechaFinal, string expectedError)
         {

@@ -12,8 +12,8 @@ namespace AppForSEII2526.UIT.CU_ComprarHerramientas
         public CompraCreate_PO(IWebDriver driver, ITestOutputHelper output) : base(driver, output)
         {
         }
-        private By _nombreCliente = By.CssSelector("input[name$='NombreCliente']");
-        private By _apellidoCliente = By.CssSelector("input[name$='ApellidoCliente']");
+        private By _nombreCliente = By.CssSelector("input[name$='Nombre_cliente']");
+        private By _apellidoCliente = By.CssSelector("input[name$='Apellidos_cliente']");
         private By _direccionEnvio = By.CssSelector("input[name$='DireccionEnvio']");
         private By _correoElectronico = By.CssSelector("input[name$='CorreoElectronico']");
         private By _metodoPago = By.Id("TiposMetodoPago");
@@ -62,6 +62,7 @@ namespace AppForSEII2526.UIT.CU_ComprarHerramientas
             _driver.FindElement(_direccionEnvio).Clear();
             _driver.FindElement(_direccionEnvio).SendKeys(direccionEnvio);
 
+            
 
             WaitForBeingVisible(_tableOfItems);
             var filas = _driver.FindElements(By.CssSelector("#TableOfRentalItems tbody tr"));
@@ -107,21 +108,21 @@ namespace AppForSEII2526.UIT.CU_ComprarHerramientas
 
         public bool ComprobarError(string expected)
         {
-            var textos = new List<string>();
+            var texts = new List<string>();
 
-            textos.AddRange(_driver.FindElements(By.CssSelector(".validation-message"))
+            texts.AddRange(_driver.FindElements(By.CssSelector(".validation-message"))
                 .Select(e => e.Text));
 
-            textos.AddRange(_driver.FindElements(By.CssSelector("form ul li"))
+            texts.AddRange(_driver.FindElements(By.CssSelector("form ul li"))
                 .Select(e => e.Text));
 
-            textos.AddRange(_driver.FindElements(By.CssSelector(".alert.alert-danger"))
+            texts.AddRange(_driver.FindElements(By.CssSelector(".alert.alert-danger"))
                 .Select(e => e.Text));
 
-            var todosLosErrores = string.Join(" | ", textos.Where(t => !string.IsNullOrWhiteSpace(t)));
-            _output.WriteLine($"Errores encontrados: {todosLosErrores}");
+            var allText = string.Join(" | ", texts.Where(t => !string.IsNullOrWhiteSpace(t)));
+            _output.WriteLine($"Errores encontrados: {allText}");
 
-            return todosLosErrores.Contains(expected, StringComparison.OrdinalIgnoreCase);
+            return allText.Contains(expected, StringComparison.OrdinalIgnoreCase);
         }
 
         public bool ComprobarListaHerramientasEnCompra(List<string[]> expectedCompraItems)

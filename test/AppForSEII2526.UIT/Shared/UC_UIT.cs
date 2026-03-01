@@ -1,29 +1,38 @@
-﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
+﻿using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
-using System;
-using System.Diagnostics;
-using System.Net.Http;
-using System.Threading;
-using Xunit.Abstractions;
+
 
 namespace AppForMovies.UIT.Shared
 {
     public class UC_UIT : IDisposable
     {
+
         private bool _pipeline = false;
+
+        //establish which browser you would like to use
+        //private string _browser = "Chrome";
+        //private string _browser = "Firefox";
         private string _browser = "Edge";
 
         protected IWebDriver _driver;
         protected readonly ITestOutputHelper _output;
 
-        public string _URI => NormalizeBaseUrl(
-            Environment.GetEnvironmentVariable("UIT_BASE_URL") ?? "https://localhost:7081/"
-        );
+
+        public string _URI
+        {
+            get
+            {
+                //set url of your web page 
+                return "https://localhost:44335/";
+
+            }
+        }
 
         public UC_UIT(ITestOutputHelper output)
         {
+
+            //it initializes where the errors will be shown
             _output = output;
 
             switch (_browser)
@@ -35,125 +44,96 @@ namespace AppForMovies.UIT.Shared
                     SetUp_EdgeFor4UIT();
                     break;
                 default:
+                    //by default Chrome will be used
                     SetUp_Chrome4UIT();
                     break;
             }
+            //Added to make _Driver wait when an element is not found.
+            //It will wait for a maximum of 50 seconds.
 
+            //maximize the window browser
             _driver.Manage().Window.Maximize();
         }
 
+
         protected void Initial_step_opening_the_web_page()
         {
-            WaitForServer(_URI, 30);
-            _driver.Navigate().GoToUrl(_URI);
+            _driver.Navigate()
+                .GoToUrl(_URI);
         }
 
         protected void Perform_login(string email, string password)
         {
-            WaitForServer(_URI, 30);
-            _driver.Navigate().GoToUrl(_URI + "Account/Login");
+            _driver.Navigate()
+                    .GoToUrl(_URI + "Account/Login");
+            // _driver.FindElement(By.Id("Input_Email"))
+            //     .SendKeys("elena.navarro@uclm.es");
+            _driver.FindElement(By.Name("Input.Email"))
+                .SendKeys(email);
 
-            _driver.FindElement(By.Name("Input.Email")).SendKeys(email);
-            _driver.FindElement(By.Name("Input.Password")).SendKeys(password);
-            _driver.FindElement(By.XPath("/html/body/div[1]/main/article/div/div[1]/section/form/div[4]/button")).Click();
+            _driver.FindElement(By.Name("Input.Password"))
+                .SendKeys(password);
+
+            _driver.FindElement(By.XPath("/html/body/div[1]/main/article/div/div[1]/section/form/div[4]/button"))
+                .Click();
         }
 
-        private static string NormalizeBaseUrl(string url)
-        {
-            url = (url ?? "").Trim();
-            if (!url.EndsWith("/")) url += "/";
-            return url;
-        }
-
-        private void WaitForServer(string url, int timeoutSeconds)
-        {
-            var handler = new HttpClientHandler
-            {
-                ServerCertificateCustomValidationCallback =
-                    HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-            };
-
-            using var client = new HttpClient(handler)
-            {
-                Timeout = TimeSpan.FromSeconds(2)
-            };
-
-            var sw = Stopwatch.StartNew();
-            Exception last = null;
-
-            while (sw.Elapsed < TimeSpan.FromSeconds(timeoutSeconds))
-            {
-                try
-                {
-                    var resp = client.GetAsync(url).GetAwaiter().GetResult();
-                    if ((int)resp.StatusCode >= 200 && (int)resp.StatusCode < 500)
-                        return;
-                }
-                catch (Exception ex)
-                {
-                    last = ex;
-                }
-
-                Thread.Sleep(500);
-            }
-
-            throw new InvalidOperationException($"No se pudo conectar a {url}. Último error: {last?.Message}");
-        }
 
         protected void SetUp_Chrome4UIT()
         {
-            var options = new ChromeOptions
+            var optionsc = new ChromeOptions
             {
                 PageLoadStrategy = PageLoadStrategy.Normal,
                 AcceptInsecureCertificates = true
             };
+            //For pipelines use this option for hiding the browser
+            if (_pipeline) optionsc.AddArgument("--headless");
 
-            if (_pipeline) options.AddArgument("--headless=new");
-            options.AddArgument("--disable-extensions");
-            options.AddArgument("--no-first-run");
-            options.AddArgument("--no-default-browser-check");
-            options.AddArgument("--remote-allow-origins=*");
+            _driver = new ChromeDriver(optionsc);
 
-            _driver = new ChromeDriver(options);
         }
 
         protected void SetUp_FireFox4UIT()
         {
-            var options = new FirefoxOptions
+            var optionsff = new FirefoxOptions
             {
                 PageLoadStrategy = PageLoadStrategy.Normal,
                 AcceptInsecureCertificates = true
             };
+            //For pipelines use this option for hiding the browser
+            if (_pipeline) optionsff.AddArgument("--headless");
 
-            if (_pipeline) options.AddArgument("--headless");
+            _driver = new FirefoxDriver(optionsff);
 
-            _driver = new FirefoxDriver(options);
         }
 
         protected void SetUp_EdgeFor4UIT()
         {
-            var options = new EdgeOptions
+            //var edgeDriverService = Microsoft.Edge.SeleniumTools.EdgeDriverService.CreateChromiumService();
+            //var edgeOptions = new Microsoft.Edge.SeleniumTools.EdgeOptions();
+            //edgeOptions.PageLoadStrategy = PageLoadStrategy.Normal;
+            //edgeOptions.UseChromium = true;
+            //if (_pipeline) edgeOptions.AddArguments("--headless");
+
+            //_driver = new Microsoft.Edge.SeleniumTools.EdgeDriver(edgeDriverService, edgeOptions);
+
+            var optionsEdge = new EdgeOptions
             {
                 PageLoadStrategy = PageLoadStrategy.Normal,
                 AcceptInsecureCertificates = true
             };
 
-            options.AddArgument("--ignore-certificate-errors");
-            options.AddArgument("--allow-insecure-localhost");
-            options.AddArgument("--disable-extensions");
-            options.AddArgument("--no-first-run");
-            options.AddArgument("--no-default-browser-check");
-            options.AddArgument("inprivate");
-            options.AddArgument("--remote-allow-origins=*");
+            //For pipelines use this option for hiding the browser
+            if (_pipeline) optionsEdge.AddArgument("--headless");
 
-            if (_pipeline) options.AddArgument("--headless=new");
+            _driver = new EdgeDriver(optionsEdge);
 
-            _driver = new EdgeDriver(options);
         }
+
 
         public void Dispose()
         {
-            try { _driver.Quit(); } catch { }
+            _driver.Close();
             _driver.Dispose();
             GC.SuppressFinalize(this);
         }
