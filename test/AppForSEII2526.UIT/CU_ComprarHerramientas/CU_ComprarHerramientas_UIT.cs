@@ -79,7 +79,6 @@ namespace AppForSEII2526.UIT.CU_ComprarHerramientas
             Thread.Sleep(500);
 
             //Assert
-
             Assert.True(detalleCompra_PO.ComprobarDetallesDeCompra("Gonza", "Ortiz", "Mi Casa", DateTime.Today, 20), "Falla CheckDetalleCompra");
             Assert.True(detalleCompra_PO.ComprobarListaDeHerramienta(expectedHerramienta), "Falla CheckListHerramienta");
 
@@ -209,6 +208,50 @@ namespace AppForSEII2526.UIT.CU_ComprarHerramientas
 
             //Assert
             Assert.True(crearCompra_PO.ComprobarError("Cantidad"));
+        }
+
+        //FB + FA1 + FA1 + FA2
+        //Examen Sprint 3 - Marzo 2026
+        [Fact]
+        [Trait("LevelTesting", "Funcional Testing")]
+        public void ExamenSprint3Marzo()
+        {
+            //Arrange
+            var expectedHerramienta = new List<string[]>
+            {
+                new string[] {herramienta2Nombre, herramienta2Material, "2", "5 €", "Puntiagudas"}
+            };
+
+            //Act
+            InitialStepsForCompraHerramientas();
+            selectHerramientasParaComprar_PO.BuscarHerramientas("", "20");               //1. Filtra por precio.
+            Thread.Sleep(2000);
+            selectHerramientasParaComprar_PO.AñadirHerramientaACarrito(herramienta1Nombre); //2. Añade al carrito una herramienta de las que devuelva.
+            Thread.Sleep(2000);
+            selectHerramientasParaComprar_PO.BuscarHerramientas("Madera", "");              //3. Filtra por material.
+            Thread.Sleep(2000);
+            selectHerramientasParaComprar_PO.AñadirHerramientaACarrito(herramienta2Nombre); //4. Añade al carrito una nueva herramienta de las que devuelva (distinta al anterior).
+            Thread.Sleep(2000);
+            selectHerramientasParaComprar_PO.ComprarHerramientas();
+            Thread.Sleep(2000);
+            crearCompra_PO.ModificarCompra();                                                   //5. Modifica el carrito y elimina la primera herramienta añadida.
+            Thread.Sleep(2000);
+            selectHerramientasParaComprar_PO.QuitarHerramientaDeCarrito(herramienta1Nombre);
+            Thread.Sleep(2000);
+            selectHerramientasParaComprar_PO.ComprarHerramientas();                             //6. Continua con el proceso hasta el final del Flujo Básico.
+            Thread.Sleep(2000);
+            crearCompra_PO.RellenarFormulario("Gonza", "Ortiz", "gonzalo@alu.uclm.es", "Mi Casa", "PayPal", "Puntiagudas");
+            Thread.Sleep(500);
+            crearCompra_PO.EstablecerCantidadPorNombre(herramienta2Nombre, "2");                //... para realizar una compra comprando una cantidad de 2 herramientas.
+            Thread.Sleep(2000);
+            crearCompra_PO.PresentarCompra();
+            Thread.Sleep(2000);
+            crearCompra_PO.ConfirmarCompra();
+            Thread.Sleep(2000);
+
+            //Assert
+            Assert.True(detalleCompra_PO.ComprobarDetallesDeCompra("Gonza", "Ortiz", "Mi Casa", DateTime.Today, 10), "Falla CheckDetalleCompra");
+            Assert.True(detalleCompra_PO.ComprobarListaDeHerramienta(expectedHerramienta), "Falla CheckListHerramienta");
         }
     }
 }
